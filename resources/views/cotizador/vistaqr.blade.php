@@ -68,7 +68,10 @@ use Illuminate\Support\Facades\DB;
       border-color: #cccccc;
       color:black;
     }
-    
+    .contenedor {
+      display: flex;
+      justify-content: center;
+    }
   </style>
   <script   src="{{ asset('js/bootstrap.bundle.min.js') }}"   ></script>
   
@@ -98,6 +101,18 @@ use Illuminate\Support\Facades\DB;
     else
     {
       ?> 
+         
+          <div class="contenedor">
+            <label>
+              <input type="checkbox" id="cbox1" value="first_checkbox" checked disabled/> 
+              Estado de la póliza 
+              <strong style="color:green;">
+                solvente
+              </strong>
+              
+            </label>
+          </div>
+          <br/>
           <!-- acordeon -->  
           <div class="accordion accordion-flush" id="accordionFlushExample" style="text-align: center;">   
               <!-- informacion personal-->
