@@ -182,7 +182,7 @@ use Illuminate\Support\Facades\DB;
                   class="accordion-header collapsed redondear"
                   data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo"
                   >
-                  Polizas Salud 
+                  Pólizas Salud 
                 </h6>
                 <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                   <div class="accordion-body row">
@@ -281,7 +281,7 @@ use Illuminate\Support\Facades\DB;
                   class="accordion-header collapsed redondear"
                   >
                   <a href="https://cotiseguros.com.ve/cotizador/salud" style ="text-decoration:none; color:#fff;" target='_blank'>
-                    Cotizar polizas
+                    Cotizar pólizas
                   </a>
                   
                 </h6>     
@@ -312,7 +312,12 @@ use Illuminate\Support\Facades\DB;
                                                             <!--<label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>-->
                                 
                                                             <div class="col-md-12">
-                                                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                                                <input 
+                                                                  id="email" 
+                                                                  type="email" 
+                                                                  class="form-control @error('email') is-invalid @enderror" 
+                                                                  name="email" value="{{ old('email') }}" 
+                                                                  required autocomplete="email" autofocus>
                                 
                                                                 @error('email')
                                                                     <span class="invalid-feedback" role="alert">
@@ -326,7 +331,12 @@ use Illuminate\Support\Facades\DB;
                                                             <!--<label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>-->
                                 
                                                             <div class="col-md-12">
-                                                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                                                <input 
+                                                                  id="password" 
+                                                                  type="password" 
+                                                                  class="form-control @error('password') is-invalid @enderror" 
+                                                                  name="password" 
+                                                                  required autocomplete="current-password">
                                 
                                                                 @error('password')
                                                                     <span class="invalid-feedback" role="alert">
@@ -342,7 +352,7 @@ use Illuminate\Support\Facades\DB;
                                                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                 
                                                                     <label class="form-check-label mon-light" for="remember">
-                                                                        Mantener sesion iniciada
+                                                                    Mantener sesión iniciada
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -352,7 +362,7 @@ use Illuminate\Support\Facades\DB;
                                                             <div class="col-12 d-flex align-items-center flex-column">
                                                                 @if (Route::has('password.request'))
                                                                     <a class="text-pink my-2 mon-light text-decoration-none" href="{{ route('password.request') }}">
-                                                                        Olvide mi contrasena
+                                                                    Olvide mi contraseña
                                                                     </a>
                                                                 @endif
                                                                 <button type="submit" class="btn bg-pink text-white rounded-pill w-50 my-2">

@@ -53,29 +53,32 @@
     </div>
 
         <!-- Footer -->
-<div class="row bg-dark p-0 m-0 pt-4 px-5" id="footer">
-    <div class="col-12 col-md-3 p-2 m-0">
-      <img src="{{ asset('storage/LOGO RGB_Icono full color (1).png') }}" style="width: 100px ;" alt="">
-    </div>
-    <div class="col-12 col-md-3 mt-3">
-      <h2 class="mon-bold text-white text-uppercase fs-5 d-none">donde estamos</h2>
-      <p class="mon-regular text-white fs-6 pt-3 d-none">{{ $footer->donde_estamos }}</p>
-    </div>
-    <div class="col-12 col-md-3 mt-3">
-      <h2 class="mon-bold text-white text-uppercase fs-5">contactanos</h2>
-      <img src="{{ asset('envelope-fill.svg') }}" alt=""> <span class="text-white mon-regular">{{ $footer->email }}</span> <br/>
-      <img src="{{ asset('whatsapp.svg') }}" alt=""> <span class="text-white mon-regular">{{ $footer->whatsapp }}</span> <br/>
-    </div>
-    <div class="col-12 col-md-3 mt-3">
-      <h2 class="mon-bold text-white text-uppercase fs-5">siguenos</h2>
-      <a class="mx-2" href="{{ $footer->instagram }}"><img src="{{ asset('instagram.svg') }}" alt=""></a>
-      <a class="mx-2" href="{{ $footer->facebook }}"><img src="{{ asset('facebook.svg') }}" alt=""></a> 
-      <a class="mx-2" href="{{ $footer->tiktok }}"><img src="{{ asset('tiktok.svg') }}" alt=""></a>
-    </div>
-    <div class="col-12">
-      <h3 class="text-white h5 my-5">COTISEGUROS 	&copy; 2022 - Todos los derechos reservados</h3>
-    </div>
-  </div>
+        @if ( isset($footer))
+            <div class="row bg-dark p-0 m-0 pt-4 px-5" id="footer">
+                <div class="col-12 col-md-3 p-2 m-0">
+                <img src="{{ asset('storage/LOGO RGB_Icono full color (1).png') }}" style="width: 100px ;" alt="">
+                </div>
+                <div class="col-12 col-md-3 mt-3">
+                <h2 class="mon-bold text-white text-uppercase fs-5 d-none">donde estamos</h2>
+                <p class="mon-regular text-white fs-6 pt-3 d-none">{{ $footer->donde_estamos }}</p>
+                </div>
+                <div class="col-12 col-md-3 mt-3">
+                <h2 class="mon-bold text-white text-uppercase fs-5">contactanos</h2>
+                <img src="{{ asset('envelope-fill.svg') }}" alt=""> <span class="text-white mon-regular">{{ $footer->email }}</span> <br/>
+                <img src="{{ asset('whatsapp.svg') }}" alt=""> <span class="text-white mon-regular">{{ $footer->whatsapp }}</span> <br/>
+                </div>
+                <div class="col-12 col-md-3 mt-3">
+                <h2 class="mon-bold text-white text-uppercase fs-5">siguenos</h2>
+                <a class="mx-2" href="{{ $footer->instagram }}"><img src="{{ asset('instagram.svg') }}" alt=""></a>
+                <a class="mx-2" href="{{ $footer->facebook }}"><img src="{{ asset('facebook.svg') }}" alt=""></a> 
+                <a class="mx-2" href="{{ $footer->tiktok }}"><img src="{{ asset('tiktok.svg') }}" alt=""></a>
+                </div>
+                <div class="col-12">
+                <h3 class="text-white h5 my-5">COTISEGUROS 	&copy; 2022 - Todos los derechos reservados</h3>
+                </div>
+            </div>
+
+        @endif
   <!-- Footer -->
 
     <a href="https://wa.me/584247089641"  target="_blank" class="position-fixed shadow-lg bottom-0 end-0 m-3 rounded-pill p-2 bg-white d-flex align-items-center" style="z-index: 20000">
