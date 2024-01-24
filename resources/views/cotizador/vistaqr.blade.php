@@ -72,6 +72,18 @@ use Illuminate\Support\Facades\DB;
       display: flex;
       justify-content: center;
     }
+    .mycheck{
+      width: 1em;
+      height: 1em;
+      background-color: #fff;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
+    .mycheck:checked {
+      background-color: #3c485a !important;;
+      border-color: #3c485a  !important;;
+    }
   </style>
   <script   src="{{ asset('js/bootstrap.bundle.min.js') }}"   ></script>
   
@@ -104,7 +116,7 @@ use Illuminate\Support\Facades\DB;
          
           <div class="contenedor">
             <label>
-              <input type="checkbox" id="cbox1" value="first_checkbox" checked disabled/> 
+              <input type="checkbox" class="form-check-input" id="cbox1" value="first_checkbox" checked disabled/> 
               Estado de la póliza 
               <strong style="color:green;">
                 solvente
@@ -364,7 +376,7 @@ use Illuminate\Support\Facades\DB;
                                                         <div class="row">
                                                             <div class="col-12 d-flex justify-content-center">
                                                                 <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                                                    <input class="mycheck" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                 
                                                                     <label class="form-check-label mon-light" for="remember">
                                                                     Mantener sesión iniciada
