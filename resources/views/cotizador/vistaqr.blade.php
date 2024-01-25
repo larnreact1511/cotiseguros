@@ -465,11 +465,12 @@ use Illuminate\Support\Facades\DB;
     
     foreach( $data as $p)
     {
-      //$htmlmodal .= "<div class='card-body text-center'>";
-      $htmlmodal .= "<a href='https://cotiseguros.com.ve/$p->documentonombre' class='btn btn-secondary colorbtn' target='_blank'>$p->tipodocumento</a> &nbsp;";
-      //$htmlmodal .= "</div>";
+
+      $htmlmodal .="<li class='list-group-item active' aria-current='true'>";
+        $htmlmodal .= "<a href='https://cotiseguros.com.ve/$p->documentonombre' class='btn btn-secondary colorbtn m-2' target='_blank'>$p->tipodocumento</a> &nbsp;";
+      $htmlmodal .=" </li>";
     }
-    $htmlmodal .= "</ul>";
+    //$htmlmodal .= "</ul>";
     $htmlmodal .= "</div>";
     $htmlmodal .= "<div class='modal-footer'>";
     $htmlmodal .= "<button type='button' class='btn btn-secondary colorbtn' data-bs-dismiss='modal'>Cerrar</button>";
