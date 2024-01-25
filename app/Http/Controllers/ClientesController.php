@@ -1672,7 +1672,38 @@ class ClientesController extends Controller
                     ]);
             }
         }
-        //dd($request);
+        $patologiacomentadas =$request->input("patologiacomentadas");
+        if ( count($patologiacomentadas) >0 )
+        {
+            foreach ( $patologiacomentadas as $c )
+            {   
+                $patologiasi = DB::table('patologia')->insertGetId(
+                    [
+                        'pat_id_poliza'=>$insurancepolicies,
+                        'pat_descripcion'=>$c,
+                        'pat_idadmin'=>$request->idaminsalud,
+                        'pat_idusuario'=>$request->idclientesalud,
+                        'pat_descripcion'=>1,
+                        'created_at'=>date("Y-m-d H:i:s"),
+                    ]);
+            }
+        }
+        $patologiasnocomentadas =$request->input("patologiasnocomentadas");
+        if ( count($patologiasnocomentadas) >0 )
+        {
+            foreach ( $patologiasnocomentadas as $c )
+            {   
+                $patologiasi = DB::table('patologia')->insertGetId(
+                    [
+                        'pat_id_poliza'=>$insurancepolicies,
+                        'pat_descripcion'=>$c,
+                        'pat_idadmin'=>$request->idaminsalud,
+                        'pat_idusuario'=>$request->idclientesalud,
+                        'pat_descripcion'=>0,
+                        'created_at'=>date("Y-m-d H:i:s"),
+                    ]);
+            }
+        }
         for ( $i=0 ; $i <= $request->input("index"); $i++ ) 
         {
            
