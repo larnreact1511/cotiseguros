@@ -28,8 +28,8 @@ let ym =parseFloat(year)-parseFloat(99); // año menor
 let ya = new Date().getFullYear(); // año actual
 let datasiniestros =[];
 //let urlservidor ='http://127.0.0.1:8000/';
-let urlservidor  ='https://dev.cotiseguros.com.ve/';
-//let urlservidor  ='https://www.cotiseguros.com.ve/';
+//let urlservidor  ='https://dev.cotiseguros.com.ve//';
+let urlservidor  ='https://www.cotiseguros.com.ve/';
 $( document ).ready(function() 
 {
     miembrosasegurados[cm]=familiar;
@@ -608,6 +608,32 @@ function addcoomentario3()
             name="comentarioempresa[]" 
             value="" 
             placeholder="Comentario sobre la póliza">
+    </th>
+</tr>`);
+}
+function patologiasi()
+{
+    $( "#tablapatologiascelaradas" ).append(`<tr> 
+    <th>
+        <input 
+            type="text" 
+            class="form-control shadow-none border-0 bg-grey" 
+            name="patologiacomentadas[]" 
+            id="patologiacomentadas[]" value="" 
+            placeholder="Patología comentada">
+    </th>
+</tr>`);
+}
+function patologiano()
+{
+    $( "#tablapatologiasnodeclaradas" ).append(`<tr> 
+    <th>
+        <input 
+            type="text" 
+            class="form-control shadow-none border-0 bg-grey" 
+            name="patologiasnocomentadas[]" 
+            id="patologiasnocomentadas[]" value="" 
+            placeholder="Patología NO comentada">
     </th>
 </tr>`);
 }

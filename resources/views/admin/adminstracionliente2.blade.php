@@ -340,30 +340,93 @@ if ( @$info[0]->numerotelefono )
                          </table>
                          <br>
                          <!-- -->
-                        <button onClick="addFamiliartabla()" type="button" class="p-3 m-2"> 
-                            <span 
-                                    class="ms-3 mon-light">
-                                    Añadir integrante a la póliza
-                            </span>        
-                        </button>
+                         <table id="tablapatologiascelaradas" class="table">
+                            <tr> 
+                                <th>
+                                    <input 
+                                        type="text" 
+                                        class="form-control shadow-none border-0 bg-grey" 
+                                        name="patologiacomentadas[]" 
+                                        id="patologiacomentadas[]" value="" 
+                                        placeholder="Patología comentada">
+                                </th>
+                            </tr>                  
+                         </table>
+                        <br>
+                        <!-- -->
+                        <table id="tablapatologiasnodeclaradas" class="table">
+                            <tr> 
+                                <th>
+                                    <input 
+                                        type="text" 
+                                        class="form-control shadow-none border-0 bg-grey" 
+                                        name="patologiasnocomentadas[]" 
+                                        id="patologiasnocomentadas[]" value="" 
+                                        placeholder="Patología NO comentada">
+                                </th>
+                            </tr>                  
+                         </table>
+                        <br>
+                        <!-- -->
+                        <table id="tablasalud" name="tablasalud" class="table">
+                            <tr>
+                                <th>
+                                    <button onClick="addFamiliartabla()" type="button" class="p-3 m-2"> 
+                                        <span 
+                                                class="ms-3 mon-light">
+                                                Añadir integrante a la póliza
+                                        </span>        
+                                    </button>
+                                </th>
+                                <th>
+                                    <button onClick="addocument()" type="button" class="p-3 m-2"> 
+                                        <span 
+                                                class="ms-3 mon-light">
+                                                Añadir documento a la póliza
+                                        </span>        
+                                    </button>
+                                </th>
+                                <th>
+                                    <button onClick="addcoomentario()" type="button" class="p-3 m-2"> 
+                                        <span 
+                                                class="ms-3 mon-light">
+                                                Añadir otro comentario
+                                        </span>        
+                                    </button>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <button onClick="patologiasi()" type="button" class="p-3 m-2"> 
+                                        <span 
+                                                class="ms-3 mon-light">
+                                                Añadir Patología  comentada
+                                        </span>        
+                                    </button>
+                                </th>
+                                <th>
+                                    <button onClick="patologiano()" type="button" class="p-3 m-2"> 
+                                        <span 
+                                                class="ms-3 mon-light">
+                                                Añadir Patología NO comentada
+                                        </span>        
+                                    </button>
+                                </th>
+                                <th>
+                                    <button type="button" onclick="guardarsalud()" class="p-3 m-2">
+                                        Guardar la Póliza
+                                    </button> 
+                                </th>
+                            </tr>
+                        </table>                    
+                        <!-- -->  
+                        
                         <!-- boton agregar documentos en polizas tipo salud-->
-                        <button onClick="addocument()" type="button" class="p-3 m-2"> 
-                            <span 
-                                    class="ms-3 mon-light">
-                                    Añadir documento a la póliza
-                            </span>        
-                        </button>
+                        
 
-                        <button onClick="addcoomentario()" type="button" class="p-3 m-2"> 
-                            <span 
-                                    class="ms-3 mon-light">
-                                    Añadir otro comentario
-                            </span>        
-                        </button>
+                        
                         <!-- btn guardar -->   
-                        <button type="button" onclick="guardarsalud()" class="p-3 m-2">
-                            Guardar la Póliza
-                        </button>       
+                              
                     </form>
                                        
                 </div> 
