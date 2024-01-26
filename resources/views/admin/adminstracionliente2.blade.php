@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{ asset('/css/lloader.css') }}">
 <script src="{{ asset('js/jquery-3.5.1.js') }}" defer></script>
 <script src="{{ asset('js/sweetalert.js') }}" defer></script>
-<script src="{{ asset('js/adminstracionclientes.js') }}" defer></script>
+<script src="{{ asset('js/adminstracionclientes2.js') }}" defer></script>
 <!-- --> 
 <?php 
 $code = '';
@@ -348,7 +348,7 @@ if ( @$info[0]->numerotelefono )
                                         class="form-control shadow-none border-0 bg-grey" 
                                         name="patologiacomentadas[]" 
                                         id="patologiacomentadas[]" value="" 
-                                        placeholder="Patología comentada">
+                                        placeholder="Patología Declarada">
                                 </th>
                             </tr>                  
                          </table>
@@ -362,7 +362,7 @@ if ( @$info[0]->numerotelefono )
                                         class="form-control shadow-none border-0 bg-grey" 
                                         name="patologiasnocomentadas[]" 
                                         id="patologiasnocomentadas[]" value="" 
-                                        placeholder="Patología NO comentada">
+                                        placeholder="Patología NO Declarada">
                                 </th>
                             </tr>                  
                          </table>

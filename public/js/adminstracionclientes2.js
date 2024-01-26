@@ -636,7 +636,7 @@ function patologiano()
             placeholder="Patología NO comentada">
     </th>
 </tr>`);
-}
+} 
 function addocument4()
 {
     $( "#tabladocumentosclientes" ).append(`<tr>

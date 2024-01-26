@@ -1608,11 +1608,8 @@ class ClientesController extends Controller
     }
     public function polizassalud(Request $request)
     {
-       
-        //dd($request);
         $idmontosalud =$request->input("idmontosalud"); // monto de la poliza
         $idsegurosalud =$request->input("idsegurosalud"); // seguro de la poiza
-       
         $insurancepolicies = DB::table('insurancepolicies')->insertGetId(
             [
                 'created_at'=>date("Y-m-d H:i:s"),
@@ -1683,7 +1680,7 @@ class ClientesController extends Controller
                         'pat_descripcion'=>$c,
                         'pat_idadmin'=>$request->idaminsalud,
                         'pat_idusuario'=>$request->idclientesalud,
-                        'pat_descripcion'=>1,
+                        'pat_status'=>1,
                         'created_at'=>date("Y-m-d H:i:s"),
                     ]);
             }
@@ -1699,7 +1696,7 @@ class ClientesController extends Controller
                         'pat_descripcion'=>$c,
                         'pat_idadmin'=>$request->idaminsalud,
                         'pat_idusuario'=>$request->idclientesalud,
-                        'pat_descripcion'=>0,
+                        'pat_status'=>0,
                         'created_at'=>date("Y-m-d H:i:s"),
                     ]);
             }

@@ -286,7 +286,91 @@ use Illuminate\Support\Facades\DB;
                                       
                                       ?>
                                     </div>
-                                    
+                                    <!-- --> 
+                                    <div class="card-body text-center">
+                                    <!-- --> 
+                                    <div 
+                                      class="accordion accordion-flush" 
+                                      id="accordionFlushExample_2" 
+                                      style="text-align: center;">   
+                                        
+                                        <div class="accordion-item m-2 ">
+                                          <h6 id="flush-headinginforperson_2" class="accordion-header redondear collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseinforp_2" aria-expanded="false" aria-controls="flush-collapseinforp_2">
+                                            Notas
+                                          </h6>
+                                          <div id="flush-collapseinforp_2" class="accordion-collapse collapse" aria-labelledby="flush-headinginforperson_2" data-bs-parent="#accordionFlushExample_2" style="">
+                                            <div class="accordion-body row">
+                                              <!--  --> 
+                                              <div class ="card m-2">
+                                                <h6  style ="color:green !important;">
+                                                  Patologias Declaradas
+                                                </h6>
+                                                <?php
+                                                  $patologias =  DB::table('patologia')
+                                                  ->where('pat_id_poliza',$poliza->id_insurancepolicies)
+                                                  ->where('pat_status','=',1)->get();
+                                                  if ( $patologias->count() >0)
+                                                  {
+                                                    foreach ($patologias as $patologia => $p)
+                                                    {
+                                                      
+                                                      ?>
+                                                          <p>
+                                                          <?php
+                                                            echo $p->pat_descripcion; 
+                                                          ?>
+                                                          </p>
+                                                            
+                                                      <?php
+                                                    }
+
+                                                  }
+                                                  else
+                                                  {
+                                                    echo " Ninguno ";
+                                                  }
+                                                ?>
+                                              </div>
+                                              <div class ="card m-2">
+                                                <h6 style ="color:#911d1b !important;">
+                                                  Patologias NO Declaradas
+                                                </h6>
+                                                <?php
+                                                  $patologiasno =  DB::table('patologia')
+                                                  ->where('pat_id_poliza',$poliza->id_insurancepolicies)
+                                                  ->where('pat_status','=',0)->get();
+                                                  if ( $patologiasno->count() >0)
+                                                  {
+                                                    foreach ($patologiasno as $patologiano => $pn)
+                                                    {
+                                                      
+                                                      ?>
+                                                          <p>
+                                                          <?php
+                                                            echo $pn->pat_descripcion; 
+                                                          ?>
+                                                          </p>
+                                                            
+                                                      <?php
+                                                    }
+
+                                                  }
+                                                  else
+                                                  {
+                                                    echo " Ninguno ";
+                                                  }
+                                                ?>
+                                              </div>
+                                              <!--  -->
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- --> 
+                                    </div>
+                                    <!-- --> 
                                   </div>
                               </div>
                             </div>
