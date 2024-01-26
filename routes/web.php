@@ -89,13 +89,6 @@ Route::get('missninestros', [App\Http\Controllers\ClientesController::class, 'mi
 Route::get('misdatos', [App\Http\Controllers\ClientesController::class, 'misdatos']);
 Route::get('mispagos', [App\Http\Controllers\ClientesController::class, 'mispagos']);
 Route::get('/test', [App\Http\Controllers\ClientesController::class, 'test']);
-
-// empresas
-Route::get('empresas/', [App\Http\Controllers\EmpresaController::class, 'index'])->name('index');
-Route::get('listarempresas/', [App\Http\Controllers\EmpresaController::class, 'listarempresas'])->name('listarempresas');
-Route::post('datosempresa/', [App\Http\Controllers\EmpresaController::class, 'datosempresa'])->name('listarempresas');
-Route::post('crearpolizaapemresa/', [App\Http\Controllers\EmpresaController::class, 'crearpolizaapemresa'])->name('crearpolizaapemresa');
-
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/excel', [App\Http\Controllers\CotizadorController::class, "insurerExcel" ]);
     Route::post('/excel', [App\Http\Controllers\CotizadorController::class, 'importExcel']);
@@ -127,4 +120,6 @@ Route::get('/view-clear', function() {
     return 'View cache has been cleared';
 });
 
-Route::get('sendwhat/', [App\Http\Controllers\CotizadorController::class, 'sendwhat'])->name('sendwhat');
+Route::get('/contacto-seguros', [App\Http\Controllers\ClientesController::class, 'contactoseguros']);
+Route::get('listarcontactos/', [App\Http\Controllers\ClientesController::class, 'listarcontactos']);
+Route::post('guardarcontacto', [App\Http\Controllers\ClientesController::class, 'guardarcontacto']);

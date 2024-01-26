@@ -905,6 +905,100 @@ class ClientesController extends Controller
         $dataresponce['data'] = $datos;
         return response()->json($dataresponce);
     }
+    public function contactoseguros()
+    {
+        $data['insurers'] = Insurer::select(["*"])->get();
+        return view("clientes.contactoseguros",$data);
+    }
+    public function guardarcontacto(Request $request)
+    {
+        if ( isset($request->conta_id) )
+        {
+            DB::table('contactoseguros')->where('conta_id',$request->conta_id )->update([
+                'conta_idseguro' =>$request->conta_idseguro,
+                'conta_nrowhat' =>$request->conta_nrowhat,
+                'conta_nrocall' =>$request->conta_nrocall,
+                'conta_servicio' =>$request->conta_servicio,
+                'created_at'=>date("Y-m-d H:i:s")
+            ]);
+        }
+        else
+        {
+            $agregarcliente = DB::table('contactoseguros')->insertGetId(
+            [
+                'conta_idseguro' =>$request->conta_idseguro,
+                'conta_nrowhat' =>$request->conta_nrowhat,
+                'conta_nrocall' =>$request->conta_nrocall,
+                'conta_servicio' =>$request->conta_servicio,
+                'created_at'=>date("Y-m-d H:i:s")
+            ]);
+        }
+        
+       
+        return back();
+       
+    }
+    
+    public function listarcontactos(Request $request)
+    {
+        
+        $data=[];
+        $search = $request->input('search'); 
+        if ($search['value']=='')
+        {
+            $contactoseguros = DB::table('contactoseguros')
+            ->leftJoin('insurers','contactoseguros.conta_idseguro', '=', 'insurers.id')
+            ->select(
+            'contactoseguros.conta_id',
+            'contactoseguros.conta_idseguro',
+            'contactoseguros.conta_nrowhat',
+            'contactoseguros.conta_nrocall',
+            'contactoseguros.conta_servicio',
+            'insurers.name')
+            ->skip($request->input('start'))->take($request->input('length'))
+            ->orderBy('contactoseguros.conta_id', 'DESC')
+            ->get();
+        }
+        else
+        {
+            $contactoseguros = DB::table('contactoseguros')
+            ->leftJoin('insurers','contactoseguros.conta_idseguro', '=', 'insurers.id')
+            ->Where('insurers.name', 'LIKE', "%$value%")
+            ->select(
+            'contactoseguros.conta_id',
+            'contactoseguros.conta_idseguro',
+            'contactoseguros.conta_nrowhat',
+            'contactoseguros.conta_nrocall',
+            'contactoseguros.conta_servicio',
+            'insurers.name')
+            ->skip($request->input('start'))->take($request->input('length'))
+            ->orderBy('contactoseguros.conta_id', 'DESC')
+            ->get();
+        }
+        
+        if ( $contactoseguros->count() > 0)
+        {
+            $i=0;
+            
+            foreach ($contactoseguros as $contactos => $conta)
+            {
+                
+                $datos[$i]['id'] = $conta->conta_id;
+                $datos[$i]['seguro'] = $conta->name;
+                $datos[$i]['idseguro'] = $conta->conta_idseguro;
+                $datos[$i]['whatsap'] = $conta->conta_nrowhat;
+                $datos[$i]['llamada'] = $conta->conta_nrocall;
+                $datos[$i]['servicio'] = $conta->conta_servicio;
+                $i++;
+            }
+            $data= $datos;
+        }
+        $dataresponce['draw'] = $request->input('draw');
+        $dataresponce['recordsTotal'] = $contactoseguros->count() >0 ? $contactoseguros->count() : 0;
+        $dataresponce['recordsFiltered'] = $contactoseguros->count() >0 ? $contactoseguros->count() : 0;
+        $dataresponce['data'] = $data;
+        return response()->json($dataresponce);
+    }
     public function pagospendientes()
     {
         return view("admin.listadopagospendientes");
@@ -2133,5 +2227,7 @@ class ClientesController extends Controller
     {
         QrCode::generate('aaaaaaaaaaaaaaaaaa', '../public/qrcodes/qrcode.svg');
     }
+
+    
     
 }
