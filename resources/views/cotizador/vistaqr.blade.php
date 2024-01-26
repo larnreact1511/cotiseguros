@@ -497,6 +497,102 @@ use Illuminate\Support\Facades\DB;
               </div>
               <!-- -->
           </div>
+          <!--  -->  
+          <h4> Nros de contacto <h4>
+          <!--cotiseguros  --> 
+           <div class="accordion accordion-flush" id="accordionFlushExample_3" style="text-align: center;">                                
+              <div class="accordion-item m-2 ">
+                <h6 id="flush-headinginforperson_3" class="accordion-header redondear" data-bs-toggle="collapse" data-bs-target="#flush-collapseinforp_3" aria-expanded="true" aria-controls="flush-collapseinforp_3">
+                  Cotiseguros
+                </h6>
+                <div id="flush-collapseinforp_3" class="accordion-collapse collapse show" aria-labelledby="flush-headinginforperson_3" data-bs-parent="#accordionFlushExample_3" style="">
+                  <div class="accordion-body row">
+                    
+                   
+                  </div>
+                </div>
+              </div>
+            </div>          
+          <!--seguro  --> 
+          <?php 
+            if ( count($salud) > 0) 
+            {
+              foreach ($salud as $poliza)
+              {
+                $idinsurers = $poliza->idinsurers;
+                $name = $poliza->name;
+                ?>
+                  <div class="accordion accordion-flush" id="acordeonnumeros_<?=$idinsurers ?>" style="text-align: center;">                
+                    <div class="accordion-item m-2 ">
+                      <h6 
+                        id="flush-headnumeros_<?=$idinsurers ?>" 
+                        class="accordion-header redondear" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#flush-collapsenumeros_<?=$idinsurers ?>" 
+                        aria-expanded="true" 
+                        aria-controls="flush-collapsenumeros_<?=$idinsurers ?>">
+                        <?=$name ?>
+                      </h6>
+                      <div 
+                        id="flush-collapsenumeros_<?=$idinsurers ?>" 
+                        class="accordion-collapse collapse show" 
+                        aria-labelledby="flush-headnumeros_<?=$idinsurers ?>" 
+                        data-bs-parent="#acordeonnumeros_<?=$idinsurers ?>" 
+                        style=""
+                        >
+                        <div class="accordion-body row">
+                        <?php
+                          $contactoseguros =  DB::table('contactoseguros')->where('conta_idseguro',$idinsurers)->get();
+                          if ( $contactoseguros->count() > 0)
+                          {
+                            ?>
+                              <ul class='list-group'>
+                                <?php
+                                  foreach ($contactoseguros as $contact => $con)
+                                  {
+                                    $url="whatsapp://send?phone=+".$con->conta_nrowhat."&text=hola";
+                                    
+                                    ?>
+                                      <li class='list-group-item ' aria-current='true'>
+                                        <p>
+                                          {{ $con->conta_servicio }} - 
+
+                                          <a href="<?=$url?>" style ="text-decoration:none;">
+                                            <span class="text-white mon-regular" style="color:black !important;">{{ $con->conta_nrowhat }}</span> 
+                                          </a>
+                                        </p>
+                                      </li>
+                                    <?php
+                                    
+                                  }
+                                ?>
+                              </ul>
+                            <?php
+                          }
+                        ?>  
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <?php 
+              }
+            }
+          ?>
+          <!--  --> 
+          <div class="accordion accordion-flush" id="accordionFlushExample_4" style="text-align: center;">   
+                                        
+              <div class="accordion-item m-2 ">
+                <h6 id="flush-headinginforperson_4" class="accordion-header redondear" data-bs-toggle="collapse" data-bs-target="#flush-collapseinforp_4" aria-expanded="true" aria-controls="flush-collapseinforp_4">
+                 Contacto de Emergencia
+                </h6>
+                <div id="flush-collapseinforp_4" class="accordion-collapse collapse show" aria-labelledby="flush-headinginforperson_4" data-bs-parent="#accordionFlushExample_4" style="">
+                  <div class="accordion-body row">
+                    
+                   
+                  </div>
+                </div>
+              </div>
+          </div> 
       <?php 
     }
     ?> 

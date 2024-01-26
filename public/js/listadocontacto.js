@@ -69,7 +69,7 @@ function guardarcontacto()
 
 function eliminarcontacto(id)
 {
-    console.log(' elimina ',id);
+    
 }
 function editarcontacto(id,seguro,servicio,whatsap,llamada,idseguro)
 {

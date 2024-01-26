@@ -1328,6 +1328,7 @@ class ClientesController extends Controller
                 'insurancepolicies.idinsurers', 
                 'coverages.coverage',
                 'insurers.name',
+                'insurers.id as idinsurers',
                 'insurancepolicies.tipopoliza',
                 'insurancepolicies.id as id_insurancepolicies',
                 'coverages.id')->get();    
