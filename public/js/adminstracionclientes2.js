@@ -655,7 +655,7 @@ function addocument4()
                 type="text" 
                 class="custom-file-input" 
                 name="nombredocumentopersonal[]" 
-                required
+                
             >
         </th>
     </tr>`);

@@ -158,8 +158,50 @@ if ( @$info[0]->numerotelefono )
                                     
                                 </select>
                             </td>
-                            <td></td>
-                            <td></td>
+                            <td>
+                                
+                            </td>
+                            <td>
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label> Nombre Contacto </label><br>
+                                <input 
+                                    name="nombrecontacto" 
+                                    type="text" 
+                                    class="form-control shadow-none border-0 bg-grey" 
+                                    id="nombrecontacto" 
+                                    required
+                                    placeholder="Nombre del contacto " 
+                                    value="<?=@$nombrecontacto?>"
+                                    >
+                            </td>
+                            <td>
+                                <label>Cedula Contacto  </label>
+                                <input 
+                                    name="cedulacontacto" 
+                                    type="number" 
+                                    class="form-control shadow-none border-0 bg-grey" 
+                                    id="cedulacontacto" 
+                                    required
+                                    placeholder="Cedula Contacto" 
+                                    value="<?=@$cedulacontacto?>"
+                                    >
+                            </td>
+                            <td>
+                                <label>Telefono Contacto  </label>
+                                <input 
+                                    name="telefonococontacto" 
+                                    type="number" 
+                                    class="form-control shadow-none border-0 bg-grey" 
+                                    id="telefonococontacto" 
+                                    required
+                                    placeholder="Telefono Contacto " 
+                                    value="<?=@$telefonococontacto?>"
+                                    >
+                            </td>
                         </tr>
                     </table>
                     <!-- documentos cargados al cliente-->
@@ -211,7 +253,7 @@ if ( @$info[0]->numerotelefono )
                                 type="text" 
                                 class="custom-file-input" 
                                 name="nombredocumentopersonal[]" 
-                                required
+                               
                             >
                             </th>
                             

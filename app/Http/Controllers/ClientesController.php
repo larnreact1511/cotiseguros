@@ -525,9 +525,11 @@ class ClientesController extends Controller
                     'apellido'=>$request->apellido,
                     'cedula'=>$request->cedula,
                     'rif'=>$request->rif,
-                    'numerotelefono'=>$numero
+                    'numerotelefono'=>$numero,
+                    'nombrecontacto'=>@$request->nombrecontacto,
+                    'telefonococontacto'=>@$request->telefonococontacto,
+                    'cedulacontacto'=>@$request->cedulacontacto,
                 ); 
-                //echo "<pre>"; print_r($data); echo $idcliente2;
                 if ( (DB::table('clientes')->where('idusuario',$idcliente2)->update($data)) )
                 {
                     //echo "c";
@@ -536,6 +538,7 @@ class ClientesController extends Controller
                         'name'=>$request->nombre,
                         'lastname'=>$request->apellido,
                         'phone'=>$numero
+                        
                     );
                     if ( (DB::table('users')->where('id',$request->idcliente2)->update($data2)) )
                         session()->flash('message', 'Datos actualizados con éxito');
@@ -581,7 +584,7 @@ class ClientesController extends Controller
                     } 
                     else
                     {
-                        echo " no " ;die;
+                       
                     }
                     //
                 }
@@ -1690,6 +1693,7 @@ class ClientesController extends Controller
        $info =$this->inforcliente($request->id);
         
        return view("admin.adminstracionliente2",[
+        
             "info" =>$info['info'],
             "codeqr" =>$info['codeqr'],
             "documentoscliente"=>$info['documentos'],
@@ -1697,6 +1701,9 @@ class ClientesController extends Controller
             "coverages" => $coverages,
             "insurers" => $insurers,
             "idcliente"=>$data['info'][0]->idusuario,
+            "nombrecontacto"=>$data['info'][0]->nombrecontacto,
+            "cedulacontacto"=>$data['info'][0]->cedulacontacto,
+            "telefonococontacto"=>$data['info'][0]->telefonococontacto,
             "insurancepolicies"=>$insurancepolicies,
             "provinces" =>\Lang::get('provinces')["provinces"],
             "frequencies"=>DB::table('frequencies')->get()] );
