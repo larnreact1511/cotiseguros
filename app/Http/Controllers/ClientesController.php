@@ -113,12 +113,7 @@ class ClientesController extends Controller
     }
     public function uploadFile(Request $request) 
     {
-        //echo "hia"; 
-        //dd( $request->all());
-        //die;
         $imagen =array();
-        // $fileName = auth()->id() . '_' . time() . '.'. $request->file->extension();  
-        //echo  auth()->id();
         if ($files =  $request->file('imagen'))
         {
             foreach ( $files  as $file )
@@ -128,7 +123,6 @@ class ClientesController extends Controller
                 $image_full_name=$image_name.'.'.$ext;
                 $upload_path ='public/documentos/';
                 $imagen_url = $upload_path.$image_full_name;
-                // Storage::move(from_path, to_path);
                 Docuemntos::where('idusuario', auth()->id())->delete();
                 if ($file->move(public_path('documentos'),$image_full_name))
                 {
@@ -145,7 +139,6 @@ class ClientesController extends Controller
         return back();
        
     }
-    
     public function uploadFile2(Request $request) 
     {
         if ($idcliente =  $request->idcliente)
@@ -486,26 +479,21 @@ class ClientesController extends Controller
     }
     public function perfilcliente(Request $request)
     {
-        //
-        $data['idcliente']=$request->id; // 
+        $data['idcliente']=$request->id; 
         $info =$this->inforcliente($request->id);
         $data['documentos']=$info['documentos'];
         $data['contrato']=$info['contrato'];
         $data['info']=$info['info'];
-        //$data['pagos']=$info['pagos'];
         $data['quotes']=$info['quotes'];
         $data['quotes2']=$info['quotes2'];
         $data['keyqrrandon']=$info['keyqrrandon'];
         $data['codeqr']=$info['codeqr'];
-        //echo "<pre>"; print_r($data);die;
         $data['provinces'] =\Lang::get('provinces')["provinces"];
         $data['frequencies']=DB::table('frequencies')->get();
-        //echo "<pre>"; print_r( $info['quotes2']); die;
         return view("admin.documentosclientesadmin",$data);
     }
     function actualizardatos(Request $request)
     {
-        //dd($request);
         if ($idcliente2 =  $request->idcliente2)
         {
             if ( ( DB::table('clientes')->where('cedula',$request->cedula)->where('idusuario','!=',$idcliente2) ->count() ) >0 )
@@ -586,17 +574,12 @@ class ClientesController extends Controller
                     {
                        
                     }
-                    //
                 }
                 else
                 {
-                    echo "e";
                     session()->flash('error_datos', 'No se pudo actualizar datos del cliente');
-                }
-                    
+                }       
             }
-
-            
         }
         else
             session()->flash('error_datos', 'No se puede verificar información del cliente, para actualizar');
@@ -612,8 +595,6 @@ class ClientesController extends Controller
             $codeqr =$info[0]->codeqr;
             QrCode::size(300)->generate('https://cotiseguros.com.ve/asegurado/'.$codeqr, '../public/qrcodes/'.$codeqr.'.svg');
         }
-       
-        //$data['pagos'] =DB::table('payments')->where('idusuario',$data['info'][0]->idusuario)->get();
         $busdocumento =array('idusuario'=>$data['info'][0]->idusuario, 'tipo'=>0 );
         $buscontrato =array('idusuario'=>$data['info'][0]->idusuario, 'tipo'=>1 );
         $documentoscliente =array('idusuario'=>$data['info'][0]->idusuario);
@@ -659,14 +640,6 @@ class ClientesController extends Controller
     }
     public function verpagos(Request $request)
     {
-        
-        /*
-        $users = DB::table('users')
-            ->join('contacts', 'users.id', '=', 'contacts.user_id')
-            ->join('orders', 'users.id', '=', 'orders.user_id')
-            ->select('users.*', 'contacts.phone', 'orders.price')
-            ->get()
-        */
         $pagos = DB::table('frequencyofpayments')
         ->leftJoin('payments', 'frequencyofpayments.id', '=', 'payments.id_frequencyofpayments')
         ->where('frequencyofpayments.fechainicio', '<',date('Y-m-d') )
@@ -687,74 +660,73 @@ class ClientesController extends Controller
     }
     public function createclientedesdequote(Request $request )
     {
-    $responce=[];
-    $quote = DB::table('quotes')->where('id',$request->id)->get();
-    $vbuscar =array(
-        'nombre'=>trim($quote[0]->name),
-        'apellido'=>trim($quote[0]->last_name),
-        'numerotelefono'=>trim($quote[0]->phone),
-    );
-    if ( (DB::table('users')->where('email',$quote[0]->email)->count()) > 0)
-    {
-        $responce['save']=false;
-        $responce['mjs']='El correo ya existe registado a un usuario';
-    }
-    else if ( (DB::table('clientes')->where($vbuscar)->count()) > 0)
-    {
-            $responce['save']=false;
-            $responce['mjs']='Este Usuario ya es cliente ';
-    }
-    else
-    {
-        $vinsert =array(
+        $responce=[];
+        $quote = DB::table('quotes')->where('id',$request->id)->get();
+        $vbuscar =array(
             'nombre'=>trim($quote[0]->name),
             'apellido'=>trim($quote[0]->last_name),
             'numerotelefono'=>trim($quote[0]->phone),
-            'created_at'=>date('Y-m-d'),
         );
-        if (DB::table('clientes')->insert($vinsert)) // creocliente
+        if ( (DB::table('users')->where('email',$quote[0]->email)->count()) > 0)
         {
-            $clienteagreado = DB::table('clientes')->where($vinsert)->get();
-            $user =array(
-                'role_id'=>4,
-                'name'=>$quote[0]->name,
-                'email'=>$quote[0]->email,
-                'password' => Hash::make($quote[0]->phone),
-                'phone'=>$quote[0]->phone,
-                'lastname'=>$quote[0]->last_name
+            $responce['save']=false;
+            $responce['mjs']='El correo ya existe registado a un usuario';
+        }
+        else if ( (DB::table('clientes')->where($vbuscar)->count()) > 0)
+        {
+                $responce['save']=false;
+                $responce['mjs']='Este Usuario ya es cliente ';
+        }
+        else
+        {
+            $vinsert =array(
+                'nombre'=>trim($quote[0]->name),
+                'apellido'=>trim($quote[0]->last_name),
+                'numerotelefono'=>trim($quote[0]->phone),
+                'created_at'=>date('Y-m-d'),
             );
-            //echo "<pre>"; print_r($user); die;
-            if (DB::table('users')->insert($user))
+            if (DB::table('clientes')->insert($vinsert)) // creocliente
             {
-                $usurioagreado =DB::table('users')->where($user)->get();
-                DB::table('clientes')->where('id',$clienteagreado[0]->id)->update(array( 'idusuario'=>$usurioagreado[0]->id));
-                DB::table('quotes')->where('id',$request->id)->update(array( 'state'=>3));
-                $quote_clients =array(
-                    'idusuario'=>$usurioagreado[0]->id,
-                    'idquote'=>$request->id,
-                    'updated_at'=>date('Y-m-d')
-
+                $clienteagreado = DB::table('clientes')->where($vinsert)->get();
+                $user =array(
+                    'role_id'=>4,
+                    'name'=>$quote[0]->name,
+                    'email'=>$quote[0]->email,
+                    'password' => Hash::make($quote[0]->phone),
+                    'phone'=>$quote[0]->phone,
+                    'lastname'=>$quote[0]->last_name
                 );
-                DB::table('quote_clients')->insert($quote_clients);
-                $responce['save']=true;
-                $responce['ultimousuario']=$usurioagreado[0]->id;
-                $responce['mjs']='Cliente y usuario  creado, recuerd;e que la clave es el nro. De teléfono';
+                //echo "<pre>"; print_r($user); die;
+                if (DB::table('users')->insert($user))
+                {
+                    $usurioagreado =DB::table('users')->where($user)->get();
+                    DB::table('clientes')->where('id',$clienteagreado[0]->id)->update(array( 'idusuario'=>$usurioagreado[0]->id));
+                    DB::table('quotes')->where('id',$request->id)->update(array( 'state'=>3));
+                    $quote_clients =array(
+                        'idusuario'=>$usurioagreado[0]->id,
+                        'idquote'=>$request->id,
+                        'updated_at'=>date('Y-m-d')
+
+                    );
+                    DB::table('quote_clients')->insert($quote_clients);
+                    $responce['save']=true;
+                    $responce['ultimousuario']=$usurioagreado[0]->id;
+                    $responce['mjs']='Cliente y usuario  creado, recuerd;e que la clave es el nro. De teléfono';
+                }
+                else
+                {
+                    $responce['save']=false;
+                    $responce['mjs']='No se pudo crear el usuario';
+                }
+                
             }
             else
             {
                 $responce['save']=false;
-                $responce['mjs']='No se pudo crear el usuario';
+                $responce['mjs']='';
             }
-            
         }
-        else
-        {
-            $responce['save']=false;
-            $responce['mjs']='';
-        }
-    }
-    return response()->json($responce);
-    //$Quote =Quote::select(["*"])->groupBy("coverage")->orderBy("coverage","ASC")->get()
+        return response()->json($responce);
     }
     public function listarclientes_1(Request $request)
     {
@@ -2230,12 +2202,8 @@ class ClientesController extends Controller
     {
         return view("clientes.test");
     }
-
     public function generarimgqr ()
     {
         QrCode::generate('aaaaaaaaaaaaaaaaaa', '../public/qrcodes/qrcode.svg');
-    }
-
-    
-    
+    }   
 }

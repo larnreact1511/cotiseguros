@@ -109,22 +109,23 @@ use Illuminate\Support\Facades\DB;
     if ( $bloqueado)
     {
         echo "<h4> Lo sentimos en estos momentos el cliente esta pendiente de pago <h4>";
-    }
-    else
-    {
-      ?> 
-         
-          <div class="contenedor">
+        ?>
+        <div class="contenedor">
             <label>
               <input type="checkbox" class="form-check-input" id="cbox1" value="first_checkbox" checked disabled/> 
               Estado de la póliza 
-              <strong style="color:green;">
-                solvente
+              <strong style="color:#911d1b !important;">
+                Insolvente
               </strong>
               
             </label>
           </div>
           <br/>
+        <?php 
+    }
+    else
+    {
+      ?> 
           <!-- acordeon -->  
           <div class="accordion accordion-flush" id="accordionFlushExample" style="text-align: center;">   
               <!-- informacion personal-->
@@ -211,7 +212,12 @@ use Illuminate\Support\Facades\DB;
                   >
                   Pólizas Salud 
                 </h6>
-                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                <div 
+                  id="flush-collapseTwo" 
+                  class="accordion-collapse collapse" 
+                  aria-labelledby="flush-headingTwo" 
+                  data-bs-parent="#accordionFlushExample"
+                  >
                   <div class="accordion-body row">
                     <!-- -->
                     <?php 
@@ -295,7 +301,7 @@ use Illuminate\Support\Facades\DB;
                                       style="text-align: center;">   
                                         
                                         <div class="accordion-item m-2 ">
-                                          <h6 id="flush-headinginforperson_2" class="accordion-header redondear collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseinforp_2" aria-expanded="false" aria-controls="flush-collapseinforp_2">
+                                          <h6 id="flush-headinginforperson_2" class="accordion-header collapsed redondear collapsed" data-bs-toggle="collapse" data-bs-target="#flush-collapseinforp_2" aria-expanded="false" aria-controls="flush-collapseinforp_2">
                                             Notas
                                           </h6>
                                           <div id="flush-collapseinforp_2" class="accordion-collapse collapse" aria-labelledby="flush-headinginforperson_2" data-bs-parent="#accordionFlushExample_2" style="">
@@ -498,14 +504,31 @@ use Illuminate\Support\Facades\DB;
               <!-- -->
           </div>
           <!--  -->  
-          <h4> Nros de contacto <h4>
+          <h>
+            <h4
+            style="text-align: center;"          
+            > Nros de contacto <h4>
+          <h>
           <!--cotiseguros  --> 
-           <div class="accordion accordion-flush" id="accordionFlushExample_3" style="text-align: center;">                                
+           <div class="accordion accordion-flush" id="acoordioncotiseguros" style="text-align: center;">                                
               <div class="accordion-item m-2 ">
-                <h6 id="flush-headinginforperson_3" class="accordion-header redondear" data-bs-toggle="collapse" data-bs-target="#flush-collapseinforp_3" aria-expanded="true" aria-controls="flush-collapseinforp_3">
+                <h6 
+                  id="flush-headincotiseguros" 
+                  class="accordion-header redondear collapsed"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapsecotiseguros"
+                  aria-expanded="false"
+                  aria-controls="flush-collapsecotiseguros"
+                  style="background-color:#911d1b !important;"
+                  >
                   Cotiseguros
                 </h6>
-                <div id="flush-collapseinforp_3" class="accordion-collapse collapse show" aria-labelledby="flush-headinginforperson_3" data-bs-parent="#accordionFlushExample_3" style="">
+                <div 
+                  id="flush-collapsecotiseguros" 
+                  class="accordion-collapse collapse show" 
+                  aria-labelledby="flush-headincotiseguros" 
+                  data-bs-parent="#acoordioncotiseguros"
+                  >
                   <div class="accordion-body row">
                     
                    
@@ -526,10 +549,10 @@ use Illuminate\Support\Facades\DB;
                     <div class="accordion-item m-2 ">
                       <h6 
                         id="flush-headnumeros_<?=$idinsurers ?>" 
-                        class="accordion-header redondear" 
+                        class="accordion-header redondear collapsed" 
                         data-bs-toggle="collapse" 
                         data-bs-target="#flush-collapsenumeros_<?=$idinsurers ?>" 
-                        aria-expanded="true" 
+                        aria-expanded="false" 
                         aria-controls="flush-collapsenumeros_<?=$idinsurers ?>">
                         <?=$name ?>
                       </h6>
@@ -538,7 +561,7 @@ use Illuminate\Support\Facades\DB;
                         class="accordion-collapse collapse show" 
                         aria-labelledby="flush-headnumeros_<?=$idinsurers ?>" 
                         data-bs-parent="#acordeonnumeros_<?=$idinsurers ?>" 
-                        style=""
+                        
                         >
                         <div class="accordion-body row">
                         <?php
@@ -579,15 +602,38 @@ use Illuminate\Support\Facades\DB;
             }
           ?>
           <!--  --> 
-          <div class="accordion accordion-flush" id="accordionFlushExample_4" style="text-align: center;">   
-                                        
+          <div class="accordion accordion-flush" id="accordionFlushExample_4" style="text-align: center;">                          
               <div class="accordion-item m-2 ">
-                <h6 id="flush-headinginforperson_4" class="accordion-header redondear" data-bs-toggle="collapse" data-bs-target="#flush-collapseinforp_4" aria-expanded="true" aria-controls="flush-collapseinforp_4">
+                <h6 
+                  id="flush-hedingemergencia" 
+                  class="accordion-header redondear collapsed" 
+                  data-bs-toggle="collapse" 
+                  data-bs-target="#flush-collapseemergencia" 
+                  aria-expanded="false" 
+                  aria-controls="flush-collapseemergencia">
                  Contacto de Emergencia
                 </h6>
-                <div id="flush-collapseinforp_4" class="accordion-collapse collapse show" aria-labelledby="flush-headinginforperson_4" data-bs-parent="#accordionFlushExample_4" style="">
+                <div 
+                  id="flush-collapseemergencia" 
+                  class="accordion-collapse collapse show" 
+                  aria-labelledby="flush-hedingemergencia" 
+                  data-bs-parent="#accordionFlushExample_4"
+                  >
                   <div class="accordion-body row">
-                    
+                    <ul class='list-group'>
+                      <li class='list-group-item ' aria-current='true'>
+                        <?php 
+                          $url="whatsapp://send?phone=+".$datacliente[0]->telefonococontacto."&text=hola";
+                        ?>
+                          <a href="{{$url}}" style ="text-decoration:none;">
+                            <span class="text-white mon-regular" style="color:black !important;">
+                              {{$datacliente[0]->nombrecontacto}} - Nro 
+                              + {{$datacliente[0]->telefonococontacto}}
+                            </span> 
+                          </a>
+                      </li>
+                      
+                    </ul>
                    
                   </div>
                 </div>
@@ -596,8 +642,6 @@ use Illuminate\Support\Facades\DB;
       <?php 
     }
     ?> 
-
-    
   </div>
 
   <div class="row bg-dark ">
