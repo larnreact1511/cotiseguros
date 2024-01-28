@@ -123,3 +123,9 @@ Route::get('/view-clear', function() {
 Route::get('/contacto-seguros', [App\Http\Controllers\ClientesController::class, 'contactoseguros']);
 Route::get('listarcontactos/', [App\Http\Controllers\ClientesController::class, 'listarcontactos']);
 Route::post('guardarcontacto', [App\Http\Controllers\ClientesController::class, 'guardarcontacto']);
+
+Route::get('cliente/mis-polizas', [App\Http\Controllers\ClientesController::class, 'polizas']);
+Route::get('cliente/mis-siniestros', [App\Http\Controllers\ClientesController::class, 'sinisestros']);
+Route::get('cliente/mis-pagos', [App\Http\Controllers\ClientesController::class, 'pagos']);
+Route::get('cliente/mis-datos', [App\Http\Controllers\ClientesController::class, 'datos']);
+
