@@ -1566,40 +1566,11 @@ class ClientesController extends Controller
         {
             $users =  DB::table('users')->where('id',auth()->id())->get();
             $role_id =$users[0]->role_id;
-            $clientes =  DB::table('clientes')->where('idusuario',auth()->id())->get();
+
             $data["footer"]=Footer::first();
-            $data["user"]=$clientes;
-            return view("clientes.clienteasegurado",$data);
-        }
-        else
-            return back();
-        
-    }
-    public function pagos()
-    {
-        if (auth()->id())
-        {
-            $users =  DB::table('users')->where('id',auth()->id())->get();
-            $role_id =$users[0]->role_id;
-            $clientes =  DB::table('clientes')->where('idusuario',auth()->id())->get();
-            $data["footer"]=Footer::first();
-            $data["user"]=$clientes;
-            return view("clientes.clienteasegurado",$data);
-        }
-        else
-            return back();
-        
-    }
-    public function datos()
-    {
-        if (auth()->id())
-        {
-            $users =  DB::table('users')->where('id',auth()->id())->get();
-            $role_id =$users[0]->role_id;
-            $clientes =  DB::table('clientes')->where('idusuario',auth()->id())->get();
-            $data["footer"]=Footer::first();
-            $data["user"]=$clientes;
-            return view("clientes.clienteasegurado",$data);
+            $data['user'] =  DB::table('clientes')->where('idusuario',auth()->id())->get(); 
+            $data['accidents'] = DB::table('accidents')->where('idusuario',auth()->id())->get();
+            return view("clientes.missiniestros",$data);
         }
         else
             return back();
@@ -1845,7 +1816,6 @@ class ClientesController extends Controller
             'insurancepolicies.comentario',
             'coverages.coverage')
             ->get();
-            //echo "<pre>"; print_r($clientes); die;
             return view("clientes.mispagos",[
                 "url" =>'https://cotiseguros.com.ve/',
                 "footer" => Footer::first(),

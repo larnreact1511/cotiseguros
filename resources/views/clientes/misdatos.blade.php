@@ -1,4 +1,4 @@
-@extends('layouts.menuclientes')
+@extends('layouts.clientesseguro')
 
 @section('content')
     <!-- -->

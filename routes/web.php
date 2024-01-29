@@ -126,8 +126,8 @@ Route::post('guardarcontacto', [App\Http\Controllers\ClientesController::class, 
 
 Route::get('cliente/mis-polizas', [App\Http\Controllers\ClientesController::class, 'mispolizascliente']);
 Route::get('cliente/mis-siniestros', [App\Http\Controllers\ClientesController::class, 'sinisestros']);
-Route::get('cliente/mis-pagos', [App\Http\Controllers\ClientesController::class, 'pagos']);
-Route::get('cliente/mis-datos', [App\Http\Controllers\ClientesController::class, 'datos']);
+Route::get('cliente/mis-pagos', [App\Http\Controllers\ClientesController::class, 'mispagos']);
+Route::get('cliente/mis-datos', [App\Http\Controllers\ClientesController::class, 'misdatos']);
 
 Route::get('cliente/salud', [App\Http\Controllers\ClientesController::class, 'clientesalud']);
 Route::get('cliente/auto', [App\Http\Controllers\ClientesController::class, 'clienteauto']);
