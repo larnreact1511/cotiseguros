@@ -14,7 +14,7 @@
     </head>
   <body>
    
-    <div class="container-fluid ">
+    <div class="container-fluid  mt-3 mb-5">
         <div class="row">
             <div class="col-md-12 p-1  d-flex justify-content-center">
                 <img src="{{env('APP_URL')}}/LOGORGBColor.png" alt="">
@@ -34,7 +34,7 @@
       
     </div>
    <!-- Footer -->
-    <div class="row bg-dark p-0 m-0 pt-4 px-5" id="footer">
+    <div class="row bg-dark" id="footer">
         <div class="col-12 col-md-3 p-2 m-0">
             <img src="https://cotiseguros.com.ve/storage/LOGO RGB_Icono full color (1).png" style="width: 100px ;" alt="">
         </div>

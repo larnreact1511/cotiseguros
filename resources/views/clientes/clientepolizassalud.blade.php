@@ -233,6 +233,7 @@
     </div>
     <!--  --> 
 </div>
+
 <script> 
   let vcabezerapolizas =[];
   let vcabezerapolizasnotas =[];
