@@ -908,10 +908,7 @@ class ClientesController extends Controller
                 'created_at'=>date("Y-m-d H:i:s")
             ]);
         }
-        
-       
         return back();
-       
     }
     
     public function listarcontactos(Request $request)
@@ -1505,7 +1502,25 @@ class ClientesController extends Controller
             $clientes =  DB::table('clientes')->where('idusuario',auth()->id())->get();
             $data["footer"]=Footer::first();
             $data["user"]=$clientes;
-            return view("clientes.clienteasegurado",$data);
+            $buscarautos= array(
+                'idusuario'=>auth()->id() ,
+                'tipopoliza'=>2);
+            $data['autos'] =DB::table('insurancepolicies')
+            ->join('coverages', 'insurancepolicies.idcoverages', '=', 'coverages.id')
+            ->join('insurers', 'insurancepolicies.idinsurers', '=', 'insurers.id')
+            ->where($buscarautos)
+            ->select(
+                'insurancepolicies.idcoverages', 
+                'insurancepolicies.idinsurers', 
+                'insurancepolicies.id as id_poliza', 
+                'insurancepolicies.comentario',
+                'coverages.coverage',
+                'insurers.name',
+                'insurancepolicies.tipopoliza',
+                'insurancepolicies.id as id_insurancepolicies',
+                'insurancepolicies.descripcionpoliza',
+                'coverages.id')->get(); 
+            return view("clientes.clientepolizasauto",$data);
         }
         else
             return back();
@@ -1521,7 +1536,25 @@ class ClientesController extends Controller
             $clientes =  DB::table('clientes')->where('idusuario',auth()->id())->get();
             $data["footer"]=Footer::first();
             $data["user"]=$clientes;
-            return view("clientes.clienteasegurado",$data);
+            $buscarempresa= array(
+                'idusuario'=>auth()->id(),
+                'tipopoliza'=>3);
+            $data['empresa'] =DB::table('insurancepolicies')
+            ->join('coverages', 'insurancepolicies.idcoverages', '=', 'coverages.id')
+            ->join('insurers', 'insurancepolicies.idinsurers', '=', 'insurers.id')
+            ->where($buscarempresa)
+            ->select(
+                'insurancepolicies.idcoverages', 
+                'insurancepolicies.idinsurers', 
+                'insurancepolicies.id as id_poliza', 
+                'insurancepolicies.comentario',
+                'coverages.coverage',
+                'insurers.name',
+                'insurancepolicies.tipopoliza',
+                'insurancepolicies.id as id_insurancepolicies',
+                'insurancepolicies.descripcionpoliza',
+                'coverages.id')->get(); 
+            return view("clientes.clientepolizaspatrimonio",$data);
         }
         else
             return back();

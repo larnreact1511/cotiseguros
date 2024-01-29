@@ -18,7 +18,7 @@
                 id=""
                 class="accordion-header collapsed redondear"
                 >
-                <a href="{{env('APP_URL')}}/cliente/autos" style ="text-decoration:none; color:#fff;">
+                <a href="{{env('APP_URL')}}/cliente/auto" style ="text-decoration:none; color:#fff;">
                 Autos
                 </a>
                 
