@@ -14,7 +14,7 @@
     </head>
   <body>
    
-    <div class="container-fluid">
+    <div class="container-fluid ">
         <div class="row">
             <div class="col-md-3 p-1 opciones">
                 <button type="button" class="btn"> 

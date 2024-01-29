@@ -40,13 +40,22 @@
             --bs-accordion-active-bg: var(--bs-primary-bg-subtle);
         }
         .redondear{
-        border: 2px solid red;
-        padding: 10px;
-        border-radius: 25px;
-        background-color: #596475 !important;
-        border-color:#596475;
-        color: #fff;
-        font-family: "mon-regular";
+            border: 2px solid red;
+            padding: 10px;
+            border-radius: 25px;
+            background-color: #596475 !important;
+            border-color:#596475;
+            color: #fff;
+            font-family: "mon-regular";
+        }
+        .redondear-2{
+            border: 2px solid red;
+            padding: 10px;
+            border-radius: 25px;
+            background-color: #fff !important;
+            border-color:#154a9a;
+            color: #000000;
+            font-family: "mon-regular";
         }
         .colorbtn
         {

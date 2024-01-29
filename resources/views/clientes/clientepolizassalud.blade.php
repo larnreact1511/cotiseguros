@@ -2,7 +2,11 @@
 @section('content')
 <div class="row d-flex justify-content-center" style="text-align: center; height:70vh;">
     <!--  -->  
-    <div class="accordion accordion-flush" id="accordionFlushExample" style="text-align: center;">   
+    <div 
+      class="accordion accordion-flush" 
+      id="acoordeoplolizasclientesalud" 
+      style="text-align: center;"
+      >   
         <?php  
             foreach ($salud as $poliza)
             {
@@ -33,12 +37,12 @@
                             id="flush-collapsePoliza_{{$poliza->idinsurers}}" 
                             class="accordion-collapse collapse" 
                             aria-labelledby="flush-headingp_{{$poliza->idinsurers}}" 
-                            data-bs-parent="#accordionFlushExample"
+                            data-bs-parent="#acoordeoplolizasclientesalud"
                             >
                             <div class="accordion-body row">
                                 <div class ="card m-2">
                                     <h6 style ="color:#911d1b !important;">
-                                        Beneficiarios 
+                                      Beneficiarios de la póliza
                                     </h6>
                                     <?php  
                                         if ( count($member_quotes) >0 )
@@ -56,7 +60,7 @@
                                         }
                                         ?>
                                         <h6 style ="color:#911d1b !important;">
-                                            Comentarios 
+                                            Comentarios  de la póliza
                                         </h6>
                                         <?php 
                                         if ( count($comentarios) >0 )
@@ -76,7 +80,7 @@
                                           echo " Ninguno ";
                                         ?>
                                         <h6 style ="color:#911d1b !important;">
-                                            Documentos 
+                                            Documentos  de la póliza
                                         </h6>
                                         <?php
                                         if ( count($documentos) >0 )
@@ -101,130 +105,104 @@
                                           echo " Ninguno ";
                                     ?>
                                 </div>
+                                <div class ="card m-2">
+                                   <!-- --> 
+                                   <div 
+                                      class="accordion accordion-flush" 
+                                      id="accordionnotas" 
+                                      style="text-align: center;">   
+                                        
+                                        <div class="accordion-item m-2 ">
+                                          <h6 
+                                            id="flush-headingnotas" 
+                                            class="accordion-header collapsed redondear-2 collapsed" 
+                                            data-bs-toggle="collapse" 
+                                            data-bs-target="#flush-collapseinfonotas" 
+                                            aria-expanded="false" 
+                                            aria-controls="flush-collapseinfonotas"
+                                            >
+                                            Notas
+                                          </h6>
+                                          <div id="flush-collapseinfonotas" class="accordion-collapse collapse" aria-labelledby="flush-headingnotas" data-bs-parent="#accordionnotas" style="">
+                                            <div class="accordion-body row">
+                                              <!--  --> 
+                                              <div class ="card m-2">
+                                                <h6  style ="color:green !important;">
+                                                  Patologias Declaradas
+                                                </h6>
+                                                <?php
+                                                  $patologias =  DB::table('patologia')
+                                                  ->where('pat_id_poliza',$poliza->id_insurancepolicies)
+                                                  ->where('pat_status','=',1)->get();
+                                                  if ( $patologias->count() >0)
+                                                  {
+                                                    foreach ($patologias as $patologia => $p)
+                                                    {
+                                                      
+                                                      ?>
+                                                          <p>
+                                                          <?php
+                                                            echo $p->pat_descripcion; 
+                                                          ?>
+                                                          </p>
+                                                            
+                                                      <?php
+                                                    }
+
+                                                  }
+                                                  else
+                                                  {
+                                                    echo " Ninguno ";
+                                                  }
+                                                ?>
+                                              </div>
+                                              <div class ="card m-2">
+                                                <h6 style ="color:#911d1b !important;">
+                                                  Patologias NO Declaradas
+                                                </h6>
+                                                <?php
+                                                  $patologiasno =  DB::table('patologia')
+                                                  ->where('pat_id_poliza',$poliza->id_insurancepolicies)
+                                                  ->where('pat_status','=',0)->get();
+                                                  if ( $patologiasno->count() >0)
+                                                  {
+                                                    foreach ($patologiasno as $patologiano => $pn)
+                                                    {
+                                                      
+                                                      ?>
+                                                          <p>
+                                                          <?php
+                                                            echo $pn->pat_descripcion; 
+                                                          ?>
+                                                          </p>
+                                                            
+                                                      <?php
+                                                    }
+
+                                                  }
+                                                  else
+                                                  {
+                                                    echo " Ninguno ";
+                                                  }
+                                                ?>
+                                              </div>
+                                              <!--  -->
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                   <!-- --> 
+                                </div>
                             </div>
                         </div>
                     </div>
                 <?php
             }
-
         ?>
     </div>
     <!--  --> 
 </div>
 <?php 
-  function generamoaldocumentos($id,$data)
-  {
-    $htmlmodal ='';
-    $htmlmodal .= "<div class='modal fade' id='modaldocumentopoliza_$id' tabindex='' aria-labelledby='modaldocumentopoliza_$id' aria-hidden='true'>";
-    $htmlmodal .= "<div class='modal-dialog'>";
-    $htmlmodal .= "<div class='modal-content'>";
-    $htmlmodal .= "<div class='modal-header'>";
-    $htmlmodal .= "<h1 class='modal-title fs-5'>Documentos Poliza</h1>";
-    $htmlmodal .= "<button type='button' class='btn-close colorbtn' data-bs-dismiss='modal' aria-label='Close'></button>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "<div class='modal-body'>";
-    
-    foreach( $data as $p)
-    {
-
-      $htmlmodal .="<li class='list-group-item active' aria-current='true'>";
-        $htmlmodal .= "<a href='https://cotiseguros.com.ve/$p->documentonombre' class='btn btn-secondary colorbtn m-2' target='_blank'>$p->tipodocumento</a> &nbsp;";
-      $htmlmodal .=" </li>";
-    }
-    //$htmlmodal .= "</ul>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "<div class='modal-footer'>";
-    $htmlmodal .= "<button type='button' class='btn btn-secondary colorbtn' data-bs-dismiss='modal'>Cerrar</button>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "</div>";
-    echo $htmlmodal;
-  }
-  function generarmodalbenficiarios($id,$data)
-  {
-    $htmlmodal ='';
-    $htmlmodal .= "<div class='modal fade' id='modalbeneficiariso_$id' tabindex='' aria-labelledby='modalbeneficiariso_$id' aria-hidden='true'>";
-    $htmlmodal .= "<div class='modal-dialog'>";
-    $htmlmodal .= "<div class='modal-content'>";
-    $htmlmodal .= "<div class='modal-header'>";
-    $htmlmodal .= "<h1 class='modal-title fs-5'>Beneficiarios</h1>";
-    $htmlmodal .= "<button type='button' class='btn-close colorbtn' data-bs-dismiss='modal' aria-label='Close'></button>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "<div class='modal-body'>";
-    $htmlmodal .= "<ul class='list-group'>";
-    foreach( $data as $m)
-    {
-      
-      $htmlmodal .= "<p>".$m->status.' '.$m->gender .' ( '.$m->date.' años)'."</p>";
-    }
-    $htmlmodal .= "</ul>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "<div class='modal-footer'>";
-    $htmlmodal .= "<button type='button' class='btn btn-secondary colorbtn' data-bs-dismiss='modal'>Cerrar</button>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "</div>";
-    echo $htmlmodal;
-  }
-  function generamodalpagospolizas($id,$data)
-  {
-    $htmlmodal ='';
-    $htmlmodal .= "<div class='modal fade' id='pagospolizas_$id' tabindex='' aria-labelledby='pagospolizas_$id' aria-hidden='true'>";
-    $htmlmodal .= "<div class='modal-dialog'>";
-    $htmlmodal .= "<div class='modal-content'>";
-    $htmlmodal .= "<div class='modal-header'>";
-    $htmlmodal .= "<h1 class='modal-title fs-5'>Pagos de la poliza</h1>";
-    $htmlmodal .= "<button type='button' class='btn-close colorbtn' data-bs-dismiss='modal' aria-label='Close'></button>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "<div class='modal-body'>";
-    //$htmlmodal .= "<ul class='list-group'>";
-    foreach( $data as $f)
-    {
-      $estado ='Pagada';
-      if ($f->estadodepago ==0)
-        $estado ='Pendiente';
-      $htmlmodal .="<li class='list-group-item active' aria-current='true'>";
-        $htmlmodal .='Fecha  de pago : '.$f->fechafin .' '.$estado;
-        if ($estado=='Pagada')
-          $htmlmodal .="<a href='https://cotiseguros.com.ve/$f->photo_payment' class='' target='_blank'> <i class='bi bi-eye-fill'></i></a>";
-      $htmlmodal .=" </li>";
-    }
-    //$htmlmodal .= "</ul>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "<div class='modal-footer'>";
-    $htmlmodal .= "<button type='button' class='btn btn-secondary colorbtn' data-bs-dismiss='modal'>Cerrar</button>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "</div>";
-    echo $htmlmodal;
-  }
-  function generamodalsiniestros($id,$data)
-  {
-    $htmlmodal ='';
-    $htmlmodal .= "<div class='modal fade' id='modalbeneficiariso_$id' tabindex='' aria-labelledby='modalbeneficiariso_$id' aria-hidden='true'>";
-    $htmlmodal .= "<div class='modal-dialog'>";
-    $htmlmodal .= "<div class='modal-content'>";
-    $htmlmodal .= "<div class='modal-header'>";
-    $htmlmodal .= "<h1 class='modal-title fs-5'>Beneficiarios</h1>";
-    $htmlmodal .= "<button type='button' class='btn-close colorbtn' data-bs-dismiss='modal' aria-label='Close'></button>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "<div class='modal-body'>";
-    foreach( $data as $m)
-    {
-      
-      //$htmlmodal .= "<p>".$m->status.' '.$m->gender .' ( '.$m->date.' años)'."</p>";
-    }
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "<div class='modal-footer'>";
-    $htmlmodal .= "<button type='button' class='btn btn-secondary colorbtn' data-bs-dismiss='modal'>Cerrar</button>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "</div>";
-    $htmlmodal .= "</div>";
-    echo $htmlmodal;
-  }
+  
 ?>
 @endsection
