@@ -1390,7 +1390,7 @@ class ClientesController extends Controller
         
     }
     //
-    public function polizas()
+    public function mispolizascliente()
     {
         if (auth()->id())
         {
@@ -1452,6 +1452,73 @@ class ClientesController extends Controller
                 'insurancepolicies.descripcionpoliza',
                 'coverages.id')->get(); 
 
+            $data["footer"]=Footer::first();
+            $data["user"]=$clientes;
+            return view("clientes.clientepolizas",$data);
+        }
+        else
+            echo " no hay session ";
+        
+    }
+    public function clientesalud()
+    {
+        if (auth()->id())
+        {
+            $users =  DB::table('users')->where('id',auth()->id())->get();
+            $role_id =$users[0]->role_id;
+            $clientes =  DB::table('clientes')->where('idusuario',auth()->id())->get();
+            $data["footer"]=Footer::first();
+            $data["user"]=$clientes;
+            $buscarsalud= array(
+                'idusuario'=>auth()->id(),
+                'tipopoliza'=>1);
+            $data['salud'] =DB::table('insurancepolicies')
+            ->join('coverages', 'insurancepolicies.idcoverages', '=', 'coverages.id')
+            ->join('insurers', 'insurancepolicies.idinsurers', '=', 'insurers.id')
+            ->where($buscarsalud)
+            ->select(
+                'insurancepolicies.id as id_poliza', 
+                'insurancepolicies.comentario', 
+                'insurancepolicies.idcoverages', 
+                'insurancepolicies.idinsurers', 
+                'coverages.coverage',
+                'insurers.name',
+                'insurers.image',
+                'insurers.id as idinsurers',
+                'insurancepolicies.tipopoliza',
+                'insurancepolicies.id as id_insurancepolicies',
+                'coverages.id')->get();  
+            return view("clientes.clientepolizassalud",$data);
+
+            // datacliente
+        }
+        else
+            return back();
+        
+    }
+    public function clienteauto()
+    {
+        if (auth()->id())
+        {
+            $users =  DB::table('users')->where('id',auth()->id())->get();
+            $role_id =$users[0]->role_id;
+            $clientes =  DB::table('clientes')->where('idusuario',auth()->id())->get();
+            $data["footer"]=Footer::first();
+            $data["user"]=$clientes;
+            return view("clientes.clienteasegurado",$data);
+        }
+        else
+            return back();
+        
+    }
+
+    public function clientepatrimonio()
+    {
+        if (auth()->id())
+        {
+            $users =  DB::table('users')->where('id',auth()->id())->get();
+            $role_id =$users[0]->role_id;
+            $clientes =  DB::table('clientes')->where('idusuario',auth()->id())->get();
             $data["footer"]=Footer::first();
             $data["user"]=$clientes;
             return view("clientes.clienteasegurado",$data);

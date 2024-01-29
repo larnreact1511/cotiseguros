@@ -790,8 +790,5 @@ use Illuminate\Support\Facades\DB;
     echo $htmlmodal;
   }
   ?>
-
-
-
 </body>
 </html>

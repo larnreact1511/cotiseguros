@@ -28,7 +28,7 @@
             </div>
             <div class="col-md-3 p-1 opciones">
                 <button type="button" class="btn"> 
-                    <a href="logout" class="nav-link text-truncate">
+                    <a href="{{env('APP_URL')}}/logout" class="nav-link text-truncate">
                     <!--<i class="fs-2 bi bi-power"></i><span class="ms-1 d-none d-sm-inline"></span>--> 
                     <img src="{{env('APP_URL')}}/log-out.png" alt="">   
                     <h5>
