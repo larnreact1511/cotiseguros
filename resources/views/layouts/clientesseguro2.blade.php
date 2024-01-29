@@ -31,8 +31,10 @@
             </div>
         </div>
         @yield('content')
+      
     </div>
-    <div class="row bg-dark p-0 m-0 pt-4 px-5" >
+     <!-- Footer -->
+     <div class="row bg-dark pt-4 px-5" style="margin-top: 180px;">
         <div class="col-12 col-md-3 p-2 m-0">
             <img src="https://cotiseguros.com.ve/storage/LOGO RGB_Icono full color (1).png" style="width: 100px ;" alt="">
         </div>
@@ -55,6 +57,8 @@
             <h3 class="text-white h5 my-5">COTISEGUROS 	© 2022 - Todos los derechos reservados</h3>
         </div>
     </div>
+    <!-- Footer -->
+    <!-- --> 
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
   </body>
 </html>

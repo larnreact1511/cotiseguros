@@ -1,6 +1,6 @@
 @extends('layouts.clientesseguro')
 @section('content')
-<div class="row d-flex justify-content-center" style="text-align: center; height:70vh;">
+<div class="row d-flex justify-content-center" style="text-align: center; height:45vh;">
     <!--
     <img src="https://cotiseguros.com.ve/saludo.png" style="width: 80%;">
     -->
@@ -13,8 +13,8 @@
                 class="accordion-header collapsed redondear"
                 >
                 <a href="{{env('APP_URL')}}/cliente/mis-polizas" style ="text-decoration:none; color:#fff;">
-                <i class="fs-4 bi bi-bag-check-fill"></i>
-                Mis polizas
+                <i class="bi-bag-check-fill bi--md"></i>
+                Mis polizas !!!!
                 </a>
                 
             </h6>     
@@ -26,7 +26,7 @@
                 class="accordion-header collapsed redondear"
                 >
                 <a href="{{env('APP_URL')}}/cliente/mis-siniestros" style ="text-decoration:none; color:#fff;">
-                <i class="fs-4 bi bi-exclamation-lg"></i>
+                <i class="bi-exclamation bi--md"></i>
                 Mis siniestros
                 </a>
                 
@@ -39,7 +39,7 @@
                 class="accordion-header collapsed redondear"
                 >
                 <a href="{{env('APP_URL')}}/cliente/mis-pagos" style ="text-decoration:none; color:#fff;">
-                <i class="fs-4 bi bi-wallet2"></i>
+                <i class="bi-wallet2 bi--md"></i>
                 Mis pagos
                 </a>
                 
@@ -52,7 +52,7 @@
                 class="accordion-header collapsed redondear"
                 >
                 <a href="{{env('APP_URL')}}/cliente/mis-datos" style ="text-decoration:none; color:#fff;">
-                <i class="fs-4 bi bi-person-fill-check"></i>
+                <i class="bi-person-fill-check bi--md"></i>
                 Mis datos
                 </a>
                 
@@ -65,14 +65,12 @@
                 class="accordion-header collapsed redondear"
                 >
                 <a href="{{env('APP_URL')}}/logout" style ="text-decoration:none; color:#fff;">
-                <i class="fs-4 bi bi-power"></i>
+                <i class="bi-power bi--md"></i>
                 Cerrar
                 </a>
                 
             </h6>     
         </div>
-
     </div>
-
 </div>
 @endsection

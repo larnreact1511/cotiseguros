@@ -1,6 +1,6 @@
-@extends('layouts.clientesseguro')
+@extends('layouts.clientesseguro2')
 @section('content')
-<div class="row d-flex justify-content-center" style="text-align: center; height:70vh;">
+<div class="row d-flex justify-content-center" style="text-align: center;">
     <!--  -->  
     <div 
       class="accordion accordion-flush" 
