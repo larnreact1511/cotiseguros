@@ -1383,7 +1383,7 @@ class ClientesController extends Controller
             }
         }
         else
-            return back();
+            return view("errors.nologin");
         
     }
     //
@@ -1454,7 +1454,7 @@ class ClientesController extends Controller
             return view("clientes.clientepolizas",$data);
         }
         else
-            echo " no hay session ";
+            return view("errors.nologin");
         
     }
     public function clientesalud()
@@ -1490,7 +1490,7 @@ class ClientesController extends Controller
             // datacliente
         }
         else
-            return back();
+            return view("errors.nologin");
         
     }
     public function clienteauto()
@@ -1523,7 +1523,7 @@ class ClientesController extends Controller
             return view("clientes.clientepolizasauto",$data);
         }
         else
-            return back();
+            return view("errors.nologin");
         
     }
 
@@ -1557,7 +1557,7 @@ class ClientesController extends Controller
             return view("clientes.clientepolizaspatrimonio",$data);
         }
         else
-            return back();
+            return view("errors.nologin");
         
     }
     public function sinisestros()
@@ -1573,7 +1573,7 @@ class ClientesController extends Controller
             return view("clientes.missiniestros",$data);
         }
         else
-            return back();
+            return view("errors.nologin");
         
     }
     //
@@ -1615,7 +1615,6 @@ class ClientesController extends Controller
     }
     public function clienteasegurado(Request $request)
     {
-        //echo $request->buscarcedulaasegurado; die;
         if ( (DB::table('clientes')->where('cedula',$request->buscarcedulaasegurado)->count()) >0  )
         {
             $datacliente= DB::table('clientes')->where('cedula',$request->buscarcedulaasegurado)->get();
@@ -1723,7 +1722,7 @@ class ClientesController extends Controller
             ]);
         }
         else
-            redirect("/");
+            return view("errors.nologin");
 
        
     }
@@ -1740,7 +1739,7 @@ class ClientesController extends Controller
             ]);
         }
         else
-            redirect("/");
+            return view("errors.nologin");
         
     }
     public function misdatos()
@@ -1779,7 +1778,7 @@ class ClientesController extends Controller
             ]);
         }
         else
-            redirect("/");
+            return view("errors.nologin");
     }
     public function actualizarmisdatos(Request $request)
     {

@@ -15,22 +15,18 @@
   <body>
    
     <div class="container-fluid ">
-        <div class="row">
-            <div class="col-md-12 p-1  d-flex justify-content-center">
-                <img src="{{env('APP_URL')}}/LOGORGBColor.png" alt="">
+        <div class ="row">
+            <div class ="col-md-12 d-flex justify-content-center">
+                <h2>
+                    Lo sentimos, su sesión ha espirado, inicie de nuevo
+                </h2>
+                <a href="{{env('APP_URL')}}/login/" style ="text-decoration:none; color:#fff;" class="btn btn-primary">
+                
+                        Iniciar
+                </a>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12 p-1  d-flex justify-content-center">
-                <h6>
-                    <img src="{{env('APP_URL')}}/user.png" alt="logo" height="20">
-                    <?=@$user[0]->nombre. ' '.@$user[0]->apellido;  ?> 
-                    <?=@$user[0]->cedula  ?> 
-                </h6>
-              
-            </div>
-        </div>
-        @yield('content')
+        
       
     </div>
    <!-- Footer -->

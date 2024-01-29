@@ -225,5 +225,19 @@
                 }
             ?> 
         </div>
+        <div class ="row">
+            <div class="col-md-12 p-2">
+                <a 
+                    href="{{env('APP_URL')}}/usuarios" 
+                    style ="text-decoration:none; color:#911d1b !important;" 
+                    class ="d-flex justify-content-center"
+                    >
+                    <i class=" bi-skip-start-fill bi--3xl"></i>
+                    <strong> 
+                    Volver
+                    </strong>   
+                </a>
+            </div>
+        </div>
     </div>
 @endsection

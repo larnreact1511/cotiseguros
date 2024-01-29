@@ -13,6 +13,7 @@
                 class="accordion-header collapsed redondear"
                 >
                 <a href="{{env('APP_URL')}}/cliente/mis-polizas" style ="text-decoration:none; color:#fff;">
+                <i class="fs-4 bi bi-bag-check-fill"></i>
                 Mis polizas
                 </a>
                 
@@ -25,6 +26,7 @@
                 class="accordion-header collapsed redondear"
                 >
                 <a href="{{env('APP_URL')}}/cliente/mis-siniestros" style ="text-decoration:none; color:#fff;">
+                <i class="fs-4 bi bi-exclamation-lg"></i>
                 Mis siniestros
                 </a>
                 
@@ -37,6 +39,7 @@
                 class="accordion-header collapsed redondear"
                 >
                 <a href="{{env('APP_URL')}}/cliente/mis-pagos" style ="text-decoration:none; color:#fff;">
+                <i class="fs-4 bi bi-wallet2"></i>
                 Mis pagos
                 </a>
                 
@@ -49,6 +52,7 @@
                 class="accordion-header collapsed redondear"
                 >
                 <a href="{{env('APP_URL')}}/cliente/mis-datos" style ="text-decoration:none; color:#fff;">
+                <i class="fs-4 bi bi-person-fill-check"></i>
                 Mis datos
                 </a>
                 
@@ -60,7 +64,8 @@
                 id=""
                 class="accordion-header collapsed redondear"
                 >
-                <a href="{{env('APP_URL')}}/cliente/mis-datos" style ="text-decoration:none; color:#fff;">
+                <a href="{{env('APP_URL')}}/logout" style ="text-decoration:none; color:#fff;">
+                <i class="fs-4 bi bi-power"></i>
                 Cerrar
                 </a>
                 

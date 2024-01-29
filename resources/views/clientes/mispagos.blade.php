@@ -26,7 +26,7 @@
                 $tipopoliza .=' monto de '.number_format($insur->coverage). ' USD';
                 
                 ?>
-                <div class="accordion-item">
+                <div class="accordion-item  m-2">
                     <h6 
                         class="accordion-header collapsed redondear" 
                         id="headingOne_<?=$insur->id?>"
@@ -95,7 +95,30 @@
                 $i++;
             }
             ?>
-            
+            <div class="accordion-item m-2">
+                <h6  
+                    id=""
+                    class="accordion-header collapsed redondear"
+                    >
+                    <a href="{{env('APP_URL')}}/usuarios" style ="text-decoration:none; color:#fff !important;">
+                    <i class=" bi-skip-start-fill bi--md"></i>
+                    Volver
+                    </a>
+                    
+                </h6>     
+            </div>
+            <div class="accordion-item m-2">
+                <h6  
+                    id=""
+                    class="accordion-header collapsed redondear"
+                    >
+                    <a href="{{env('APP_URL')}}/logout" style ="text-decoration:none; color:#fff;">
+                    <i class=" bi bi-power bi--md"></i>
+                    Cerrar
+                    </a>
+                    
+                </h6>     
+            </div>
         </div>
         <!-- --> 
     </div>
