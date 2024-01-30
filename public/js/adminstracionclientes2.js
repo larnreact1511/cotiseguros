@@ -1108,17 +1108,24 @@ function generarvistadocumentos(id,doc)
     doc2.map((d,indx) =>{
         if (d.id_accidente == id)
         {
-            htmldoc +=`<label> ${d.tipodocumento} </label> 
-            <span 
-                    class='icon voyager-documentation p-3 m-2' 
-                    title='Ver'
-                    onclick="verfoto('${d.documentonombre}')" 
-                  ></span> <span 
-                  class='icon voyager-trash p-3 m-2' 
-                  title='Borrar Documento'
-                  onclick="borrar('${d.id}')" 
-                ></span> <br>
-            `;
+            htmldoc +=`
+                <label> ${d.tipodocumento} </label> 
+                <a href="#" style ="text-decoration: none;">
+                    
+                    <span 
+                            class='icon voyager-documentation p-3 m-2' 
+                            title='Ver'
+                            onclick="verfoto('${d.documentonombre}')" 
+                        ></span>   
+                </a>
+                <a href="#" style ="text-decoration: none;">
+                    <span 
+                        class='icon voyager-trash p-3 m-2' 
+                        title='Borrar Documento'
+                        onclick="borrar('${d.id}')" 
+                        ></span>    
+                </a>
+            <br>`;
         }
     });
     return htmldoc;
@@ -1178,6 +1185,16 @@ function borrar(id)
     .then(response => response.json())
     .then(
         location.reload()
+    );
+    
+}
+function eliminarqr(id)
+{
+    
+    fetch(urlservidor+"eliminarqr/"+id)
+    .then(response => response.json())
+    .then(
+       // location.reload()
     );
     
 }

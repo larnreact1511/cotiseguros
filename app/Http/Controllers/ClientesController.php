@@ -2393,6 +2393,7 @@ class ClientesController extends Controller
             $data['accidents'] =false;
             $data['data'] =[];
             $data['datadoc'] =[];
+            $data['id'] =$request->id_insurancepolicies;
         }
         return response()->json($data);
     }
@@ -2466,6 +2467,13 @@ class ClientesController extends Controller
         else
             $res['result']=false;
 
+        return response()->json($res);
+    }
+    public function eliminarqr($id)
+    {
+        $accidents =array('codeqr'=>'');
+        DB::table('clientes')->where('id',$id)->update($accidents);
+        $res['result']=true;
         return response()->json($res);
     }
     public function test()

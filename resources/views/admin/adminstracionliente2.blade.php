@@ -996,15 +996,21 @@ if ( @$info[0]->numerotelefono )
                             ?>
                                     <div class="text-center" style="border: 1px solid #fff;">
                                         <div class="row" style="border: 1px solid #fff;">
-                                            <img src="https://cotiseguros.com.ve/qrcodes/<?=$codeqr?>.svg">
+                                            <img src="{{env('APP_URL')}}/qrcodes/<?=$codeqr?>.svg">
                                         </div>
                                         <a 
-                                            href="https://cotiseguros.com.ve/qrcodes/<?=$codeqr?>.svg"" 
+                                            href="{{env('APP_URL')}}/qrcodes/<?=$codeqr?>.svg"" 
                                             class="btn btn-primary"
                                             download>
                                             Descargar
                                         </a>
-                                        
+                                        <a 
+                                            href="#" 
+                                            class="btn btn-primary"
+                                            onclick="eliminarqr('{{$idcliente}}')"
+                                            >
+                                            Eliminar
+                                        </a>
                                     </div>
                                     <div class="text-center" style="border: 1px solid #fff;">
                                         <label for=""> codigo : <?=$codeqr?> </label>
