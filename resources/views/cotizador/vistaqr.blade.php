@@ -8,82 +8,12 @@ use Illuminate\Support\Facades\DB;
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('bootstrapicons/font/bootstrap-icons.min.css') }}" rel="stylesheet"><!-- Styles -->
+  <link href="{{ asset('bootstrapicons/font/bootstrap-icons.min.css') }}" rel="stylesheet"><!-- Styles -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <link href="{{ asset('css/global.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/cssqr.css') }}" rel="stylesheet">
   <style>
-    .btn-secondary 
-    {
-        --bs-btn-color: #fff;
-        --bs-btn-bg: #911d1b;
-        --bs-btn-border-color: #911d1b;
-        --bs-btn-hover-color: #fff;
-        --bs-btn-hover-bg: #7b1917;
-        --bs-btn-hover-border-color: #741716;
-        --bs-btn-focus-shadow-rgb: 162, 63, 61;
-        --bs-btn-active-color: #fff;
-        --bs-btn-active-bg: #741716;
-        --bs-btn-active-border-color: #6d1614;
-        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-        --bs-btn-disabled-color: #fff;
-        --bs-btn-disabled-bg: #911d1b;
-        --bs-btn-disabled-border-color: #911d1b;
-    }
-    .accordion {
-        --bs-accordion-color: #0d6efd;
-        --bs-accordion-bg: var(--bs-body-bg);
-        --bs-accordion-transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out,border-radius 0.15s ease;
-        --bs-accordion-border-color: #fff;
-        --bs-accordion-border-width: var(--bs-border-width);
-        --bs-accordion-border-radius: var(--bs-border-radius);
-        --bs-accordion-inner-border-radius: calc(var(--bs-border-radius) - (var(--bs-border-width)));
-        --bs-accordion-btn-padding-x: 1.25rem;
-        --bs-accordion-btn-padding-y: 1rem;
-        --bs-accordion-btn-color: var(--bs-body-color);
-        --bs-accordion-btn-bg: var(--bs-accordion-bg);
-        --bs-accordion-btn-icon: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e);
-        --bs-accordion-btn-icon-width: 1.25rem;
-        --bs-accordion-btn-icon-transform: rotate(-180deg);
-        --bs-accordion-btn-icon-transition: transform 0.2s ease-in-out;
-        --bs-accordion-btn-active-icon: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23052c65'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e);
-        --bs-accordion-btn-focus-border-color: #86b7fe;
-        --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        --bs-accordion-body-padding-x: 1.25rem;
-        --bs-accordion-body-padding-y: 1rem;
-        --bs-accordion-active-color: var(--bs-primary-text-emphasis);
-        --bs-accordion-active-bg: var(--bs-primary-bg-subtle);
-    }
-    .redondear{
-      border: 2px solid red;
-      padding: 10px;
-      border-radius: 25px;
-      background-color: #596475 !important;
-      border-color:#596475;
-      color: #fff;
-      font-family: "mon-regular";
-    }
-    .colorbtn
-    {
-      background-color: #cccccc;
-      border-color: #cccccc;
-      color:black;
-    }
-    .contenedor {
-      display: flex;
-      justify-content: center;
-    }
-    .mycheck{
-      width: 1em;
-      height: 1em;
-      background-color: #fff;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: contain;
-    }
-    .mycheck:checked {
-      background-color: #3c485a !important;;
-      border-color: #3c485a  !important;;
-    }
+    
   </style>
   <script   src="{{ asset('js/bootstrap.bundle.min.js') }}"   ></script>
   
@@ -96,7 +26,7 @@ use Illuminate\Support\Facades\DB;
     $estilo ='background-color:#911d1b !important;';
   ?>
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="<?=$estilo; ?>">
-    <div class="container-fluid">
+    <div class="container-fluid d-flex justify-content-center">
       <a class="navbar-brand" href="#">
         <?=$datacliente[0]->nombre.' '.$datacliente[0]->apellido?>
       </a>
@@ -137,7 +67,11 @@ use Illuminate\Support\Facades\DB;
                   >
                   Información personal
                 </h6>
-                <div id="flush-collapseinforp" class="accordion-collapse collapse" aria-labelledby="flush-headinginforperson" data-bs-parent="#accordionFlushExample">
+                <div 
+                  id="flush-collapseinforp" 
+                  class="accordion-collapse collapse" 
+                  aria-labelledby="flush-headinginforperson" 
+                  data-bs-parent="#accordionFlushExample">
                   <div class="accordion-body row">
                     <!--  --> 
                     <div class="col-md-12 card p-1" style="text-align: center;">
@@ -391,7 +325,7 @@ use Illuminate\Support\Facades\DB;
                   </div>
                 </div>
               </div>
-              <!-- -->
+              <!--Cotizar póliza -->
               <div class="accordion-item m-2">
                 <h6  
                   id=""
@@ -403,7 +337,7 @@ use Illuminate\Support\Facades\DB;
                   
                 </h6>     
               </div>
-              <!-- -->
+              <!--Ingresa a tu Perfil -->
               <div class="accordion-item m-2">
                 <h6 id="flush-ingresar" class="accordion-header collapsed redondear" data-bs-toggle="collapse" data-bs-target="#flush-collapseingesar" aria-expanded="false" aria-controls="flush-collapseingesar">
                   Ingresa a tu Perfil
@@ -502,143 +436,132 @@ use Illuminate\Support\Facades\DB;
                 </div>
               </div>
               <!-- -->
-          </div>
-          <!--  -->  
-          <h>
-            <h4
-            style="text-align: center;"          
-            > Nros de contacto <h4>
-          <h>
-          <!--cotiseguros  --> 
-           <div class="accordion accordion-flush" id="acoordioncotiseguros" style="text-align: center;">                                
-              <div class="accordion-item m-2 ">
+              <h>
+                <h4
+                style="text-align: center;"          
+                > Nros de contacto <h4>
+              <h>
+              <!-- Numeros de Cotiseguros --> 
+              <div class="accordion-item m-2" >
                 <h6 
-                  id="flush-headincotiseguros" 
-                  class="accordion-header redondear collapsed"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapsecotiseguros"
-                  aria-expanded="false"
-                  aria-controls="flush-collapsecotiseguros"
-                  style="background-color:#911d1b !important;"
+                  id="headingContactoCotiseguros"
+                  class="accordion-header collapsed redondear-3"
+                  data-bs-toggle="collapse" 
+                  data-bs-target="#collapseCotiNumero" 
+                  aria-expanded="false" 
+                  aria-controls="collapseCotiNumero"
                   >
                   Cotiseguros
                 </h6>
                 <div 
-                  id="flush-collapsecotiseguros" 
-                  class="accordion-collapse collapse show" 
-                  aria-labelledby="flush-headincotiseguros" 
-                  data-bs-parent="#acoordioncotiseguros"
+                  id="collapseCotiNumero" 
+                  class="accordion-collapse collapse" 
+                  aria-labelledby="headingContactoCotiseguros" 
+                  data-bs-parent="#accordionFlushExample"
                   >
                   <div class="accordion-body row">
+                    <!-- -->
                     
-                   
+                    <!-- -->
                   </div>
                 </div>
               </div>
-            </div>          
-          <!--seguro  --> 
-          <?php 
-            if ( count($salud) > 0) 
-            {
-              foreach ($salud as $poliza)
-              {
-                $idinsurers = $poliza->idinsurers;
-                $name = $poliza->name;
-                ?>
-                  <div class="accordion accordion-flush" id="acordeonnumeros_<?=$idinsurers ?>" style="text-align: center;">                
-                    <div class="accordion-item m-2 ">
-                      <h6 
-                        id="flush-headnumeros_<?=$idinsurers ?>" 
-                        class="accordion-header redondear collapsed" 
-                        data-bs-toggle="collapse" 
-                        data-bs-target="#flush-collapsenumeros_<?=$idinsurers ?>" 
-                        aria-expanded="false" 
-                        aria-controls="flush-collapsenumeros_<?=$idinsurers ?>">
-                        <?=$name ?>
-                      </h6>
-                      <div 
-                        id="flush-collapsenumeros_<?=$idinsurers ?>" 
-                        class="accordion-collapse collapse show" 
-                        aria-labelledby="flush-headnumeros_<?=$idinsurers ?>" 
-                        data-bs-parent="#acordeonnumeros_<?=$idinsurers ?>" 
-                        
-                        >
-                        <div class="accordion-body row">
-                        <?php
-                          $contactoseguros =  DB::table('contactoseguros')->where('conta_idseguro',$idinsurers)->get();
-                          if ( $contactoseguros->count() > 0)
-                          {
-                            ?>
-                              <ul class='list-group'>
-                                <?php
-                                  foreach ($contactoseguros as $contact => $con)
-                                  {
-                                    $url="whatsapp://send?phone=+".$con->conta_nrowhat."&text=hola";
-                                    
-                                    ?>
-                                      <li class='list-group-item ' aria-current='true'>
-                                        <p>
-                                          {{ $con->conta_servicio }} - 
-
-                                          <a href="<?=$url?>" style ="text-decoration:none;">
-                                            <span class="text-white mon-regular" style="color:black !important;">{{ $con->conta_nrowhat }}</span> 
-                                          </a>
-                                        </p>
-                                      </li>
-                                    <?php
-                                    
-                                  }
-                                ?>
-                              </ul>
+              <!-- Numeros de seguros --> 
+              <?php 
+                if ( count($salud) > 0) 
+                {
+                  foreach ($salud as $poliza)
+                  {
+                    $idinsurers = $poliza->idinsurers;
+                    $name = $poliza->name;
+                    ?>
+                      <div class="accordion-item m-2" >
+                        <h6 
+                          id="headingcontactoseguro_{{$idinsurers}}"
+                          class="accordion-header collapsed redondear-2"
+                          data-bs-toggle="collapse" 
+                          data-bs-target="#collapseCotacseguro_{{$idinsurers}}" 
+                          aria-expanded="false" 
+                          aria-controls="collapseCotacseguro_{{$idinsurers}}"
+                          >
+                          {{$name }}
+                        </h6>
+                        <div 
+                          id="collapseCotacseguro_{{$idinsurers}}" 
+                          class="accordion-collapse collapse" 
+                          aria-labelledby="headingcontactoseguro_{{$idinsurers}}" 
+                          data-bs-parent="#accordionFlushExample"
+                          >
+                          <div class="accordion-body row d-flex justify-content-center">
+                            <!-- -->
                             <?php
-                          }
-                        ?>  
+                              $contactoseguros =  DB::table('contactoseguros')->where('conta_idseguro',$idinsurers)->get();
+                              if ( $contactoseguros->count() > 0)
+                              {
+                                foreach ($contactoseguros as $contact => $con)
+                                {
+                                  $url="whatsapp://send?phone=+".$con->conta_nrowhat."&text=hola";
+                                  
+                                  ?>
+                                    <p class="tituloservicio">
+                                      {{ $con->conta_servicio }} 
+                                    </p>
+                                    <p>
+                                      <a 
+                                        class="btn btn-success rounded-pill px-1 mx-sm-0 mb-2 w-25" 
+                                        href=<?= ($con->conta_nrowhat) ? $url : "#"; ?> 
+                                        target="_blank">
+                                        whatssap -  {{ $con->conta_nrowhat }} 
+                                      </a>
+                                    </p>
+                                    <p>
+                                      <button class="btn btn-info rounded-pill px-1 mx-sm-0 mb-2 w-25" style="background-color:#3c485a !important; color :#fff;"  >    
+                                      llamada {{ $con->conta_nrocall }} 
+                                      </button>
+                                    </p>
+                                    
+                                    
+                                  <?php
+                                  
+                                }
+                              }
+                            ?> 
+                            <!-- -->
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                <?php 
-              }
-            }
-          ?>
-          <!--  --> 
-          <div class="accordion accordion-flush" id="accordionFlushExample_4" style="text-align: center;">                          
-              <div class="accordion-item m-2 ">
+                    <?php 
+                  }
+                }
+              ?>
+              
+              <!-- Numeros de Emergencia --> 
+              <div class="accordion-item m-2" >
                 <h6 
-                  id="flush-hedingemergencia" 
-                  class="accordion-header redondear collapsed" 
+                  id="headingContacemergencia"
+                  class="accordion-header collapsed redondear"
                   data-bs-toggle="collapse" 
-                  data-bs-target="#flush-collapseemergencia" 
+                  data-bs-target="#collapseCotacEmergencia" 
                   aria-expanded="false" 
-                  aria-controls="flush-collapseemergencia">
-                 Contacto de Emergencia
+                  aria-controls="collapseCotacEmergencia"
+                  >
+                  Nro de emergencia
                 </h6>
                 <div 
-                  id="flush-collapseemergencia" 
-                  class="accordion-collapse collapse show" 
-                  aria-labelledby="flush-hedingemergencia" 
-                  data-bs-parent="#accordionFlushExample_4"
+                  id="collapseCotacEmergencia" 
+                  class="accordion-collapse collapse" 
+                  aria-labelledby="headingContacemergencia" 
+                  data-bs-parent="#accordionFlushExample"
                   >
                   <div class="accordion-body row">
-                    <ul class='list-group'>
-                      <li class='list-group-item ' aria-current='true'>
-                        <?php 
-                          $url="whatsapp://send?phone=+".$datacliente[0]->telefonococontacto."&text=hola";
-                        ?>
-                          <a href="{{$url}}" style ="text-decoration:none;">
-                            <span class="text-white mon-regular" style="color:black !important;">
-                              {{$datacliente[0]->nombrecontacto}} - Nro 
-                              + {{$datacliente[0]->telefonococontacto}}
-                            </span> 
-                          </a>
-                      </li>
-                      
-                    </ul>
-                   
+                    <!-- -->
+                    
+                    <!-- -->
                   </div>
                 </div>
               </div>
-          </div> 
+          </div>
+          
       <?php 
     }
     ?> 
