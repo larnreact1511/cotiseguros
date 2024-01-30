@@ -223,7 +223,9 @@ if ( @$info[0]->numerotelefono )
                                                     <a href="../<?=$d->documentonombre ?>" target="_blank">
                                                         ver img
                                                     </a>
-                                                
+                                                    <a href="#" onclick="borrar('{{$d->id}}')">
+                                                        Eliminar
+                                                    </a>
                                                 </th>
                                                 
                                             </tr>

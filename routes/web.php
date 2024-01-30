@@ -79,7 +79,8 @@ Route::post('adminstracionclientes/polizaempresas', [App\Http\Controllers\Client
 Route::post('adminstracionclientes/adminpagos/', [App\Http\Controllers\ClientesController::class, 'guardarpagpendiente']);
 Route::post('adminstracionclientes/gudardarsinisestro/', [App\Http\Controllers\ClientesController::class, 'gudardarsinisestro']); 
 Route::post('adminstracionclientes/gudardarsinisestroeditar/', [App\Http\Controllers\ClientesController::class, 'gudardarsinisestroeditar']);
-Route::post('adminstracionclientes/borrardocumento/', [App\Http\Controllers\ClientesController::class, 'borrardocumento']);
+Route::post('adminstracionclientes/borrardocumento/{id}', [App\Http\Controllers\ClientesController::class, 'borrardocumento']);
+Route::get('borrardocumento/{id}', [App\Http\Controllers\ClientesController::class, 'borrardocumento']);
 Route::get('asegurado/{code}', [App\Http\Controllers\ClientesController::class, 'qrurl']);
 Route::post('clienteasegura', [App\Http\Controllers\ClientesController::class, 'clienteasegurado']);
 Route::post('actualizarmisdatos', [App\Http\Controllers\ClientesController::class, 'actualizarmisdatos']);

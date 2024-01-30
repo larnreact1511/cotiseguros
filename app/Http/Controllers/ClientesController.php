@@ -812,9 +812,6 @@ class ClientesController extends Controller
     }
     public function listarclientes(Request $request)
     {
-        // en dev es role = 4
-        //$users = DB::table('users')->where('role_id',4)->get();
-        // en produccion es rol 5 el cliente
         $users = DB::table('users')->where('role_id',5)->get();
         foreach ($users as $u)
         {
@@ -829,7 +826,6 @@ class ClientesController extends Controller
                     [
                         'created_at'=>date("Y-m-d H:i:s"),
                         'nombre'=>$u->name,
-                        //'apellido'=>@$u->lastname,
                         'cedula' =>'',
                         'estado' =>1,
                         'idusuario' =>$idusuario,
@@ -840,43 +836,130 @@ class ClientesController extends Controller
         
         $search = $request->input('search'); 
         $datos=[];
+        $limit = $request->input('length');
+        $start = $request->input('start');
+
+        $order = $request->input('order');
+        $column =$order[0]['column'];
+        $dir =$order[0]['dir'];
+
+        $orderBy ='id';
+        switch ($column) {
+            case 0:
+                $orderBy ='id';
+                break;
+            case 1:
+                $orderBy ='nombre';
+                break;
+            case 2:
+                $orderBy ='apellido';
+                break;
+            case 3:
+                $orderBy ='cedula';
+                break;
+            case 4:
+                $orderBy ='numerotelefono';
+                break;
+            case 5:
+                $orderBy ='email';
+                    break;
+            case 6:
+                $orderBy ='estado';
+                    break;
+        }
         if ($search['value']=='')
         {
-            $clientes =clientes::orderBy('id', 'DESC')->skip($request->input('start'))->take($request->input('length'))->get();
-            //$count =clientes::orderBy('id', 'DESC')->where('role_id',5)->count();
-            $count =  DB::table('users')->where('role_id',5)->count();
+            $clientes =DB::table('clientes')
+            ->select('clientes.id',
+            'clientes.nombre',
+            'clientes.apellido',
+            'clientes.numerotelefono',
+            'clientes.cedula',
+            'clientes.rif',
+            'clientes.estado',
+            'users.email')
+            ->leftJoin('users', 'clientes.idusuario', '=', 'users.id')
+            ->skip($start)
+            ->take($limit)
+            ->orderBy($orderBy, 'desc')
+            ->get();
+    
+            $recordsTotal =DB::table('clientes')
+            ->select('clientes.id',
+            'clientes.nombre',
+            'clientes.apellido',
+            'clientes.numerotelefono',
+            'clientes.cedula',
+            'clientes.rif',
+            'clientes.estado',
+            'users.email')
+            ->leftJoin('users', 'clientes.idusuario', '=', 'users.id')
+            ->orderBy('id', 'desc')
+            ->get();
         }
         else
         {
             $value =$search['value']; 
-            $clientes =clientes::orderBy('id', 'DESC')->where(function ($query) use ($value) 
-            {
-                $query->where('nombre', 'LIKE', "%$value%");
-            })->get();
-            //$count =clientes::orderBy('id', 'DESC')->count();
+            $clientes =DB::table('clientes')
+            ->select('clientes.id',
+            'clientes.nombre',
+            'clientes.apellido',
+            'clientes.numerotelefono',
+            'clientes.cedula',
+            'clientes.rif',
+            'clientes.estado',
+            'users.email')
+            ->leftJoin('users', 'clientes.idusuario', '=', 'users.id')
+            ->orWhere('clientes.nombre', 'LIKE', "%$value%")
+            ->orWhere('clientes.apellido', 'LIKE', "%$value%")
+            ->orWhere('clientes.numerotelefono', 'LIKE', "%$value%")
+            ->orWhere('clientes.cedula', 'LIKE', "%$value%")
+            ->orWhere('users.email', 'LIKE', "%$value%")
+            ->skip($start)
+            ->take($limit)
+            ->orderBy($orderBy, 'desc')
+            ->get();
+
+            $recordsTotal =DB::table('clientes')
+            ->select('clientes.id',
+            'clientes.nombre',
+            'clientes.apellido',
+            'clientes.numerotelefono',
+            'clientes.cedula',
+            'clientes.rif',
+            'clientes.estado',
+            'users.email')
+            ->leftJoin('users', 'clientes.idusuario', '=', 'users.id')
+            ->orWhere('clientes.nombre', 'LIKE', "%$value%")
+            ->orWhere('clientes.apellido', 'LIKE', "%$value%")
+            ->orWhere('clientes.numerotelefono', 'LIKE', "%$value%")
+            ->orWhere('clientes.cedula', 'LIKE', "%$value%")
+            ->orWhere('users.email', 'LIKE', "%$value%")
+            ->skip($start)
+            ->take($limit)
+            ->orderBy('id', 'desc')
+            ->get();
+
             $count =  DB::table('users')->where('role_id',5)->count();
         }
         $i = 0;
-        foreach( $clientes  as $cliente)
-        {
-            if ($cliente->idusuario >0)
-            {
-                $infouser =DB::table('users')->where('id',$cliente->idusuario)->get();
-                $datos[$i]['id'] = $cliente->id;
-                $datos[$i]['nombre'] = $cliente->nombre;
-                $datos[$i]['apellido'] = $cliente->apellido;
-                $datos[$i]['phone'] = $cliente->phone;
-                $datos[$i]['cedula'] = $cliente->cedula;
-                $datos[$i]['numerotelefono'] = $cliente->numerotelefono;
-                $datos[$i]['estado'] = $cliente->estado;
-                $datos[$i]['email'] = $infouser[0]->email;
-                $i++;
-            }
+        foreach ($clientes as $cliente => $c) {
+               
+            $nestedData['id']               = $c->id;
+            $nestedData['nombre']           = $c->nombre;
+            $nestedData['apellido']         = $c->apellido;
+            $nestedData['phone']            = $c->numerotelefono;
+            $nestedData['cedula']           = $c->cedula;
+            $nestedData['numerotelefono']   = $c->numerotelefono;
+            $nestedData['email']            = $c->email;
+            $nestedData['estado']            = $c->estado;
+
             
+            $datos[] = $nestedData;
         }
         $dataresponce['draw'] = $request->input('draw');
-        $dataresponce['recordsTotal'] = $count;
-        $dataresponce['recordsFiltered'] = $count;
+        $dataresponce['recordsTotal'] =$recordsTotal->count();
+        $dataresponce['recordsFiltered'] = $recordsTotal->count();
         $dataresponce['data'] = $datos;
         return response()->json($dataresponce);
     }
@@ -1847,8 +1930,8 @@ class ClientesController extends Controller
         ->join('insurers', 'insurancepolicies.idinsurers', '=', 'insurers.id')
         ->where('insurancepolicies.idusuario',$data['info'][0]->idusuario)
         ->select('insurancepolicies.idcoverages', 'insurancepolicies.idinsurers', 'coverages.coverage','insurers.name','insurancepolicies.tipopoliza','insurancepolicies.id as id_insurancepolicies','coverages.id')->get();    
-       // echo "";print_r($insurancepolicies); die; adminstracionliente2 adminstracionclientes
-       $info =$this->inforcliente($request->id);
+        
+        $info =$this->inforcliente($request->id);
         
        return view("admin.adminstracionliente2",[
         
@@ -2375,9 +2458,10 @@ class ClientesController extends Controller
        
         return back();
     }
-    public function borrardocumento (Request $request)
+    public function borrardocumento($id)
     {
-        if (Docuemntos::where('id',$request->iddocumento)->delete())
+        $delete=array('id'=>$id);
+        if (Docuemntos::where($delete)->delete())
             $res['result']=true;
         else
             $res['result']=false;

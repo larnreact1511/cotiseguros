@@ -1173,32 +1173,11 @@ function verfoto(img)
 }
 function borrar(id)
 {
-    mostrarcarga()
-    fetch(urlservidor+"api/borrardocumento", 
-    {
-        headers: 
-        {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // <--- aquí el token
-            "Content-type": "application/json; charset=UTF-8"
-        },
-        method: "POST",
-        body: JSON.stringify(
-        {
-            iddocumento: id,
-        }),
-    })
-    .then(r => r.json())
-    .then(r => 
-    {
-        if (r.result)
-        {
-            Swal.fire('Documento eliminado con éxito');
-        }
-        else
-            Swal.fire('No se pudo eliminar el documento');
-        ocultarcarga()
-    }).finally(()=>
-    {
-        
-    });
+    
+    fetch(urlservidor+"borrardocumento/"+id)
+    .then(response => response.json())
+    .then(
+        location.reload()
+    );
+    
 }

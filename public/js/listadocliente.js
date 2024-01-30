@@ -11,6 +11,7 @@ $(document).ready(function ()
 				"url": "json/Spanish.json"
 			},
         columns: [
+            { data: 'id' },
             { data: 'nombre' },
             { data: 'apellido' },
             { data: 'cedula' },
@@ -36,11 +37,13 @@ $(document).ready(function ()
               {
                 arreglo[row.id] =row.memberquote;
                 return  `
+                <a href="#">
                   <span 
                     class='icon voyager-wallet btn-doc p-3' 
                     title='Adminstracion cliente'
                     onclick="adminstracionclientes(${row.id})" 
-                  ></span>`;
+                  ></span>
+                </a>`;
               }
             },
         ]

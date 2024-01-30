@@ -11,6 +11,7 @@
             <table id="example" class="table" >
             <thead class="thead-dark">
                 <tr>
+                    <th>ID</th>    
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Cedula </th>
