@@ -2784,4 +2784,23 @@ class ClientesController extends Controller
         } 
         return back();
     }
+    public function editarcomentariosagregar(Request $request)
+    {
+        $comentarioautoseditadd =$request->input("comentarioautoseditadd"); 
+        if ( count($comentarioautoseditadd) >0 )
+        {
+            foreach ( $comentarioautoseditadd as $c )
+            {   
+                $comentariospolizas = DB::table('comentariospolizas')->insertGetId(
+                    [
+                        'created_at'=>date("Y-m-d H:i:s"),
+                        'id_insurancepolicies'=>$request->poliatuedit3,
+                        'comentario'=>$c,
+                        'idadmin'=>$request->adminpoliatuedit3,
+                        'idusuario'=>$request->usuarioadminpoliatuedit3,
+                    ]);
+            }
+        }
+        return back();
+    }
 }

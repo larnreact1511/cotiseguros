@@ -1684,6 +1684,7 @@ function btnsaveadd(id)
 //
 function btneditautos(id)
 {
+    console.log(id);
     let divautoedit = document.getElementById("divautoedit_"+id);
     divautoedit.style.display = "block";
 

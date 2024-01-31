@@ -99,7 +99,7 @@ Route::post('adminstracionclientes/patologianoadd/', [App\Http\Controllers\Clien
 
 Route::post('adminstracionclientes/editmodeloautos/', [App\Http\Controllers\ClientesController::class, 'editmodeloautos']);
 Route::post('adminstracionclientes/formeditdocumentosautosadd/', [App\Http\Controllers\ClientesController::class, 'editardocumentosauto']);
-
+Route::post('adminstracionclientes/formcomentarioseditadd/', [App\Http\Controllers\ClientesController::class, 'editarcomentariosagregar']);
 
 Route::get('asegurado/{code}', [App\Http\Controllers\ClientesController::class, 'qrurl']);
 Route::post('clienteasegura', [App\Http\Controllers\ClientesController::class, 'clienteasegurado']);

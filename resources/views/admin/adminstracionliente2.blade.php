@@ -1083,8 +1083,72 @@ if ( @$info[0]->numerotelefono )
                     </div>
                     <!-- -->
                     <hr>
-                    <h4> Comenntarios Cargados  </h4>
+                    <h4> Comentarios Cargados  </h4>
                     <table id="tablaautoscomentarios" class="table"></table>
+                    <table  class="table">
+                        <tr>
+                            <th width ="30%">
+                                <button
+                                    class="btn btn-primary mt-2"
+                                    type="button" 
+                                    id="btneditauto3"
+                                    name="btneditauto3"
+                                    onClick="btneditautos(3)"
+                                    >
+                                    Agregar            
+                                </button> 
+                            </th>
+                            <th width ="30%">
+                                <button
+                                class="btn btn-primary mt-2"
+                                type="button" 
+                                id="clearatuosedit3"
+                                onClick="btnclearatuosedit(3)"  
+                                name="clearatuosedit3"
+                                style="display : none;"
+                                >
+                                Cancelar            
+                            </button>  
+                            </th>
+                            <th width ="30%">
+                                <button
+                                    class="btn btn-primary mt-2"
+                                    type="button" 
+                                    id="saveeditautos3"
+                                    onClick="btnsaveeditautos(3)"  
+                                    name="saveeditautos3"
+                                    style="display : none;"
+                                    >
+                                    Guardar            
+                                </button>  
+                            </th>
+                        </tr>
+                    </table>
+                    <div id="divautoedit_3" style="display:none;">
+                        <form action="formcomentarioseditadd" 
+                            method="POST"
+                            enctype="multipart/form-data"
+                            id="formeditauto3"
+                            name="formeditauto3"
+                            class="container px-4 my-5">
+                            @csrf
+                            <input type="hidden" id="poliatuedit3" readonly name="poliatuedit3" class="form-control" value =""/>
+                            <input type="hidden" id="adminpoliatuedit3" readonly name="adminpoliatuedit3" class="form-control" value =""/>
+                            <input type="hidden" id="usuarioadminpoliatuedit3" readonly name="usuarioadminpoliatuedit3" class="form-control" value =""/>
+                            <table id="" name="" class="table">
+                                <tr> 
+                                    <th>
+                                        <input 
+                                            type="text" 
+                                            class="form-control shadow-none border-0 bg-grey" 
+                                            name="comentarioautoseditadd[]" id="comentarioautoseditadd" 
+                                            value="" placeholder="Comentario sobre la póliza">
+                                    </th>
+                                </tr> 
+                            </table> 
+                        </form>
+                                      
+                    </div>
                     <!-- --> 
                     
                 </div>
