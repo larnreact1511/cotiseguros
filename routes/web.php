@@ -101,6 +101,10 @@ Route::post('adminstracionclientes/editmodeloautos/', [App\Http\Controllers\Clie
 Route::post('adminstracionclientes/formeditdocumentosautosadd/', [App\Http\Controllers\ClientesController::class, 'editardocumentosauto']);
 Route::post('adminstracionclientes/formcomentarioseditadd/', [App\Http\Controllers\ClientesController::class, 'editarcomentariosagregar']);
 
+Route::post('adminstracionclientes/editarempresaadd/', [App\Http\Controllers\ClientesController::class, 'editarempresa']);
+Route::post('adminstracionclientes/editardocumentoseditar/', [App\Http\Controllers\ClientesController::class, 'editarempresadocumentos']);
+Route::post('adminstracionclientes/editarcomentarioempresa/', [App\Http\Controllers\ClientesController::class, 'editarempresacomentarios']);
+
 Route::get('asegurado/{code}', [App\Http\Controllers\ClientesController::class, 'qrurl']);
 Route::post('clienteasegura', [App\Http\Controllers\ClientesController::class, 'clienteasegurado']);
 Route::post('actualizarmisdatos', [App\Http\Controllers\ClientesController::class, 'actualizarmisdatos']);

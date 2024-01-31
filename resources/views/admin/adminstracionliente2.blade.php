@@ -933,7 +933,7 @@ if ( @$info[0]->numerotelefono )
                                     class="btn btn-primary mt-2"
                                     type="button" 
                                     id="btneditauto1"
-                                    onClick="btneditautos(1)"  
+                                    onClick="btneditempresa(1)"  
                                     name="btneditauto1"
                                     >
                                     Editar            
@@ -1179,7 +1179,7 @@ if ( @$info[0]->numerotelefono )
                                 <input type="text" id="dimensiones" name="dimensiones"  value="">
                                 </th>
                                 <th>
-                                <label> ubicación</label>
+                                <label> Ubicación</label>
                                 <input type="text" id="ubicacion" name="ubicacion"  value="">
                                 </th>
                             </tr>
@@ -1239,92 +1239,235 @@ if ( @$info[0]->numerotelefono )
                     </form>
                                    
                 </div>
-                 <!-- formulario empresa -->
-                 <div  class="card" id="divempresaseditar" style="display:none;">
-                    <form  action="polizaempresaseditar" 
-                        method="POST"
-                        enctype="multipart/form-data"
-                        id="formulariosempresa"
-                        name="formulariosempresa"
-                        class="container px-4 my-5">
-                        @csrf
-                        <input type="hidden" id="tipopoliza3" readonly name="tipopoliza3" class="form-control" value =""/>
-                        <table class="table">
-                            <tr>
-                                <th>
-                                <label>Nombre de la empresa</label>
-                                <input type="text" id="nombreempresa" name="nombreempresa"  value="">
-                                </th>
-                                <th>
-                                <label> Representante</label>
-                                <input type="text" id="representante" name="representante"  value="">
-                                </th>
-                            </tr>
-                            <tr>
-                                <th>
-                                <label>Dimensiones</label>
-                                <input type="text" id="dimensiones" name="dimensiones"  value="">
-                                </th>
-                                <th>
-                                <label> ubicación</label>
-                                <input type="text" id="ubicacion" name="ubicacion"  value="">
-                                </th>
-                            </tr>
-                        </table>      
-                        <!-- pdf poliza auto-->
-                        <table id="tablaempresa" name="tablasalud" class="table">
-                            <tr>
-                                <th>
-                                <label class="custom-file-label" for=""> Agregar documento   </label>
-                                <input 
-                                    type="file" 
-                                    class="custom-file-input" 
-                                    name="documentosempresa[]" 
-                                    accept="pdf" >
-                                </th>
-                                <th>
-                                <label class="custom-file-label" for="">Nombre del documento  </label><br>    
-                                <input 
-                                        type="text" 
-                                        class="custom-file-input" 
-                                        name="nombredocumentosempresa[]" 
-                                        
+                <!-- formulario empresa editar -->
+                <div  class="card" id="divempresaseditar" style="display:none;">
+                                    
+                    <!-- --> 
+                    <table  class="table">
+                        <tr>
+                            <th>
+                                <label id="dimensionesedit" name ="dimensionesedit">
+                                <label id="ubicacionedit" name ="ubicacionedit">
+                                <label id="descripcionpolizaempresa" name ="descripcionpolizaempresa">
+                            </th>
+                            <th>
+                                <button
+                                    class="btn btn-primary mt-2"
+                                    type="button" 
+                                    id="btneditempresa1"
+                                    onClick="btneditempresa(1)"  
+                                    name="btneditempresa1"
                                     >
-                                </th>
-                            </tr>
-                        </table>   
-                        <!-- -->
-                        <table id="tablacomentarioempresa" class="table">
-                                <tr> 
+                                    Editar            
+                                </button>
+                            </th>
+                        </tr>
+                    </table> 
+                    <!-- --> 
+                    <div id="divempresaoedit_1" style="display:none;">
+
+                        <form  action="editarempresaadd" 
+                            method="POST"
+                            enctype="multipart/form-data"
+                            id="formempresaedit1"
+                            name="formempresaedit1"
+                            class="container px-4 my-5">
+                                @csrf
+                                <input type="hidden" id="polizaempresaedit1" readonly name="polizaempresaedit1" class="form-control" value =""/>
+                                <input type="hidden" id="adminempresapoliza1" readonly name="adminempresapoliza1" class="form-control" value =""/>
+                                <input type="hidden" id="usuarioempresapoliza1" readonly name="usuarioempresapoliza1" class="form-control" value =""/>
+                                <table class="table">
+                                    <tr>
+                                        <th>
+                                            <label>Nombre de la empresa</label>
+                                            <input type="text" id="nombreempresaedita" name="nombreempresaedita"  value="">
+                                        </th>
+                                        <th>
+                                            <label> Representante</label>
+                                            <input type="text" id="representanteedit" name="representanteedit"  value="">
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <label>Dimensiones</label>
+                                            <input type="text" id="dimensionesedit" name="dimensionesedit"  value="">
+                                        </th>
+                                        <th>
+                                            <label> Ubicación</label>
+                                            <input type="text" id="ubicacionedit" name="ubicacionedit"  value="">
+                                        </th>
+                                    </tr>
+                                    <tr>
                                     <th>
-                                        <input 
-                                            type="text"
-                                            class="form-control shadow-none border-0 bg-grey" 
-                                            name="comentarioempresa[]" id="comentarioempresa" value="" 
-                                            placeholder="Comentario sobre la póliza">
+                                        <button
+                                            class="btn btn-primary mt-2"
+                                            type="button" 
+                                            id="clearempresaedi1"
+                                            onClick="btnclearempresaedi(1)"  
+                                            name="clearempresaedi1"
+                                            >
+                                            Cancelar            
+                                        </button>
                                     </th>
-                                </tr>                  
-                            </table>    
-                        <!-- --> 
-                        <button onClick="addocument3()"  type="button" class="my-5 p-3"> 
-                            <span 
-                                    class="ms-3 mon-light">
-                                    Añadir documento
-                            </span>        
-                        </button>
-                        <!-- --> 
-                        <button onClick="addcoomentario3()" type="button" class="p-3 m-2"> 
-                                <span 
-                                        class="ms-3 mon-light">
-                                        Añadir otro comentario
-                                </span>        
-                            </button>
-                        <!-- -->         
-                        <button type="button" onclick="guardareempresas()" class="my-5 p-3">
-                            Guardar la Póliza
-                        </button>
-                    </form>
-                                   
+                                    <th>
+                                        <button
+                                            class="btn btn-primary mt-2"
+                                            type="button" 
+                                            id="saveempresaedit1"
+                                            onClick="btnsaveempresaedit(1)"  
+                                            name="saveempresaedit1"
+                                            >
+                                            Guardar            
+                                        </button>
+                                    </th>
+                                </tr>
+                                </table>        
+                        </form>
+                    </div>
+                    <hr>
+                    
+                    <table  class="table">
+                        <tr>
+                            <th width ="30%">
+                                <button
+                                    class="btn btn-primary mt-2"
+                                    type="button" 
+                                    id="btneditempresa2"
+                                    name="btneditempresa2"
+                                    onClick="btneditempresa(2)"
+                                    >
+                                    Agregar            
+                                </button> 
+                            </th>
+                            <th width ="30%">
+                                <button
+                                class="btn btn-primary mt-2"
+                                type="button" 
+                                id="clearempresaedi2"
+                                onClick="btnclearempresaedi(2)"  
+                                name="clearempresaedi2"
+                                style="display : none;"
+                                >
+                                Cancelar            
+                            </button>  
+                            </th>
+                            <th width ="30%">
+                                <button
+                                    class="btn btn-primary mt-2"
+                                    type="button" 
+                                    id="saveempresaedit2"
+                                    onClick="btnsaveempresaedit(2)"  
+                                    name="saveempresaedit2"
+                                    style="display : none;"
+                                    >
+                                    Guardar            
+                                </button>  
+                            </th>
+                        </tr>
+                    </table>  
+                    <table id="tabladocumentosempresaseidtar" name="tabladocumentosempresaseidtar" class="table"></table> 
+                    <div id="divempresaoedit_2" style="display:none;">
+                        <form  action="editardocumentoseditar" 
+                            method="POST"
+                            enctype="multipart/form-data"
+                            id="formempresaedit2"
+                            name="formempresaedit2"
+                            class="container px-4 my-5">
+                                @csrf
+                                <input type="hidden" id="polizaempresaedit2" readonly name="polizaempresaedit2" class="form-control" value =""/>
+                                <input type="hidden" id="adminempresapoliza2" readonly name="adminempresapoliza2" class="form-control" value =""/>
+                                <input type="hidden" id="usuarioempresapoliza2" readonly name="usuarioempresapoliza2" class="form-control" value =""/>
+                                <table id="" name="" class="table">
+                                    <tr>
+                                        <th>
+                                        <label class="custom-file-label" for=""> Agregar documento  </label>
+                                        <input 
+                                            type="file" 
+                                            class="custom-file-input" 
+                                            name="documentosempresaeditar[]" 
+                                            accept="pdf" >
+                                        </th>
+                                        <th>
+                                        <label class="custom-file-label" for="">Nombre del documento  </label><br>    
+                                        <input 
+                                                type="text" 
+                                                class="custom-file-input" 
+                                                name="nombredocumentosempresaeditar[]" 
+                                                
+                                            >
+                                        </th>
+                                    </tr>
+                                </table>     
+                        </form>
+                    </div>
+                    <h>
+                    
+                    <table  class="table">
+                        <tr>
+                            <th width ="30%">
+                                <button
+                                    class="btn btn-primary mt-2"
+                                    type="button" 
+                                    id="btneditempresa3"
+                                    name="btneditempresa3"
+                                    onClick="btneditempresa(3)"
+                                    >
+                                    Agregar            
+                                </button> 
+                            </th>
+                            <th width ="30%">
+                                <button
+                                class="btn btn-primary mt-2"
+                                type="button" 
+                                id="clearempresaedi3"
+                                onClick="btnclearempresaedi(3)"  
+                                name="clearempresaedi3"
+                                style="display : none;"
+                                >
+                                Cancelar            
+                            </button>  
+                            </th>
+                            <th width ="30%">
+                                <button
+                                    class="btn btn-primary mt-2"
+                                    type="button" 
+                                    id="saveempresaedit3"
+                                    onClick="btnsaveempresaedit(3)"  
+                                    name="saveempresaedit3"
+                                    style="display : none;"
+                                    >
+                                    Guardar            
+                                </button>  
+                            </th>
+                        </tr>
+                    </table>
+                    <table id="tablacomentariosempresaeditar" name="tablacomentariosempresaeditar" class="table"></table>   
+                    <div id="divempresaoedit_3" style="display:none;">
+                        <form  action="editarcomentarioempresa" 
+                            method="POST"
+                            enctype="multipart/form-data"
+                            id="formempresaedit3"
+                            name="formempresaedit3"
+                            class="container px-4 my-5">
+                                @csrf
+                                <input type="hidden" id="polizaempresaedit3" readonly name="polizaempresaedit3" class="form-control" value =""/>
+                                <input type="hidden" id="adminempresapoliza3" readonly name="adminempresapoliza3" class="form-control" value =""/>
+                                <input type="hidden" id="usuarioempresapoliza3" readonly name="usuarioempresapoliza3" class="form-control" value =""/>
+                                <table id="tablacomentarioempresa" class="table">
+                                    <tr> 
+                                        <th>
+                                            <input 
+                                                type="text"
+                                                class="form-control shadow-none border-0 bg-grey" 
+                                                name="comentarioempresaeditar[]" id="comentarioempresaeditar" value="" 
+                                                placeholder="Comentario sobre la póliza">
+                                        </th>
+                                    </tr>                  
+                                </table>    
+                        </form>
+                    </div>
+                    
+                                
                 </div>                    
                 <!-- -->                        
             </div>

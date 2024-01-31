@@ -2803,4 +2803,75 @@ class ClientesController extends Controller
         }
         return back();
     }
+
+    public function editarempresa(Request $request)
+    {
+        $edita =array(
+            'descripcionpoliza' =>$request->nombreempresaedita.' Representante : '.$request->representanteedit,
+            'dimensiones' =>$request->dimensionesedit,
+            'ubicacion' =>$request->ubicacionedit
+           );
+        DB::table('insurancepolicies')->where('id',$request->polizaempresaedit1)->update($edita);
+        return back();
+    }
+    public function editarempresadocumentos(Request $request)
+    {
+        if ($documentosempresaeditar =  $request->file('documentosempresaeditar'))
+        {
+            $cn=0;
+            $nombredocumentosempresaeditar =$request->input("nombredocumentosempresaeditar");
+            foreach ($documentosempresaeditar as $documento)
+            {
+                $image_name=md5(rand(1000,10000));
+                $ext = strtolower($documento->getClientOriginalExtension() );
+                $image_full_name=$image_name.'.'.$ext;
+                $upload_path ='public/documentos/';
+                $imagen_url = $upload_path.$image_full_name;
+                
+                if ($documento->move(public_path('documentos'),$image_full_name))
+                {
+                    $imagen[]=$imagen_url;
+                    $tipo ='documento';
+                    if ( $nombredocumentosempresaeditar[$cn] )
+                        $tipo =$nombredocumentosempresaeditar[$cn];
+                    Docuemntos::insert(
+                        [
+                            'created_at'=>date("Y-m-d H:i:s"),
+                            'documentonombre'=>$image_full_name,
+                            'tipodocumento'=>$tipo,
+                            'documentonombre'=>'documentos/'.$image_full_name,
+                            'idusuario'=>$request->usuarioempresapoliza2,
+                            'tipo'=>1,
+                            'id_insurancepolicies'=>$request->polizaempresaedit2
+                        ]);    
+                    session()->flash('message', 'Documento cargado con éxito');              
+                } 
+                else
+                    session()->flash('error_documentos', 'No se pudo subir algunos documentos');
+                $cn++;
+            }
+        }
+        
+        return back();
+    }
+    public function editarempresacomentarios(Request $request)
+    {
+       
+        $comentarioempresaeditar =$request->input("comentarioempresaeditar");
+            if ( count($comentarioempresaeditar) >0 )
+            {
+                foreach ( $comentarioempresaeditar as $c )
+                {   
+                    $comentariospolizas = DB::table('comentariospolizas')->insertGetId(
+                        [
+                            'created_at'=>date("Y-m-d H:i:s"),
+                            'id_insurancepolicies'=>$request->polizaempresaedit3,
+                            'comentario'=>$c,
+                            'idadmin'=>$request->adminempresapoliza3,
+                            'idusuario'=>$request->usuarioempresapoliza3,
+                        ]);
+                }
+            }
+        return back();
+    }
 }

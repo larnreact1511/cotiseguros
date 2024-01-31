@@ -29,9 +29,9 @@ let  cm =0; // contador miembros
 let ym =parseFloat(year)-parseFloat(99); // año menor
 let ya = new Date().getFullYear(); // año actual
 let datasiniestros =[];
-let urlservidor ='http://127.0.0.1:8000/';
+//let urlservidor ='http://127.0.0.1:8000/';
 //let urlservidor  ='https://dev.cotiseguros.com.ve//';
-//let urlservidor  ='https://www.cotiseguros.com.ve/';
+let urlservidor  ='https://www.cotiseguros.com.ve/';
 
 let polizaieditar =0;
 $( document ).ready(function() 
@@ -1297,7 +1297,7 @@ function editarpoliza(id_insurancepolicies)
                             </td>
                             <td>
                                 <span 
-                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    class='icon voyager-documentation btn-delete p-3 m-2' 
                                     title='Ver'
                                     >
                                     <a href="../${ f.documentonombre }" target="_blank"  style ="text-decoration: none;" >
@@ -1419,7 +1419,7 @@ function editarpoliza(id_insurancepolicies)
                             </td>
                             <td>
                                 <span 
-                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    class='icon voyager-documentation btn-delete p-3 m-2' 
                                     title='Ver'
                                     >
                                     <a href="../${ f.documentonombre }" target="_blank"  style ="text-decoration: none;" >
@@ -1471,8 +1471,81 @@ function editarpoliza(id_insurancepolicies)
         }
         else 
         {
-            selectempresa()
+            $("#divsaludeditar").css('display','none');
+            $("#divsalud").css('display','none');
+            $("#tipopoliza2").val(2)
+            $("#divautoeditar").css('display','none');
+            $("#divauto").css('display','none');
+
+            $("#divempresas").css('display','none');
+            $("#divempresaseditar").css('display','block');
             
+            let descripcionpolizaempresa =  document.getElementById("descripcionpolizaempresa");
+            descripcionpolizaempresa.innerHTML ='';
+            descripcionpolizaempresa.innerHTML = insurers[0].descripcionpoliza;
+
+            let dimensionesedit =  document.getElementById("dimensionesedit");
+            dimensionesedit.innerHTML ='';
+            dimensionesedit.innerHTML = 'Dimensiones '+ insurers[0].dimensiones;
+
+            let ubicacion =  document.getElementById("ubicacionedit");
+            ubicacion.innerHTML ='';
+            ubicacion.innerHTML ='Ubicación '+insurers[0].ubicacion;
+
+            if (documentos.length > 0)
+            {
+                documentos.map((f,indexFamiliar) =>
+                {
+                    $("#tabladocumentosempresaseidtar").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p> documento cargado ->  ${ f.tipodocumento } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-documentation btn-delete p-3 m-2' 
+                                    title='Ver'
+                                    >
+                                    <a href="../${ f.documentonombre }" target="_blank"  style ="text-decoration: none;" >
+                                        ver
+                                    </a>
+                                </span>
+
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminardocumento(${ f.id })"
+                                >
+                                    Eliminar
+                                </span>
+                                    
+                            </td>
+                        </tr>
+                        `);
+                });
+            }
+            if (comentario.length > 0)
+            {
+                comentario.map((f,indexFamiliar) =>
+                {
+                    $("#tablacomentariosempresaeditar").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p> comentario cargado ->  ${ f.comentario } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminarcomentario('${ f.id }')"
+                                >
+                                    Eliminar
+                                </span>
+                            </td>
+                        </tr>
+                        `);
+                });
+            }
         }
     });
 }
@@ -1684,7 +1757,7 @@ function btnsaveadd(id)
 //
 function btneditautos(id)
 {
-    console.log(id);
+    
     let divautoedit = document.getElementById("divautoedit_"+id);
     divautoedit.style.display = "block";
 
@@ -1713,4 +1786,58 @@ function btnsaveeditautos(id)
 {
     let formeditauto = document.getElementById("formeditauto"+id);
     formeditauto.submit();
+}
+
+function btneditempresa(id)
+{
+    let divempresaoedit = document.getElementById("divempresaoedit_"+id);
+    divempresaoedit.style.display = "block";
+
+    let polizaempresaedit = document.getElementById("polizaempresaedit"+id);
+    let adminempresapoliza = document.getElementById("adminempresapoliza"+id);
+    let usuarioempresapoliza = document.getElementById("usuarioempresapoliza"+id);
+
+    let clearempresaedi = document.getElementById("clearempresaedi"+id);
+    clearempresaedi.style.display = "block";
+
+    
+    let saveempresaedit = document.getElementById("saveempresaedit"+id);
+    saveempresaedit.style.display = "block";
+    
+    let btneditempresa = document.getElementById("btneditempresa"+id);
+    btneditempresa.style.display = "none";
+
+    
+    polizaempresaedit.value =polizaieditar;
+    adminempresapoliza.value =$("#idadmin").val();
+    usuarioempresapoliza.value =$("#idcliente").val();
+    // 
+   
+}
+function btnclearempresaedi(id)
+{
+    let divempresaoedit = document.getElementById("divempresaoedit_"+id);
+    divempresaoedit.style.display = "none";
+
+
+    if (id >1)
+    {
+        let clearempresaedi = document.getElementById("clearempresaedi"+id);
+        clearempresaedi.style.display = "none";
+
+        
+        let saveempresaedit = document.getElementById("saveempresaedit"+id);
+        saveempresaedit.style.display = "none";
+        
+        let btneditempresa = document.getElementById("btneditempresa"+id);
+        btneditempresa.style.display = "block";
+
+        let divempresaoedit = document.getElementById("divempresaoedit_"+id);
+        divempresaoedit.style.display = "none";
+    }
+}
+function btnsaveempresaedit(id)
+{
+    let formempresaedit = document.getElementById("formempresaedit"+id);
+    formempresaedit.submit();
 }
