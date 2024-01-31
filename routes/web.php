@@ -146,8 +146,13 @@ Route::get('/view-clear', function() {
 });
 
 Route::get('/contacto-seguros', [App\Http\Controllers\ClientesController::class, 'contactoseguros']);
+Route::get('/contacto-cotiseguros', [App\Http\Controllers\ClientesController::class, 'conctactocotiseguros']);
 Route::get('listarcontactos/', [App\Http\Controllers\ClientesController::class, 'listarcontactos']);
+Route::get('listarpersonal/', [App\Http\Controllers\ClientesController::class, 'listarpersonal']);
 Route::post('guardarcontacto', [App\Http\Controllers\ClientesController::class, 'guardarcontacto']);
+Route::post('guardarcontactocotiseguro', [App\Http\Controllers\ClientesController::class, 'contactocotiseguro']);
+Route::get('eliminarpersonal/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarpersonal']);
+Route::get('eliminarcontacto/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarcontacto']);
 
 Route::get('cliente/mis-polizas', [App\Http\Controllers\ClientesController::class, 'mispolizascliente']);
 Route::get('cliente/mis-siniestros', [App\Http\Controllers\ClientesController::class, 'sinisestros']);

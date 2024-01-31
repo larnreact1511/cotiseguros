@@ -968,6 +968,11 @@ class ClientesController extends Controller
         $data['insurers'] = Insurer::select(["*"])->get();
         return view("clientes.contactoseguros",$data);
     }
+    public function conctactocotiseguros()
+    {
+        $data['insurers'] = Insurer::select(["*"])->get();
+        return view("clientes.contactoscotiseguros",$data);
+    }
     public function guardarcontacto(Request $request)
     {
         if ( isset($request->conta_id) )
@@ -993,7 +998,31 @@ class ClientesController extends Controller
         }
         return back();
     }
-    
+    public function contactocotiseguro(Request $request)
+    {
+        if ( isset($request->cotiseguros_id) )
+        {
+            DB::table('contactocotiseguros')->where('id',$request->cotiseguros_id )->update([
+                'nombre' =>$request->nombre,
+                'cedula' =>$request->cedula,
+                'rif' =>$request->rif,
+                'whatssap' =>$request->whatssap,
+                'llamada'=>$request->llamada,
+            ]);
+        }
+        else
+        {
+            $agregarcliente = DB::table('contactocotiseguros')->insertGetId(
+            [
+                'nombre' =>$request->nombre,
+                'cedula' =>$request->cedula,
+                'rif' =>$request->rif,
+                'whatssap' =>$request->whatssap,
+                'llamada'=>$request->llamada,
+            ]);
+        }
+        return back();
+    }
     public function listarcontactos(Request $request)
     {
         
@@ -1044,6 +1073,68 @@ class ClientesController extends Controller
                 $datos[$i]['whatsap'] = $conta->conta_nrowhat;
                 $datos[$i]['llamada'] = $conta->conta_nrocall;
                 $datos[$i]['servicio'] = $conta->conta_servicio;
+                $i++;
+            }
+            $data= $datos;
+        }
+        $dataresponce['draw'] = $request->input('draw');
+        $dataresponce['recordsTotal'] = $contactoseguros->count() >0 ? $contactoseguros->count() : 0;
+        $dataresponce['recordsFiltered'] = $contactoseguros->count() >0 ? $contactoseguros->count() : 0;
+        $dataresponce['data'] = $data;
+        return response()->json($dataresponce);
+    }
+    public function listarpersonal(Request $request)
+    {
+        
+        $data=[];
+        $search = $request->input('search');  // $conta_id
+        if ($search['value']=='')
+        {
+            $contactoseguros = DB::table('contactocotiseguros')
+            ->select(
+            'contactocotiseguros.id',
+            'contactocotiseguros.nombre',
+            'contactocotiseguros.cedula',
+            'contactocotiseguros.rif',
+            'contactocotiseguros.whatssap',
+            'contactocotiseguros.llamada')
+            ->skip($request->input('start'))->take($request->input('length'))
+            ->orderBy('contactocotiseguros.id', 'DESC')
+            ->get();
+        }
+        else
+        {
+            $contactoseguros = DB::table('contactocotiseguros')
+            ->Where('contactocotiseguros.nombre', 'LIKE', "%$value%")
+            ->orWhere('contactocotiseguros.cedula', 'LIKE', "%$value%")
+            ->orWhere('contactocotiseguros.rif', 'LIKE', "%$value%")
+            ->orWhere('contactocotiseguros.whatssap', 'LIKE', "%$value%")
+            ->orWhere('contactocotiseguros.llamada', 'LIKE', "%$value%")
+            ->select(
+                'contactocotiseguros.id',
+                'contactocotiseguros.nombre',
+                'contactocotiseguros.cedula',
+                'contactocotiseguros.rif',
+                'contactocotiseguros.whatssap',
+                'contactocotiseguros.llamada')
+            ->skip($request->input('start'))->take($request->input('length'))
+            ->orderBy('contactocotiseguros.id', 'DESC')
+            ->get();
+        }
+        
+        if ( $contactoseguros->count() > 0)
+        {
+            $i=0;
+            
+            foreach ($contactoseguros as $contactos => $conta)
+            {
+                
+                $datos[$i]['id'] = $conta->id;
+                $datos[$i]['nombre'] = $conta->nombre;
+                $datos[$i]['cedula'] = $conta->cedula;
+                $datos[$i]['rif'] = $conta->rif;
+                $datos[$i]['whatssap'] = $conta->whatssap;
+                $datos[$i]['llamada'] = $conta->llamada;
                 $i++;
             }
             $data= $datos;
@@ -2873,5 +2964,19 @@ class ClientesController extends Controller
                 }
             }
         return back();
+    }
+    public function eliminarpersonal($id)
+    {
+        $eliminarparentesco =array('id'=>$id);
+        DB::table('contactocotiseguros')->where('id',$id)->delete();
+        $res['result']=true;
+        return response()->json($res);
+    }
+    public function eliminarcontacto($id)
+    {
+        $eliminarparentesco =array('id'=>$id);
+        DB::table('contactoseguros')->where('id',$id)->delete();
+        $res['result']=true;
+        return response()->json($res);
     }
 }

@@ -40,7 +40,7 @@ use Illuminate\Support\Facades\DB;
     {
         echo "<h4> Lo sentimos en estos momentos el cliente esta pendiente de pago <h4>";
         ?>
-        <div class="contenedor">
+          <div class="contenedor">
             <label>
               <input type="checkbox" class="form-check-input" id="cbox1" value="first_checkbox" checked disabled/> 
               Estado de la póliza 
@@ -56,6 +56,16 @@ use Illuminate\Support\Facades\DB;
     else
     {
       ?> 
+          <div class="contenedor">
+            <label>
+              <input type="checkbox" class="form-check-input" id="cbox1" value="first_checkbox" checked disabled/> 
+              Estado de la póliza 
+              <strong style="color:green !important;">
+                Solvente
+              </strong>
+              
+            </label>
+          </div>
           <!-- acordeon -->  
           <div class="accordion accordion-flush" id="accordionFlushExample" style="text-align: center;">   
               <!-- informacion personal-->
@@ -508,14 +518,16 @@ use Illuminate\Support\Facades\DB;
                                     </p>
                                     <p>
                                       <a 
-                                        class="btn btn-success rounded-pill px-1 mx-sm-0 mb-2 w-25" 
+                                        class="btn btn-success rounded-pill px-1 mx-sm-0 mb-2 w-100" 
                                         href=<?= ($con->conta_nrowhat) ? $url : "#"; ?> 
                                         target="_blank">
                                         whatssap -  {{ $con->conta_nrowhat }} 
                                       </a>
                                     </p>
                                     <p>
-                                      <button class="btn btn-info rounded-pill px-1 mx-sm-0 mb-2 w-25" style="background-color:#3c485a !important; color :#fff;"  >    
+                                      <button 
+                                        class="btn btn-info rounded-pill px-1 mx-sm-0 mb-2 w-100" 
+                                        style="background-color:#3c485a !important; color :#fff;"  >    
                                       llamada {{ $con->conta_nrocall }} 
                                       </button>
                                     </p>

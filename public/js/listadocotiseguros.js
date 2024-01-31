@@ -5,16 +5,17 @@ $(document).ready(function ()
         responsive: true,
         processing: true,
         serverSide: true,
-        ajax: `listarcontactos/`,
+        ajax: `listarpersonal/`,
         language:
             {
 				"url": "json/Spanish.json"
 			},
         columns: [
             { data: 'id' },
-            { data: 'seguro' },
-            { data: 'servicio' },
-            { data: 'whatsap' },
+            { data: 'nombre' },
+            { data: 'cedula' },
+            { data: 'rif' },
+            { data: 'whatssap' },
             { data: 'llamada' },
             {
                 orderable: false,
@@ -28,12 +29,12 @@ $(document).ready(function ()
                     <span 
                       class='icon voyager-trash btn-doc p-3' 
                       title='Eliminar Contacto'
-                      onclick="eliminarcontacto(${row.id})" 
+                      onclick="eliminarpersonal(${row.id})" 
                     ></span>
                     <span 
                       class='icon voyager-wallet btn-doc p-3' 
                       title='Editar Contacto'
-                      onclick="editarcontacto(${row.id},'${row.seguro}','${row.servicio}','${row.whatsap}','${row.llamada}','${row.idseguro}')" 
+                      onclick="editarcontacto(${row.id},'${row.nombre}','${row.cedula}','${row.rif}','${row.whatssap}','${row.llamada}')" 
                     ></span>`;
                 }
               },
@@ -41,26 +42,26 @@ $(document).ready(function ()
     });
     //
 });
-//let urlservidor ='http://127.0.0.1:8000/';
-//let urlservidor  ='https://dev.cotiseguros.com.ve//';
-let urlservidor  ='https://www.cotiseguros.com.ve/';
-
 function guardarcontacto()
 {
     
-    if ($("#conta_idseguro").val()==0)
+    if ($("#nombre").val()==0)
     {
-        Swal.fire('Ingrese un seguro');
+        Swal.fire('Ingrese un nombre');
     }
-    if ($("#conta_servicio").val()=='')
+    if ($("#cedula").val()=='')
     {
-        Swal.fire('Ingrese nombre servicio ');
+        Swal.fire('Ingrese nombre cedula ');
     }
-    if ($("#conta_nrowhat").val()=='')
+    if ($("#rif").val()=='')
     {
-        Swal.fire('Ingrese nro whatsapp ');
+        Swal.fire('Ingrese nro rif ');
     }
-    if ($("#conta_nrocall").val()=='')
+    if ($("#whatssap").val()=='')
+    {
+        Swal.fire('Ingrese nro whatssap ');
+    }
+    if ($("#llamada").val()=='')
     {
         Swal.fire('Ingrese nro llamada ');
     }
@@ -70,22 +71,25 @@ function guardarcontacto()
         formulario.submit();
     }
 }
-
-function eliminarcontacto(id)
+//let urlservidor ='http://127.0.0.1:8000/';
+//let urlservidor  ='https://dev.cotiseguros.com.ve//';
+let urlservidor  ='https://www.cotiseguros.com.ve/';
+function eliminarpersonal(id)
 {
-    fetch(urlservidor+"eliminarcontacto/"+id)
+    fetch(urlservidor+"eliminarpersonal/"+id)
     .then(response => response.json())
     .then(
        location.reload()
     );
 }
-function editarcontacto(id,seguro,servicio,whatsap,llamada,idseguro)
+function editarcontacto(id,nombre,cedula,rif,whatssap,llamada)
 {
-    $("#conta_id").val(id)
-    $("#conta_servicio").val(servicio)
-    $("#conta_idseguro").val(idseguro)
-    $("#conta_nrowhat").val(whatsap)
-    $("#conta_nrocall").val(llamada)
+    $("#cotiseguros_id").val(id)
+    $("#nombre").val(nombre)
+    $("#cedula").val(cedula)
+    $("#rif").val(rif)
+    $("#whatssap").val(whatssap)
+    $("#llamada").val(llamada)
     
 }
 
