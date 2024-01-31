@@ -2737,4 +2737,51 @@ class ClientesController extends Controller
         }
         return back();
     }
+
+    public function editmodeloautos(Request $request)
+    {
+       $edita =array(
+        'descripcionpoliza' =>$request->nroplacaedit.' Modelo : '.$request->modeloedit,
+       );
+       DB::table('insurancepolicies')->where('id',$request->poliatuedit1)->update($edita);
+       return back();
+    }
+    public function editardocumentosauto(Request $request)
+    {
+        if ($documentosautoseditardd =  $request->file('documentosautoseditardd'))
+        {
+            $cn=0;
+            $nombredocumentosautoseditardd =$request->input("nombredocumentosautoseditardd");
+            foreach ($documentosautoseditardd as $documento)
+            {
+                $image_name=md5(rand(1000,10000));
+                $ext = strtolower($documento->getClientOriginalExtension() );
+                $image_full_name=$image_name.'.'.$ext;
+                $upload_path ='public/documentos/';
+                $imagen_url = $upload_path.$image_full_name;
+                if ($documento->move(public_path('documentos'),$image_full_name))
+                {
+                    $imagen[]=$imagen_url;
+                    $tipo ='documento';
+                    if ( $nombredocumentosautoseditardd[$cn] )
+                        $tipo =$nombredocumentosautoseditardd[$cn];
+                    Docuemntos::insert(
+                        [
+                            'created_at'=>date("Y-m-d H:i:s"),
+                            'documentonombre'=>$image_full_name,
+                            'tipodocumento'=>$tipo,
+                            'documentonombre'=>'documentos/'.$image_full_name,
+                            'idusuario'=>$request->usuarioadminpoliatuedit2,
+                            'tipo'=>1,
+                            'id_insurancepolicies'=>$request->poliatuedit2
+                        ]);    
+                    session()->flash('message', 'Documento cargado con éxito');              
+                } 
+                else
+                    session()->flash('error_documentos', 'No se pudo subir algunos documentos');
+                $cn++;
+            }
+        } 
+        return back();
+    }
 }

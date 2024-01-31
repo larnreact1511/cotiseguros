@@ -290,7 +290,7 @@ if ( @$info[0]->numerotelefono )
                             <input 
                                 class="form-check-input" 
                                 type="radio" 
-                                name="edipoliza_{{$i->id_insurancepolicies}}" 
+                                name="edipoliza" 
                                 id="edipoliza_{{$i->id_insurancepolicies}}" 
                                 onclick="editarpoliza(<?=$i->id_insurancepolicies ?>)">
                             <label class="form-check-label" for="flexRadioDefault2">
@@ -917,99 +917,176 @@ if ( @$info[0]->numerotelefono )
                     </form>
                            
                 </div>
-                <!-- formmulario editar  -->
+                <!-- formmulario auto editar  -->
                 <div  class="card" id="divautoeditar" style="display:none;">
-                    <form action="polizasuatoeditar" 
-                        method="POST"
-                        enctype="multipart/form-data"
-                        id="formulariosaatuos"
-                        name="formulariosaatuos"
-                        class="container px-4 my-5"
-                        >
+                    <input type="hidden" id="tipopoliza2" readonly name="tipopoliza2" class="form-control" value =""/>
+                    <table  class="table">
+                        <tr>
+                            <th>
+                                <label>Modelo  </label>
+                                <label id="modeloauto" name ="modeloauto">
+
+                                </label>
+                            </th>
+                            <th>
+                                <button
+                                    class="btn btn-primary mt-2"
+                                    type="button" 
+                                    id="btneditauto1"
+                                    onClick="btneditautos(1)"  
+                                    name="btneditauto1"
+                                    >
+                                    Editar            
+                                </button>
+                            </th>
+                        </tr>
+                    </table> 
+                    <div id="divautoedit_1" style="display:none;">
+                        <form action="editmodeloautos" 
+                            method="POST"
+                            enctype="multipart/form-data"
+                            id="formeditauto1"
+                            name="formeditauto1"
+                            class="container px-4 my-5">
                             @csrf
-                            <input type="hidden" id="tipopoliza2" readonly name="tipopoliza2" class="form-control" value =""/>
+                            
+                        </form>
+
+                        <form action="editmodeloautos" 
+                            method="POST"
+                            enctype="multipart/form-data"
+                            id="formeditauto1"
+                            name="formeditauto1"
+                            class="container px-4 my-5">
+                            @csrf
+                            <input type="hidden" id="poliatuedit1" readonly name="poliatuedit1" class="form-control" value =""/>
+                            <input type="hidden" id="adminpoliatuedit1" readonly name="adminpoliatuedit1" class="form-control" value =""/>
+                            <input type="hidden" id="usuarioadminpoliatuedit1" readonly name="usuarioadminpoliatuedit1" class="form-control" value =""/>
                             <table  class="table">
                                 <tr>
                                     <th>
-                                        <label>Modelo  </label>
-                                        <label id="modeloauto" name ="modeloauto">
-
-                                        </label>
+                                    <label>Nro  De placa </label>
+                                    <input type="text" id="nroplacaedit" name="nroplacaedit"  value="">
+                                    </th>
+                                    <th>
+                                    <label> Modelo</label>
+                                    <input type="text" id="modeloedit" name="modeloedit"  value="">
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <button
+                                            class="btn btn-primary mt-2"
+                                            type="button" 
+                                            id="clearatuosedit1"
+                                            onClick="btnclearatuosedit(1)"  
+                                            name="clearatuosedit1"
+                                            >
+                                            Cancelar            
+                                        </button>
                                     </th>
                                     <th>
                                         <button
                                             class="btn btn-primary mt-2"
                                             type="button" 
-                                            id="btneditauto1"
-                                            onClick="btneditautos(1)"  
-                                            name="btneditauto1"
+                                            id="saveeditautos1"
+                                            onClick="btnsaveeditautos(1)"  
+                                            name="saveeditautos1"
                                             >
-                                            Editar            
+                                            Guardar            
                                         </button>
                                     </th>
                                 </tr>
                             </table> 
-                            <div id="divautoedit_1" style="display:none;">
-                                <form action="editmodeloautos" 
-                                    method="POST"
-                                    enctype="multipart/form-data"
-                                    id="formadd5"
-                                    name="formadd5"
-                                    class="container px-4 my-5">
-                                    @csrf
-                                    <input type="hidden" id="poliatuedit1" readonly name="poliatuedit1" class="form-control" value =""/>
-                                    <input type="hidden" id="adminpoliatuedit1" readonly name="adminpoliatuedit1" class="form-control" value =""/>
-                                    <input type="hidden" id="usuarioadminpoliatuedit1" readonly name="usuarioadminpoliatuedit1" class="form-control" value =""/>
-                                    <table  class="table">
-                                        <tr>
-                                            <th>
-                                            <label>Nro  De placa </label>
-                                            <input type="text" id="nroplacaedit" name="nroplacaedit"  value="">
-                                            </th>
-                                            <th>
-                                            <label> Modelo</label>
-                                            <input type="text" id="modeloedit" name="modeloedit"  value="">
-                                            </th>
-                                        </tr>
-                                        <tr>
-                                            <th>
-                                                <button
-                                                    class="btn btn-primary mt-2"
-                                                    type="button" 
-                                                    id="clearatuosedit1"
-                                                    onClick="btnclearatuosedit1(1)"  
-                                                    name="clearatuosedit1"
-                                                    >
-                                                    Cancelar            
-                                                </button>
-                                            </th>
-                                            <th>
-                                                <button
-                                                    class="btn btn-primary mt-2"
-                                                    type="button" 
-                                                    id="saveeditautos1"
-                                                    onClick="btnsaveeditautos1(1)"  
-                                                    name="saveeditautos1"
-                                                    >
-                                                    Guardar            
-                                                </button>
-                                            </th>
-                                        </tr>
-                                    </table> 
-                                </form>
-                               
-                            </div>           
-                            
-                            <!-- pdf poliza auto-->
-                            <hr>
-                            <table id="tablaautosdocumentos" name="tablaautosdocumentos" class="table"></table>
-                            <!-- -->
-                            <hr>
-                            <table id="tablaautoscomentarios" class="table"></table>
-                            <!-- --> 
-                            
-                    </form>
-                           
+                        </form>
+                        
+                    </div>           
+                    
+                    <!-- pdf poliza auto-->
+                    <hr>
+                    <h4> Documentos Cargados  </h4>
+                    <table id="tablaautosdocumentos" name="tablaautosdocumentos" class="table"></table>
+                    <table  class="table">
+                        <tr>
+                            <th width ="30%">
+                                <button
+                                    class="btn btn-primary mt-2"
+                                    type="button" 
+                                    id="btneditauto2"
+                                    name="btneditauto2"
+                                    onClick="btneditautos(2)"
+                                    >
+                                    Agregar            
+                                </button> 
+                            </th>
+                            <th width ="30%">
+                                <button
+                                class="btn btn-primary mt-2"
+                                type="button" 
+                                id="clearatuosedit2"
+                                onClick="btnclearatuosedit(2)"  
+                                name="clearatuosedit2"
+                                style="display : none;"
+                                >
+                                Cancelar            
+                            </button>  
+                            </th>
+                            <th width ="30%">
+                                <button
+                                    class="btn btn-primary mt-2"
+                                    type="button" 
+                                    id="saveeditautos2"
+                                    onClick="btnsaveeditautos(2)"  
+                                    name="saveeditautos2"
+                                    style="display : none;"
+                                    >
+                                    Guardar            
+                                </button>  
+                            </th>
+                        </tr>
+                    </table>
+                    <div id="divautoedit_2" style="display:none;">
+                        <form action="formeditdocumentosautosadd" 
+                            method="POST"
+                            enctype="multipart/form-data"
+                            id="formeditauto2"
+                            name="formeditauto2"
+                            class="container px-4 my-5">
+                            @csrf
+                            <input type="hidden" id="poliatuedit2" readonly name="poliatuedit2" class="form-control" value =""/>
+                            <input type="hidden" id="adminpoliatuedit2" readonly name="adminpoliatuedit2" class="form-control" value =""/>
+                            <input type="hidden" id="usuarioadminpoliatuedit2" readonly name="usuarioadminpoliatuedit2" class="form-control" value =""/>
+                            <table id="" name="" class="table">
+                                <tr>
+                                    <th>
+                                    <label class="custom-file-label" for=""> Agregar documento   </label>
+                                    <input 
+                                            type="file" 
+                                            class="custom-file-input" 
+                                            name="documentosautoseditardd[]" 
+                                            accept="pdf,png,jpg"  
+                                            >
+                                    </th>
+                                    <th>
+                                    <label class="custom-file-label" for="">Nombre del documento  </label><br>    
+                                    <input 
+                                            type="text" 
+                                            class="custom-file-input" 
+                                            name="nombredocumentosautoseditardd[]" 
+                                            
+                                        >
+                                    </th>
+                                </tr>
+                            </table> 
+                        </form>
+                                      
+                    </div>
+                    <!-- -->
+                    <hr>
+                    <h4> Comenntarios Cargados  </h4>
+                    <table id="tablaautoscomentarios" class="table"></table>
+                    <!-- --> 
+                    
                 </div>
                 <!-- formulario empresa -->
                 <div  class="card" id="divempresas" style="display:none;">

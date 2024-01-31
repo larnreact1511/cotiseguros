@@ -1,3 +1,5 @@
+
+
 let familiar = 
 {
     status: "-1",
@@ -1143,7 +1145,7 @@ function generarvistadocumentos(id,doc)
                     <span 
                         class='icon voyager-trash p-3 m-2' 
                         title='Borrar Documento'
-                        onclick="borrar('${d.id}')" 
+                        onclick="borrar(${d.id})" 
                         ></span>    
                 </a>
             <br>`;
@@ -1332,7 +1334,7 @@ function editarpoliza(id_insurancepolicies)
                                 <span 
                                     class='icon voyager-trash btn-delete p-3 m-2' 
                                     title='borrar'
-                                    onclick="eliminarcomentario('${ f.id }')"
+                                    onclick="eliminarcomentario(${ f.id })"
                                 >
                                     Eliminar
                                 </span>
@@ -1667,7 +1669,7 @@ function btnclear(id)
 }
 function btnsaveadd(id)
 {
-    console.log(id);
+   
     if (id==1)
     {
         let formadd1 = document.getElementById("formparentescoeditaradd");
@@ -1684,4 +1686,30 @@ function btneditautos(id)
 {
     let divautoedit = document.getElementById("divautoedit_"+id);
     divautoedit.style.display = "block";
+
+    let poliatuedit = document.getElementById("poliatuedit"+id);
+    let adminpoliatuedit = document.getElementById("adminpoliatuedit"+id);
+    let usuarioadminpoliatuedit = document.getElementById("usuarioadminpoliatuedit"+id);
+    console.log(polizaieditar,id)
+    poliatuedit.value =polizaieditar;
+    adminpoliatuedit.value =$("#idadmin").val();
+    usuarioadminpoliatuedit.value =$("#idcliente").val();
+
+    if (id >1)
+    {
+        
+        let clearatuosedit = document.getElementById("clearatuosedit"+id);
+        clearatuosedit.style.display = "block";
+        let saveeditautos = document.getElementById("saveeditautos"+id);
+        saveeditautos.style.display = "block";
+
+        let btneditauto = document.getElementById("btneditauto"+id);
+        btneditauto.style.display = "none";
+    }
+
+}
+function btnsaveeditautos(id)
+{
+    let formeditauto = document.getElementById("formeditauto"+id);
+    formeditauto.submit();
 }

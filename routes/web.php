@@ -97,6 +97,10 @@ Route::post('adminstracionclientes/comentariosadd/', [App\Http\Controllers\Clien
 Route::post('adminstracionclientes/patologiasiadd/', [App\Http\Controllers\ClientesController::class, 'addpatologiasi']);
 Route::post('adminstracionclientes/patologianoadd/', [App\Http\Controllers\ClientesController::class, 'addpatologiano']);
 
+Route::post('adminstracionclientes/editmodeloautos/', [App\Http\Controllers\ClientesController::class, 'editmodeloautos']);
+Route::post('adminstracionclientes/formeditdocumentosautosadd/', [App\Http\Controllers\ClientesController::class, 'editardocumentosauto']);
+
+
 Route::get('asegurado/{code}', [App\Http\Controllers\ClientesController::class, 'qrurl']);
 Route::post('clienteasegura', [App\Http\Controllers\ClientesController::class, 'clienteasegurado']);
 Route::post('actualizarmisdatos', [App\Http\Controllers\ClientesController::class, 'actualizarmisdatos']);
