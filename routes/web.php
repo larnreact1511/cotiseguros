@@ -82,6 +82,15 @@ Route::post('adminstracionclientes/gudardarsinisestroeditar/', [App\Http\Control
 Route::post('adminstracionclientes/borrardocumento/{id}', [App\Http\Controllers\ClientesController::class, 'borrardocumento']);
 Route::get('borrardocumento/{id}', [App\Http\Controllers\ClientesController::class, 'borrardocumento']);
 Route::get('eliminarqr/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarqr']);
+
+Route::get('editarpoliza/{idinsurancepolicies}', [App\Http\Controllers\ClientesController::class, 'editarpoliza']);
+
+Route::get('eliminarparentesco/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarqr']);
+Route::get('eliminardocumento/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarqr']);
+Route::get('eliminarcomentario/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarqr']);
+Route::get('eliminardelcarada/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarqr']);
+Route::get('eliminarnodeclarada/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarqr']);
+
 Route::get('asegurado/{code}', [App\Http\Controllers\ClientesController::class, 'qrurl']);
 Route::post('clienteasegura', [App\Http\Controllers\ClientesController::class, 'clienteasegurado']);
 Route::post('actualizarmisdatos', [App\Http\Controllers\ClientesController::class, 'actualizarmisdatos']);

@@ -1929,7 +1929,10 @@ class ClientesController extends Controller
         ->join('coverages', 'insurancepolicies.idcoverages', '=', 'coverages.id')
         ->join('insurers', 'insurancepolicies.idinsurers', '=', 'insurers.id')
         ->where('insurancepolicies.idusuario',$data['info'][0]->idusuario)
-        ->select('insurancepolicies.idcoverages', 'insurancepolicies.idinsurers', 'coverages.coverage','insurers.name','insurancepolicies.tipopoliza','insurancepolicies.id as id_insurancepolicies','coverages.id')->get();    
+        ->select('insurancepolicies.idcoverages', 
+        'insurancepolicies.idinsurers', 'coverages.coverage','insurers.name',
+        'insurancepolicies.tipopoliza','insurancepolicies.id as id_insurancepolicies',
+        'coverages.id')->get();    
         
         $info =$this->inforcliente($request->id);
         
@@ -2483,5 +2486,130 @@ class ClientesController extends Controller
     public function generarimgqr ()
     {
         QrCode::generate('aaaaaaaaaaaaaaaaaa', '../public/qrcodes/qrcode.svg');
-    }   
+    } 
+    public function editarpoliza($idinsurancepolicies)
+    {
+        $insurancepolicies =DB::table('insurancepolicies')->where('id',$idinsurancepolicies)->get();
+        $docuemntos =DB::table('docuemntos')->where('id_insurancepolicies',$idinsurancepolicies)->get(); 
+
+        if ($docuemntos->count() > 0 )
+        {
+            foreach ( $docuemntos  as $member_quote => $d)
+            {
+                $nestedData['id']               = $d->id;
+                $nestedData['documentonombre']  = $d->documentonombre;
+                $nestedData['tipodocumento']    = $d->tipodocumento;
+                $nestedData['url']              = $d->url;
+                $nestedData['tipo']              = $d->tipo;
+                $documentos[] = $nestedData;
+            }
+        }
+
+        $comentario =DB::table('comentariospolizas')->where('id_insurancepolicies',$idinsurancepolicies)->get();
+
+        if ($comentario->count() > 0 )
+        {
+            foreach ( $comentario  as $comentari => $c)
+            {
+                $nestedData['id']               = $c->id;
+                $nestedData['comentario']           = $c->comentario;
+                $coment[] = $nestedData;
+            }
+        }
+        $member_quotes =DB::table('member_quotes')->where('id_insurancepolicies',$idinsurancepolicies)->get();
+
+        
+        if ($member_quotes->count() > 0 )
+        {
+            foreach ( $member_quotes  as $member_quote => $c)
+            {
+                $nestedData['id']               = $c->id;
+                $nestedData['status']           = $c->status;
+                $nestedData['gender']         = $c->gender;
+                $nestedData['date']            = $c->date;
+                $nestedData['birthday']           = $c->birthday;
+                $nestedData['day']   = $c->day;
+                $nestedData['month']            = $c->month;
+                $nestedData['year']            = $c->year;
+                $nestedData['total']            = $c->total;
+                $member[] = $nestedData;
+            }
+        }
+
+        $patologiasi =DB::table('patologia')->where(
+        [
+            'pat_id_poliza' => $idinsurancepolicies,
+            'pat_status' => 1
+        ]
+        )->get();
+        if ($patologiasi->count() > 0 )
+        {
+            foreach ( $patologiasi  as $psi => $p)
+            {
+                $nestedData['id']           = $p->pat_id;
+                $nestedData['descripcion']  = $p->pat_descripcion;
+                $declarada[] = $nestedData;
+            }
+        }
+
+        $patologiano =DB::table('patologia')->where(
+        [
+            'pat_id_poliza' => $idinsurancepolicies,
+            'pat_status' => 0
+        ]
+        )->get();
+        if ($patologiano->count() > 0 )
+        {
+            foreach ( $patologiano  as $pno => $p)
+            {
+                $nestedData['id']               = $p->pat_id;
+                $nestedData['descripcion']  = $p->pat_descripcion;
+                $nodeclarada[] = $nestedData;
+            }
+        }
+        $res['documentos']= $docuemntos->count() > 0 ? $documentos: [];
+        $res['insurers']=$insurancepolicies->count() > 0 ? $insurancepolicies: [];
+        $res['comentario']=$comentario->count() > 0 ? $coment: [];
+        $res['member']=$member_quotes->count() > 0 ? $member: [];
+
+        $res['declarada']=$patologiasi->count() > 0 ? $declarada: [];
+        $res['nodeclarada']=$patologiano->count() > 0 ? $nodeclarada: [];
+
+        return response()->json($res);
+    }  
+    public function eliminarparentesco($id)
+    {
+        $eliminarparentesco =array('id'=>$id);
+        DB::table('member_quotes')->where('id',$id)->delete();
+        $res['result']=true;
+        return response()->json($res);
+    }
+    public function eliminardocumento($id)
+    {
+        $docuemntos =array('id'=>$id);
+        DB::table('docuemntos')->where('id',$id)->delete();
+        $res['result']=true;
+        return response()->json($res);
+    }
+    public function eliminarcomentario($id)
+    {
+        $comentariospolizas =array('id'=>$id);
+        DB::table('comentariospolizas')->where('id',$id)->delete();
+        $res['result']=true;
+        return response()->json($res);
+    }
+    public function eliminardelcarada($id)
+    {
+        $patologia =array('id'=>$id);
+        DB::table('patologia')->where('id',$id)->delete();
+        $res['result']=true;
+        return response()->json($res);
+    }
+    public function eliminarnodeclarada($id)
+    {
+        $patologia =array('id'=>$id);
+        DB::table('patologia')->where('id',$id)->delete();
+        $res['result']=true;
+        return response()->json($res);
+    }
 }

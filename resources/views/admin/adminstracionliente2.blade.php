@@ -269,6 +269,36 @@ if ( @$info[0]->numerotelefono )
             </div>
             <!-- Crear polizas-->
             <div class="tab2" >
+                
+                <?php                                  
+                    foreach ($insurancepolicies as $i )
+                    {
+                        $tipopoliza='';
+                        switch ($i->tipopoliza) {
+                            case 1:
+                                $tipopoliza =" Salud ";
+                                break;
+                            case 2:
+                                $tipopoliza =" Autos ";
+                                break;
+                            case 3:
+                                $tipopoliza =" Empresa ";
+                                break;
+                        }
+                        $monto = number_format($i->coverage) .' USD ( '.$i->name.' :'.$tipopoliza.' ) '
+                        ?>
+                            <input 
+                                class="form-check-input" 
+                                type="radio" 
+                                name="flexRadioDefault" 
+                                id="flexRadioDefault2" 
+                                onclick="editarpoliza(<?=$i->id_insurancepolicies ?>)">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                {{ $monto }}
+                            </label>
+                        <?php  
+                    }
+                ?>
                 <table class="table">
                     <tr>
                         <th><label> Monto </label></th>
@@ -325,7 +355,6 @@ if ( @$info[0]->numerotelefono )
                         </td>
                     </tr>
                 </table>
-                <!-- --> 
                 <!-- formulario salud -->
                 <div class="card" id="divsalud" style="display:none;">
                     <form action="polizassalud" 
@@ -464,7 +493,7 @@ if ( @$info[0]->numerotelefono )
                             </tr>
                         </table>                    
                         <!-- -->  
-                        
+                       
                         <!-- boton agregar documentos en polizas tipo salud-->
                         
 
@@ -474,6 +503,84 @@ if ( @$info[0]->numerotelefono )
                     </form>
                                        
                 </div> 
+                <!-- salud editar -->
+                <div class="card" id="divsaludeditar" style="display:none;">
+                    <form action="polizassaludeditar" 
+                        method="POST"
+                        enctype="multipart/form-data"
+                        id="formulariosalud"
+                        name="formulariosalud"
+                        class="container px-4 my-5">
+                        @csrf
+                        <!-- Beneficiarios poliza salud-->
+                        <input type="hidden" id="tipopoliza" readonly name="tipopoliza" class="form-control" value =""/>
+                        
+                        <div id="cotizador" class="row text-center " hidden> 
+
+                        </div>
+                        <hr>
+                        <h4> Parentesco de la póliza </h4>
+                        <table  id="tablaparentescospolizaseditar" name="tablaparentescospolizaseditar" class="table">
+                        </table>    
+                        <button
+                            class="btn btn-primary mt-2"
+                            id="addparentesco"
+                            name="addparentesco"
+                            >
+                            Agregar            
+                        </button> 
+                        <!-- -->    
+                        <hr>
+                        <h4> Documentos de la póliza </h4>
+                        <table id="tablasaludocumentosdeditar" name="tablasaludocumentosdeditar" class="table"></table>
+                        <button
+                            class="btn btn-primary mt-2"
+                            id="addocumento"
+                            name="addocumento"
+                            >
+                            Agregar            
+                        </button>
+                        <!-- -->
+                        <hr>
+                        <h4> Comentarios de la póliza </h4>
+                        <table id="tablacomentarioseditar" name="tablacomentarioseditar" class="table"></table>
+                        <button
+                            class="btn btn-primary mt-2"
+                            id="addcomentario"
+                            name="addcomentario"
+                            >
+                            Agregar            
+                        </button>                
+                        <!-- -->
+                        <hr>
+                        <h4> Patologías declaradas de la póliza </h4>
+                        <table id="tabladeclaradaeditar" class="table"></table>
+                        <button
+                            class="btn btn-primary mt-2"
+                            id="addpatologia"
+                            name="addpatologia"
+                            >
+                            Agregar            
+                        </button>
+                        <!-- -->
+                        <hr>
+                        <h4> Patologías No  declaradas de la póliza </h4>
+                        <table id="tablanodeclaradaeditar" class="table"></table>
+                        <button
+                            class="btn btn-primary mt-2"
+                            id="addpatologiano"
+                            name="addpatologiano"
+                            >
+                            Agregar            
+                        </button>
+                        <br>
+                        <!-- -->
+                                           
+                        <!-- -->  
+                              
+                    </form>
+                                       
+                </div>
                 <!-- formmulario auto -->
                 <div  class="card" id="divauto" style="display:none;">
                     <form action="polizasuato" 
@@ -562,9 +669,184 @@ if ( @$info[0]->numerotelefono )
                     </form>
                            
                 </div>
+                <!-- formmulario editar  -->
+                <div  class="card" id="divautoeditar" style="display:none;">
+                    <form action="polizasuatoeditar" 
+                        method="POST"
+                        enctype="multipart/form-data"
+                        id="formulariosaatuos"
+                        name="formulariosaatuos"
+                        class="container px-4 my-5">
+                        @csrf
+                            <input type="hidden" id="tipopoliza2" readonly name="tipopoliza2" class="form-control" value =""/>
+                            <table  class="table">
+                                <tr>
+                                    <th>
+                                    <label>Nro  De placa </label>
+                                    <input type="text" id="nroplaca" name="nroplaca"  value="">
+                                    </th>
+                                    <th>
+                                    <label> Modelo</label>
+                                    <input type="text" id="modelo" name="modelo"  value="">
+                                    </th>
+                                </tr>
+                            </table> 
+                            
+                            <!-- pdf poliza auto-->
+                            <table id="tablaautos" name="tablasalud" class="table">
+                                <tr>
+                                    <th>
+                                    <label class="custom-file-label" for=""> Agregar documento   </label>
+                                    <input 
+                                            type="file" 
+                                            class="custom-file-input" 
+                                            name="documentosautos[]" 
+                                            accept="pdf,png,jpg"  
+                                            >
+                                    </th>
+                                    <th>
+                                    <label class="custom-file-label" for="">Nombre del documento  </label><br>    
+                                    <input 
+                                            type="text" 
+                                            class="custom-file-input" 
+                                            name="nombredocumentosautos[]" 
+                                            required
+                                        >
+                                    </th>
+                                </tr>
+                            </table>
+
+                            <!-- -->
+
+                            <table id="tablacomentariosautos" class="table">
+                                <tr> 
+                                    <th>
+                                        <input 
+                                            type="text" 
+                                            class="form-control shadow-none border-0 bg-grey" 
+                                            name="comentarioautos[]" id="comentarioautos" 
+                                            value="" placeholder="Comentario sobre la póliza">
+                                    </th>
+                                </tr>                  
+                            </table>
+                            
+                            
+                            <!-- --> 
+                            <button 
+                                onClick="addocument2()"  
+                                type="button" class="p-3 m-3"> 
+                                <span 
+                                        class="ms-3 mon-light">
+                                        Añadir documento
+                                </span>        
+                            </button>
+                            <!-- --> 
+                            <button onClick="addcoomentario2()" type="button" class="p-3 m-2"> 
+                                <span 
+                                        class="ms-3 mon-light">
+                                        Añadir otro comentario
+                                </span>        
+                            </button>
+                            <!-- -->          
+                            <button 
+                                type="button" 
+                                onclick="guardarpolizaautos()" 
+                                class="p-3 m-3"> 
+                                Guardar la Póliza
+                            </button>
+                    </form>
+                           
+                </div>
                 <!-- formulario empresa -->
                 <div  class="card" id="divempresas" style="display:none;">
                     <form  action="polizaempresas" 
+                        method="POST"
+                        enctype="multipart/form-data"
+                        id="formulariosempresa"
+                        name="formulariosempresa"
+                        class="container px-4 my-5">
+                        @csrf
+                        <input type="hidden" id="tipopoliza3" readonly name="tipopoliza3" class="form-control" value =""/>
+                        <table class="table">
+                            <tr>
+                                <th>
+                                <label>Nombre de la empresa</label>
+                                <input type="text" id="nombreempresa" name="nombreempresa"  value="">
+                                </th>
+                                <th>
+                                <label> Representante</label>
+                                <input type="text" id="representante" name="representante"  value="">
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                <label>Dimensiones</label>
+                                <input type="text" id="dimensiones" name="dimensiones"  value="">
+                                </th>
+                                <th>
+                                <label> ubicación</label>
+                                <input type="text" id="ubicacion" name="ubicacion"  value="">
+                                </th>
+                            </tr>
+                        </table>      
+                        <!-- pdf poliza auto-->
+                        <table id="tablaempresa" name="tablasalud" class="table">
+                            <tr>
+                                <th>
+                                <label class="custom-file-label" for=""> Agregar documento   </label>
+                                <input 
+                                    type="file" 
+                                    class="custom-file-input" 
+                                    name="documentosempresa[]" 
+                                    accept="pdf" >
+                                </th>
+                                <th>
+                                <label class="custom-file-label" for="">Nombre del documento  </label><br>    
+                                <input 
+                                        type="text" 
+                                        class="custom-file-input" 
+                                        name="nombredocumentosempresa[]" 
+                                        required
+                                    >
+                                </th>
+                            </tr>
+                        </table>   
+                        <!-- -->
+                        <table id="tablacomentarioempresa" class="table">
+                                <tr> 
+                                    <th>
+                                        <input 
+                                            type="text"
+                                            class="form-control shadow-none border-0 bg-grey" 
+                                            name="comentarioempresa[]" id="comentarioempresa" value="" 
+                                            placeholder="Comentario sobre la póliza">
+                                    </th>
+                                </tr>                  
+                            </table>    
+                        <!-- --> 
+                        <button onClick="addocument3()"  type="button" class="my-5 p-3"> 
+                            <span 
+                                    class="ms-3 mon-light">
+                                    Añadir documento
+                            </span>        
+                        </button>
+                        <!-- --> 
+                        <button onClick="addcoomentario3()" type="button" class="p-3 m-2"> 
+                                <span 
+                                        class="ms-3 mon-light">
+                                        Añadir otro comentario
+                                </span>        
+                            </button>
+                        <!-- -->         
+                        <button type="button" onclick="guardareempresas()" class="my-5 p-3">
+                            Guardar la Póliza
+                        </button>
+                    </form>
+                                   
+                </div>
+                 <!-- formulario empresa -->
+                 <div  class="card" id="divempresaseditar" style="display:none;">
+                    <form  action="polizaempresaseditar" 
                         method="POST"
                         enctype="multipart/form-data"
                         id="formulariosempresa"

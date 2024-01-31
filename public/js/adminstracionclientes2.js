@@ -27,9 +27,9 @@ let  cm =0; // contador miembros
 let ym =parseFloat(year)-parseFloat(99); // año menor
 let ya = new Date().getFullYear(); // año actual
 let datasiniestros =[];
-//let urlservidor ='http://127.0.0.1:8000/';
+let urlservidor ='http://127.0.0.1:8000/';
 //let urlservidor  ='https://dev.cotiseguros.com.ve//';
-let urlservidor  ='https://www.cotiseguros.com.ve/';
+//let urlservidor  ='https://www.cotiseguros.com.ve/';
 $( document ).ready(function() 
 {
     miembrosasegurados[cm]=familiar;
@@ -294,7 +294,7 @@ function addFamiliar()
     $("#cotizador").html('');
     generardatosparientes();
 }
-function generahtmlparentesco(id,valor)
+function generahtmlparentesco(id,valor,disabeld= null)
 {
     htmlparentesco ='';
     htmlparentesco +=`
@@ -307,6 +307,7 @@ function generahtmlparentesco(id,valor)
             name ="status_${id}"
             id ="status_${id}"
             onChange ="changeStatus(${id})"
+            ${ disabeld ? 'disabeld': ''}
         >
                ${opcionesparentesco(valor)}
         </select>`;
@@ -1196,5 +1197,184 @@ function eliminarqr(id)
     .then(
        // location.reload()
     );
-    
+}
+function editarpoliza(id_insurancepolicies)
+{
+    fetch(urlservidor+"editarpoliza/"+id_insurancepolicies)
+    .then(response => response.json())
+    .then(response=>{
+
+        let documentos = response.documentos;
+        let insurers = response.insurers;
+        let comentario = response.comentario;
+        let member = response.member;
+        let declarada = response.declarada;
+        let nodeclarada = response.nodeclarada;
+        if (  insurers[0].tipopoliza==1)
+        {
+            $("#divsaludeditar").css('display','block');
+            $("#divsalud").css('display','none');
+            $("#tipopoliza").val(1)
+
+            $("#divauto").css('display','none');
+            $("#divempresas").css('display','none');
+
+            $("#divautoeditar").css('display','none');
+            $("#divempresaseditar").css('display','none');
+
+            $("#tablaparentescospolizaseditar").empty();
+            member.map((f,indexFamiliar) =>
+            {
+                $("#tablaparentescospolizaseditar").append(`
+                    <tr>
+                        <td>
+                            ${generahtmlparentesco(indexFamiliar,f.status)}
+                        </td>
+                        <td>
+                            ${generahtmlsexo(indexFamiliar,f.gender)}
+                        </td>
+                        <td>
+                            ${generaretornardia(indexFamiliar,f.day)}
+                        </td>
+                        <th>
+                            ${generameses(indexFamiliar,f.mounth)}
+                        </th>
+                        <th>
+                            ${generayy(indexFamiliar, f.year)}
+                        </th>
+                        <th>
+                        <span 
+                            class='icon voyager-trash btn-delete p-3 m-2' 
+                            title='borrar'
+                            onclick="eliminarparentesco(${f.id})" 
+                        ></span>
+                        </th>
+                    </tr>
+                    `);
+                
+            });
+
+            $("#tablasaludocumentosdeditar").empty();
+            documentos.map((f,indexFamiliar) =>
+            {
+                $("#tablasaludocumentosdeditar").append(`
+                    <tr>
+                        <td>
+                         <p> documento cargado ->  ${ f.tipodocumento } </p>
+                        </td>
+                        <td>
+                            <a href="../${ f.documentonombre }" target="_blank"  style ="text-decoration: none;" >
+                                ver
+                            </a>
+                            <a href="#" onclick="eliminardocumento('${ f.id }')"  style ="text-decoration: none;" >
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    `);
+            });
+
+            $("#tablacomentarioseditar").empty();
+            comentario.map((f,indexFamiliar) =>
+            {
+                $("#tablacomentarioseditar").append(`
+                    <tr>
+                        <td>
+                         <p> comentario cargado ->  ${ f.comentario } </p>
+                        </td>
+                        <td>
+                            <a href="#" onclick="eliminarcomentario('${ f.id }')"  style ="text-decoration: none;" >
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    `);
+            });
+
+            $("#tabladeclaradaeditar").empty();
+            declarada.map((f,indexFamiliar) =>
+            {
+                $("#tabladeclaradaeditar").append(`
+                    <tr>
+                        <td>
+                         <p> Patologia delcarada ->  ${ f.descripcion } </p>
+                        </td>
+                        <td>
+                            <a href="#" onclick="eliminardelcarada('${ f.id }')"  style ="text-decoration: none;" >
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                `);
+            });
+
+            $("#tablanodeclaradaeditar").empty();
+            nodeclarada.map((f,indexFamiliar) =>
+            {
+                $("#tablanodeclaradaeditar").append(`
+                    <tr>
+                        <td>
+                         <p>  Patologia delcarada ->  ${ f.descripcion } </p>
+                        </td>
+                        <td>
+                            <a href="#" onclick="eliminarnodeclarada('${ f.id }')"  style ="text-decoration: none;" >
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                `);
+            });
+                
+        }
+        else if (  insurers[0].tipopoliza==2)
+        {
+            selectauto();
+
+        }
+        else 
+        {
+            selectempresa()
+            
+        }
+    });
+}
+function eliminarparentesco(id)
+{
+    fetch(urlservidor+"eliminarparentesco/"+id)
+    .then(response => response.json())
+    .then(
+        location.reload()
+    );
+}
+function eliminardocumento(id)
+{
+    fetch(urlservidor+"eliminardocumento/"+id)
+    .then(response => response.json())
+    .then(
+        location.reload()
+    );
+}
+function eliminarcomentario(id)
+{
+    fetch(urlservidor+"eliminarcomentario/"+id)
+    .then(response => response.json())
+    .then(
+        location.reload()
+    );
+}
+function eliminardelcarada(id)
+{
+    fetch(urlservidor+"eliminardelcarada/"+id)
+    .then(response => response.json())
+    .then(
+        location.reload()
+    );
+}
+function eliminarnodeclarada(id)
+{
+    fetch(urlservidor+"eliminarnodeclarada/"+id)
+    .then(response => response.json())
+    .then(
+        location.reload()
+    );     
 }
