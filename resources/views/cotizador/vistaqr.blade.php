@@ -133,7 +133,7 @@ use Illuminate\Support\Facades\DB;
                             ?> 
                             <h7 style="color:black;">
                               <?=$d->tipodocumento?> 
-                              <a href='https://cotiseguros.com.ve/<?=$d->documentonombre ?>' class='' target='_blank'> 
+                              <a href='{{env('APP_URL')}}/<?=$d->documentonombre ?>' class='' target='_blank'> 
                               <i class='bi bi-eye-fill'></i></a>  
                             </h7>
                             
@@ -341,7 +341,7 @@ use Illuminate\Support\Facades\DB;
                   id=""
                   class="accordion-header collapsed redondear"
                   >
-                  <a href="https://cotiseguros.com.ve/cotizador/salud" style ="text-decoration:none; color:#fff;" target='_blank'>
+                  <a href="{{env('APP_URL')}}/cotizador/salud" style ="text-decoration:none; color:#fff;" target='_blank'>
                     Cotizar pólizas
                   </a>
                   
@@ -363,7 +363,7 @@ use Illuminate\Support\Facades\DB;
                                             <div class="card border-10">
                                                 <!--<div class="card-header">{{ __('Login') }}</div>-->
                                                 <div class="w-100 d-flex justify-content-center px-5 py-3">
-                                                    <img class="w-100" src="https://cotiseguros.com.ve/storage/LOGO%20RGB_Color.png" alt="">
+                                                    <img class="w-100" src="{{env('APP_URL')}}/storage/LOGO%20RGB_Color.png" alt="">
                                                 </div>
                                                 <div class="card-body">
                                                     <form method="POST" action="{{ route('login') }}">
@@ -448,8 +448,8 @@ use Illuminate\Support\Facades\DB;
               <!-- -->
               <h>
                 <h4
-                style="text-align: center;"          
-                > Nros de contacto <h4>
+                style="text-align: center; color:#596475 !important;"          
+                > Números de contacto <h4>
               <h>
               <!-- Numeros de Cotiseguros --> 
               <div class="accordion-item m-2" >
@@ -471,6 +471,38 @@ use Illuminate\Support\Facades\DB;
                   >
                   <div class="accordion-body row">
                     <!-- -->
+                    <?php 
+                      if ( count($contactocotiseguros) > 0 )
+                      {
+                       foreach ($contactocotiseguros as $contact =>$cn )
+                       {
+                          $url="whatsapp://send?phone=+".$cn['whatssap']."&text=hola";
+                                  
+                          ?>
+                            <p class="tituloservicio">
+                              {{$cn['nombre']  }} 
+                            </p>
+                            <p>
+                              <a 
+                                class="btn btn-success rounded-pill px-1 mx-sm-0 mb-2 w-100" 
+                                href=<?= ($cn['whatssap']) ? $url : "#"; ?> 
+                                target="_blank">
+                                whatssap -  {{ $cn['whatssap'] }} 
+                              </a>
+                            </p>
+                            <p>
+                              <button 
+                                class="btn btn-info rounded-pill px-1 mx-sm-0 mb-2 w-100" 
+                                style="background-color:#3c485a !important; color :#fff;"  >    
+                              llamada {{ $cn['llamada']}} 
+                              </button>
+                            </p>
+                            
+                            
+                          <?php 
+                       }
+                      }
+                    ?>
                     
                     <!-- -->
                   </div>
@@ -626,7 +658,7 @@ use Illuminate\Support\Facades\DB;
     {
 
       $htmlmodal .="<li class='list-group-item active' aria-current='true'>";
-        $htmlmodal .= "<a href='https://cotiseguros.com.ve/$p->documentonombre' class='btn btn-secondary colorbtn m-2' target='_blank'>$p->tipodocumento</a> &nbsp;";
+        $htmlmodal .= "<a href='{{env('APP_URL')}}/$p->documentonombre' class='btn btn-secondary colorbtn m-2' target='_blank'>$p->tipodocumento</a> &nbsp;";
       $htmlmodal .=" </li>";
     }
     //$htmlmodal .= "</ul>";
@@ -686,7 +718,7 @@ use Illuminate\Support\Facades\DB;
       $htmlmodal .="<li class='list-group-item active' aria-current='true'>";
         $htmlmodal .='Fecha  de pago : '.$f->fechafin .' '.$estado;
         if ($estado=='Pagada')
-          $htmlmodal .="<a href='https://cotiseguros.com.ve/$f->photo_payment' class='' target='_blank'> <i class='bi bi-eye-fill'></i></a>";
+          $htmlmodal .="<a href='{{env('APP_URL')}}/$f->photo_payment' class='' target='_blank'> <i class='bi bi-eye-fill'></i></a>";
       $htmlmodal .=" </li>";
     }
     //$htmlmodal .= "</ul>";

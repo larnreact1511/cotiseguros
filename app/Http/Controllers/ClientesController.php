@@ -1515,6 +1515,25 @@ class ClientesController extends Controller
                 'insurancepolicies.descripcionpoliza',
                 'coverages.id')->get(); 
             $data['footer'] = Footer::first();
+
+            
+            if (DB::table('contactocotiseguros')->count() > 0)
+            {
+                $conctactos = DB::table('contactocotiseguros')->get();
+                foreach ($conctactos as $conctac => $c) {
+               
+                    $nestedData['id']               = $c->id;
+                    $nestedData['nombre']           = $c->nombre;
+                    $nestedData['cedula']         = $c->cedula;
+                    $nestedData['rif']            = $c->rif;
+                    $nestedData['whatssap']           = $c->whatssap;
+                    $nestedData['llamada']   = $c->llamada;
+                  
+                    
+                    $datos[] = $nestedData;
+                }
+            }
+            $data['contactocotiseguros'] =  $datos;
             return view("cotizador.vistaqr",$data);
         }
         else
