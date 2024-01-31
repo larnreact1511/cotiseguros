@@ -75,7 +75,7 @@ if ( @$info[0]->numerotelefono )
                                         id="nombre"
                                         type="text" 
                                         class="form-control shadow-none border-0 bg-grey"
-                                        placeholder="Nombre" required
+                                        placeholder="Nombre" 
                                         value="<?= @$info[0]->nombre; ?>">
                             </th>
                             <th>
@@ -86,7 +86,7 @@ if ( @$info[0]->numerotelefono )
                                         id="apellido" 
                                         type="text" 
                                         class="form-control shadow-none border-0 bg-grey" 
-                                        required
+                                        
                                         placeholder="Apellido" 
                                         value="<?= @$info[0]->apellido; ?>"
                                     >
@@ -98,7 +98,7 @@ if ( @$info[0]->numerotelefono )
                                         id="code" 
                                         class="form-select shadow-none border-0 bg-grey w-25 align-self-start" 
                                         aria-label="Default select example" 
-                                        required
+                                        
                                         >
                                         
                                         <option  selected value="+58">+58 </option>
@@ -114,7 +114,7 @@ if ( @$info[0]->numerotelefono )
                                             type="number" 
                                             class="form-control shadow-none border-0 bg-grey" 
                                             id="numerotelefono" 
-                                            required
+                                            
                                             placeholder="Nro de telefono" 
                                             value="<?=$numero ?>">
                             </td>
@@ -125,7 +125,7 @@ if ( @$info[0]->numerotelefono )
                                     type="number" 
                                     class="form-control shadow-none border-0 bg-grey" 
                                     id="cedula" 
-                                    required
+                                    
                                     placeholder="Cedula" 
                                     value="<?= @$info[0]->cedula; ?>"
                                     >
@@ -137,7 +137,7 @@ if ( @$info[0]->numerotelefono )
                                     type="text" 
                                     class="form-control shadow-none border-0 bg-grey" 
                                     id="cedula" 
-                                    required
+                                    
                                     placeholder="rif" 
                                     value="<?= @$info[0]->rif; ?>"
                                 >
@@ -150,7 +150,7 @@ if ( @$info[0]->numerotelefono )
                                     name="province" 
                                     id="province" 
                                     class="form-select w-100 shadow-none border-0 bg-grey w-25 align-self-start"  
-                                    aria-label="Default select example" required >
+                                    aria-label="Default select example"  >
 
                                     @foreach ($provinces as $p)
                                         <option @if( $p["estado"] == 'Táchira' ) selected @endif  value="{{ $p["estado"] }}">{{ $p["estado"] }}</option>
@@ -173,7 +173,7 @@ if ( @$info[0]->numerotelefono )
                                     type="text" 
                                     class="form-control shadow-none border-0 bg-grey" 
                                     id="nombrecontacto" 
-                                    required
+                                    
                                     placeholder="Nombre del contacto " 
                                     value="<?=@$nombrecontacto?>"
                                     >
@@ -185,7 +185,7 @@ if ( @$info[0]->numerotelefono )
                                     type="number" 
                                     class="form-control shadow-none border-0 bg-grey" 
                                     id="cedulacontacto" 
-                                    required
+                                    
                                     placeholder="Cedula Contacto" 
                                     value="<?=@$cedulacontacto?>"
                                     >
@@ -197,7 +197,7 @@ if ( @$info[0]->numerotelefono )
                                     type="number" 
                                     class="form-control shadow-none border-0 bg-grey" 
                                     id="telefonococontacto" 
-                                    required
+                                    
                                     placeholder="Telefono Contacto " 
                                     value="<?=@$telefonococontacto?>"
                                     >
@@ -290,8 +290,8 @@ if ( @$info[0]->numerotelefono )
                             <input 
                                 class="form-check-input" 
                                 type="radio" 
-                                name="flexRadioDefault" 
-                                id="flexRadioDefault2" 
+                                name="edipoliza_{{$i->id_insurancepolicies}}" 
+                                id="edipoliza_{{$i->id_insurancepolicies}}" 
                                 onclick="editarpoliza(<?=$i->id_insurancepolicies ?>)">
                             <label class="form-check-label" for="flexRadioDefault2">
                                 {{ $monto }}
@@ -312,7 +312,7 @@ if ( @$info[0]->numerotelefono )
                                 id="mnontocobertura" 
                                 class="form-select shadow-none border-0 bg-grey w-25 align-self-start" 
                                 aria-label="Default select example" 
-                                required
+                                
                                 >
                                 <option value="0">Seleccione</option> 
                                 <?php  
@@ -332,7 +332,7 @@ if ( @$info[0]->numerotelefono )
                                 id="segurocobertura" 
                                 class="form-select shadow-none border-0 bg-grey w-25 align-self-start" 
                                 aria-label="Default select example" 
-                                required
+                                
                                 >
                                     <option value="0">Seleccione</option> 
                                     <?php  
@@ -392,7 +392,7 @@ if ( @$info[0]->numerotelefono )
                                     type="text" 
                                     class="custom-file-input" 
                                     name="nombredocumentosalud[]" 
-                                    required
+                                    
                                 >
                                 </th>
                                 
@@ -522,48 +522,67 @@ if ( @$info[0]->numerotelefono )
                         <h4> Parentesco de la póliza </h4>
                         <table  id="tablaparentescospolizaseditar" name="tablaparentescospolizaseditar" class="table">
                         </table>    
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="btndivadd1"
-                            onClick="btndivadd(1)"  
-                            name="btndivadd1"
-                           
-                            >
-                            Agregar            
-                        </button> 
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="clearbtn1"
-                            onClick="btnclear(1)"  
-                            name="clearbtn1"
-                            style="display : none;"
-                            >
-                            Cancelar            
-                        </button> 
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="savebtn1"
-                            onClick="btnsaveadd(1)"  
-                            name="savebtn1"
-                            style="display : none;"
-                            >
-                            Guardar            
-                        </button> 
+                        <table  class="table">
+                            <tr>
+                                <th width ="30%">
+                                    <button
+                                        class="btn btn-primary mt-2"
+                                        type="button" 
+                                        id="btndivadd1"
+                                        onClick="btndivadd(1)"  
+                                        name="btndivadd1"
+                                    
+                                        >
+                                        Agregar            
+                                    </button>
+                                </th>
+                                <th width ="30%">
+                                    <button
+                                        class="btn btn-primary mt-2"
+                                        type="button" 
+                                        id="clearbtn1"
+                                        onClick="btnclear(1)"  
+                                        name="clearbtn1"
+                                        style="display : none;"
+                                        >
+                                        Cancelar            
+                                    </button>
+                                </th>
+                                <th width ="30%">
+                                    <button
+                                        class="btn btn-primary mt-2"
+                                        type="button" 
+                                        id="savebtn1"
+                                        onClick="btnsaveadd(1)"  
+                                        name="savebtn1"
+                                        style="display : none;"
+                                        >
+                                        Guardar            
+                                    </button> 
+                                </th>
+                            </tr>
+                        </table>
                         <div id ="divadd_1" name="divadd_1" style="display : none;" >
                             <form action="parentescoadd" 
                                 method="POST"
                                 enctype="multipart/form-data"
-                                id="formadd1"
-                                name="formadd1"
+                                id="formparentescoeditaradd"
+                                name="formparentescoeditaradd"
                                 class="container px-4 my-5">
                                 @csrf
-                                <input type="text" id="polisaeditar1" readonly name="polisaeditar1" class="form-control" value =""/>
-                                <input type="text" id="polisaeditaradmin1" readonly name="polisaeditaradmin1" class="form-control" value =""/>
-                                <input type="text" id="polisaidusuario1" readonly name="polisaidusuario1" class="form-control" value =""/>
-                                <table id="tablaparentescoadd" name="tablaparentescoadd" class="table"></table> 
+                                
+                            </form>            
+                            <form action="parentescoadd" 
+                                method="POST"
+                                enctype="multipart/form-data"
+                                id="formparentescoeditaradd"
+                                name="formparentescoeditaradd"
+                                class="container px-4 my-5">
+                                @csrf
+                                <input type="hidden" id="polisaeditar1" readonly name="polisaeditar1" class="form-control" value =""/>
+                                <input type="hidden" id="polisaeditaradmin1" readonly name="polisaeditaradmin1" class="form-control" value =""/>
+                                <input type="hidden" id="polisaidusuario1" readonly name="polisaidusuario1" class="form-control" value =""/>
+                                <table id="tablaparentescoadd" name="tablaparentescoadd" class="table"></table>
                             </form>
                                        
                         </div>
@@ -571,35 +590,46 @@ if ( @$info[0]->numerotelefono )
                         <hr>
                         <h4> Documentos de la póliza </h4>
                         <table id="tablasaludocumentosdeditar" name="tablasaludocumentosdeditar" class="table"></table>
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="btndivadd2"
-                            name="btndivadd2"
-                            onClick="btndivadd(2)"  
-                            >
-                            Agregar            
-                        </button>
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="clearbtn2"
-                            onClick="btnclear(2)"  
-                            name="clearbtn2"
-                            style="display : none;"
-                            >
-                            Cancelar            
-                        </button> 
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="savebtn2"
-                            onClick="btnsaveadd(2)"  
-                            name="savebtn2"
-                            style="display : none;"
-                            >
-                            Guardar            
-                        </button> 
+        
+                        <table  class="table">
+                            <tr>
+                                <th width ="30%">
+                                <button
+                                    class="btn btn-primary mt-2"
+                                    type="button" 
+                                    id="btndivadd2"
+                                    name="btndivadd2"
+                                    onClick="btndivadd(2)"  
+                                    >
+                                    Agregar            
+                                </button>
+                                </th>
+                                <th width ="30%">
+                                    <button
+                                        class="btn btn-primary mt-2"
+                                        type="button" 
+                                        id="clearbtn2"
+                                        onClick="btnclear(2)"  
+                                        name="clearbtn2"
+                                        style="display : none;"
+                                        >
+                                        Cancelar            
+                                    </button> 
+                                </th>
+                                <th width ="30%">
+                                    <button
+                                        class="btn btn-primary mt-2"
+                                        type="button" 
+                                        id="savebtn2"
+                                        onClick="btnsaveadd(2)"  
+                                        name="savebtn2"
+                                        style="display : none;"
+                                        >
+                                        Guardar            
+                                    </button> 
+                                </th>
+                            </tr>
+                        </table>
                         <div id ="divadd_2" name="divadd_2" style="display : none;" >
                             
                             <form action="documentosadd" 
@@ -619,35 +649,46 @@ if ( @$info[0]->numerotelefono )
                         <hr>
                         <h4> Comentarios de la póliza </h4>
                         <table id="tablacomentarioseditar" name="tablacomentarioseditar" class="table"></table>
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="btndivadd3"
-                            name="btndivadd3"
-                            onClick="btndivadd(3)"
-                            >
-                            Agregar            
-                        </button>  
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="clearbtn3"
-                            onClick="btnclear(3)"  
-                            name="clearbtn3"
-                            style="display : none;"
-                            >
-                            Cancelar            
-                        </button> 
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="savebtn3"
-                            onClick="btnsaveadd(3)"  
-                            name="savebtn3"
-                            style="display : none;"
-                            >
-                            Guardar            
-                        </button>  
+                         
+                        <table  class="table">
+                            <tr>
+                                <th width ="30%">
+                                    <button
+                                        class="btn btn-primary mt-2"
+                                        type="button" 
+                                        id="btndivadd3"
+                                        name="btndivadd3"
+                                        onClick="btndivadd(3)"
+                                        >
+                                        Agregar            
+                                    </button> 
+                                </th>
+                                <th width ="30%">
+                                    <button
+                                    class="btn btn-primary mt-2"
+                                    type="button" 
+                                    id="clearbtn3"
+                                    onClick="btnclear(3)"  
+                                    name="clearbtn3"
+                                    style="display : none;"
+                                    >
+                                    Cancelar            
+                                </button>  
+                                </th>
+                                <th width ="30%">
+                                    <button
+                                        class="btn btn-primary mt-2"
+                                        type="button" 
+                                        id="savebtn3"
+                                        onClick="btnsaveadd(3)"  
+                                        name="savebtn3"
+                                        style="display : none;"
+                                        >
+                                        Guardar            
+                                    </button>  
+                                </th>
+                            </tr>
+                        </table>
                         <div id ="divadd_3" name="divadd_3" style="display : none;" >
                             <form action="comentariosadd" 
                                 method="POST"
@@ -667,35 +708,45 @@ if ( @$info[0]->numerotelefono )
                         <hr>
                         <h4> Patologías declaradas de la póliza </h4>
                         <table id="tabladeclaradaeditar" class="table"></table>
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="btndivadd4"
-                            name="btndivadd4"
-                            onClick="btndivadd(4)"
-                            >
-                            Agregar            
-                        </button>
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="clearbtn4"
-                            onClick="btnclear(4)"  
-                            name="clearbtn4"
-                            style="display : none;"
-                            >
-                            Cancelar            
-                        </button> 
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="savebtn4"
-                            onClick="btnsaveadd(4)"  
-                            name="savebtn4"
-                            style="display : none;"
-                            >
-                            Guardar            
-                        </button>
+                        <table  class="table">
+                            <tr>
+                                <th width ="30%">
+                                    <button
+                                        class="btn btn-primary mt-2"
+                                        type="button" 
+                                        id="btndivadd4"
+                                        name="btndivadd4"
+                                        onClick="btndivadd(4)"
+                                        >
+                                        Agregar            
+                                    </button>
+                                </th>
+                                <th width ="30%">
+                                    <button
+                                        class="btn btn-primary mt-2"
+                                        type="button" 
+                                        id="clearbtn4"
+                                        onClick="btnclear(4)"  
+                                        name="clearbtn4"
+                                        style="display : none;"
+                                        >
+                                        Cancelar            
+                                    </button> 
+                                </th>
+                                <th width ="30%">
+                                    <button
+                                        class="btn btn-primary mt-2"
+                                        type="button" 
+                                        id="savebtn4"
+                                        onClick="btnsaveadd(4)"  
+                                        name="savebtn4"
+                                        style="display : none;"
+                                        >
+                                        Guardar            
+                                    </button>
+                                </th>
+                            </tr>
+                        </table>
                         <div id ="divadd_4" name="divadd_4" style="display : none;" >
                             <form action="patologiasiadd" 
                                 method="POST"
@@ -715,35 +766,46 @@ if ( @$info[0]->numerotelefono )
                         <hr>
                         <h4> Patologías No  declaradas de la póliza </h4>
                         <table id="tablanodeclaradaeditar" class="table"></table>
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="btndivadd5"
-                            name="btndivadd5"
-                            onClick="btndivadd(5)"
-                            >
-                            Agregar            
-                        </button>
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="clearbtn5"
-                            onClick="btnclear(5)"  
-                            name="clearbtn5"
-                            style="display : none;"
-                            >
-                            Cancelar            
-                        </button> 
-                        <button
-                            class="btn btn-primary mt-2"
-                             type="button" 
-                            id="savebtn5"
-                            onClick="btnsaveadd(5)"  
-                            name="savebtn5"
-                            style="display : none;"
-                            >
-                            Guardar            
-                        </button>
+                        
+                        <table  class="table">
+                            <tr>
+                                <th width ="30%">
+                                    <button
+                                        class="btn btn-primary mt-2"
+                                        type="button" 
+                                        id="btndivadd5"
+                                        name="btndivadd5"
+                                        onClick="btndivadd(5)"
+                                        >
+                                        Agregar            
+                                    </button>
+                                </th>
+                                <th width ="30%">
+                                    <button
+                                        class="btn btn-primary mt-2"
+                                        type="button" 
+                                        id="clearbtn5"
+                                        onClick="btnclear(5)"  
+                                        name="clearbtn5"
+                                        style="display : none;"
+                                        >
+                                        Cancelar            
+                                    </button>  
+                                </th>
+                                <th width ="30%">
+                                    <button
+                                        class="btn btn-primary mt-2"
+                                        type="button" 
+                                        id="savebtn5"
+                                        onClick="btnsaveadd(5)"  
+                                        name="savebtn5"
+                                        style="display : none;"
+                                        >
+                                        Guardar            
+                                    </button>
+                                </th>
+                            </tr>
+                        </table>
                         <div id ="divadd_5" name="divadd_5" style="display : none;" >
                             
                             <form action="patologianoadd" 
@@ -808,7 +870,7 @@ if ( @$info[0]->numerotelefono )
                                             type="text" 
                                             class="custom-file-input" 
                                             name="nombredocumentosautos[]" 
-                                            required
+                                            
                                         >
                                     </th>
                                 </tr>
@@ -862,84 +924,90 @@ if ( @$info[0]->numerotelefono )
                         enctype="multipart/form-data"
                         id="formulariosaatuos"
                         name="formulariosaatuos"
-                        class="container px-4 my-5">
-                        @csrf
+                        class="container px-4 my-5"
+                        >
+                            @csrf
                             <input type="hidden" id="tipopoliza2" readonly name="tipopoliza2" class="form-control" value =""/>
                             <table  class="table">
                                 <tr>
                                     <th>
-                                    <label>Nro  De placa </label>
-                                    <input type="text" id="nroplaca" name="nroplaca"  value="">
+                                        <label>Modelo  </label>
+                                        <label id="modeloauto" name ="modeloauto">
+
+                                        </label>
                                     </th>
                                     <th>
-                                    <label> Modelo</label>
-                                    <input type="text" id="modelo" name="modelo"  value="">
+                                        <button
+                                            class="btn btn-primary mt-2"
+                                            type="button" 
+                                            id="btneditauto1"
+                                            onClick="btneditautos(1)"  
+                                            name="btneditauto1"
+                                            >
+                                            Editar            
+                                        </button>
                                     </th>
                                 </tr>
                             </table> 
+                            <div id="divautoedit_1" style="display:none;">
+                                <form action="editmodeloautos" 
+                                    method="POST"
+                                    enctype="multipart/form-data"
+                                    id="formadd5"
+                                    name="formadd5"
+                                    class="container px-4 my-5">
+                                    @csrf
+                                    <input type="hidden" id="poliatuedit1" readonly name="poliatuedit1" class="form-control" value =""/>
+                                    <input type="hidden" id="adminpoliatuedit1" readonly name="adminpoliatuedit1" class="form-control" value =""/>
+                                    <input type="hidden" id="usuarioadminpoliatuedit1" readonly name="usuarioadminpoliatuedit1" class="form-control" value =""/>
+                                    <table  class="table">
+                                        <tr>
+                                            <th>
+                                            <label>Nro  De placa </label>
+                                            <input type="text" id="nroplacaedit" name="nroplacaedit"  value="">
+                                            </th>
+                                            <th>
+                                            <label> Modelo</label>
+                                            <input type="text" id="modeloedit" name="modeloedit"  value="">
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <button
+                                                    class="btn btn-primary mt-2"
+                                                    type="button" 
+                                                    id="clearatuosedit1"
+                                                    onClick="btnclearatuosedit1(1)"  
+                                                    name="clearatuosedit1"
+                                                    >
+                                                    Cancelar            
+                                                </button>
+                                            </th>
+                                            <th>
+                                                <button
+                                                    class="btn btn-primary mt-2"
+                                                    type="button" 
+                                                    id="saveeditautos1"
+                                                    onClick="btnsaveeditautos1(1)"  
+                                                    name="saveeditautos1"
+                                                    >
+                                                    Guardar            
+                                                </button>
+                                            </th>
+                                        </tr>
+                                    </table> 
+                                </form>
+                               
+                            </div>           
                             
                             <!-- pdf poliza auto-->
-                            <table id="tablaautos" name="tablasalud" class="table">
-                                <tr>
-                                    <th>
-                                    <label class="custom-file-label" for=""> Agregar documento   </label>
-                                    <input 
-                                            type="file" 
-                                            class="custom-file-input" 
-                                            name="documentosautos[]" 
-                                            accept="pdf,png,jpg"  
-                                            >
-                                    </th>
-                                    <th>
-                                    <label class="custom-file-label" for="">Nombre del documento  </label><br>    
-                                    <input 
-                                            type="text" 
-                                            class="custom-file-input" 
-                                            name="nombredocumentosautos[]" 
-                                            required
-                                        >
-                                    </th>
-                                </tr>
-                            </table>
-
+                            <hr>
+                            <table id="tablaautosdocumentos" name="tablaautosdocumentos" class="table"></table>
                             <!-- -->
-
-                            <table id="tablacomentariosautos" class="table">
-                                <tr> 
-                                    <th>
-                                        <input 
-                                            type="text" 
-                                            class="form-control shadow-none border-0 bg-grey" 
-                                            name="comentarioautos[]" id="comentarioautos" 
-                                            value="" placeholder="Comentario sobre la póliza">
-                                    </th>
-                                </tr>                  
-                            </table>
-                            
-                            
+                            <hr>
+                            <table id="tablaautoscomentarios" class="table"></table>
                             <!-- --> 
-                            <button 
-                                onClick="addocument2()"  
-                                type="button" class="p-3 m-3"> 
-                                <span 
-                                        class="ms-3 mon-light">
-                                        Añadir documento
-                                </span>        
-                            </button>
-                            <!-- --> 
-                            <button onClick="addcoomentario2()" type="button" class="p-3 m-2"> 
-                                <span 
-                                        class="ms-3 mon-light">
-                                        Añadir otro comentario
-                                </span>        
-                            </button>
-                            <!-- -->          
-                            <button 
-                                type="button" 
-                                onclick="guardarpolizaautos()" 
-                                class="p-3 m-3"> 
-                                Guardar la Póliza
-                            </button>
+                            
                     </form>
                            
                 </div>
@@ -992,7 +1060,7 @@ if ( @$info[0]->numerotelefono )
                                         type="text" 
                                         class="custom-file-input" 
                                         name="nombredocumentosempresa[]" 
-                                        required
+                                        
                                     >
                                 </th>
                             </tr>
@@ -1079,7 +1147,7 @@ if ( @$info[0]->numerotelefono )
                                         type="text" 
                                         class="custom-file-input" 
                                         name="nombredocumentosempresa[]" 
-                                        required
+                                        
                                     >
                                 </th>
                             </tr>
@@ -1330,7 +1398,7 @@ if ( @$info[0]->numerotelefono )
                                             type="text" 
                                             class="custom-file-input" 
                                             name="nombredocumentossiniestro[]" 
-                                            required
+                                            
                                         >
                                     </th>
                                 </tr>
@@ -1407,7 +1475,7 @@ if ( @$info[0]->numerotelefono )
                                             type="text" 
                                             class="custom-file-input" 
                                             name="nombredocumentossiniestro[]" 
-                                            required
+                                            
                                         >
                                     </th>
                                 </tr>

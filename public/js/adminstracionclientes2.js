@@ -27,9 +27,9 @@ let  cm =0; // contador miembros
 let ym =parseFloat(year)-parseFloat(99); // año menor
 let ya = new Date().getFullYear(); // año actual
 let datasiniestros =[];
-//let urlservidor ='http://127.0.0.1:8000/';
+let urlservidor ='http://127.0.0.1:8000/';
 //let urlservidor  ='https://dev.cotiseguros.com.ve//';
-let urlservidor  ='https://www.cotiseguros.com.ve/';
+//let urlservidor  ='https://www.cotiseguros.com.ve/';
 
 let polizaieditar =0;
 $( document ).ready(function() 
@@ -493,12 +493,12 @@ function changeGender(id)
 function changeday(id)
 {
     let valor =$("#day_"+id).val();
-    miembrosasegurados[id].day=valor; console.log(miembrosasegurados)
+    miembrosasegurados[id].day=valor; 
 }
 function changemounth(id)
 {
     let valor =$("#mounth_"+id).val();
-    miembrosasegurados[id].mounth=valor;  console.log(miembrosasegurados)
+    miembrosasegurados[id].mounth=valor;  
 }
 function changebirthday(id)
 {
@@ -711,11 +711,12 @@ function addocument6()
 }
 function selectsalud()
 {
+   
     $("#divsalud").css('display','block');
     $("#tipopoliza").val(1)
     $("#divauto").css('display','none');
     $("#divempresas").css('display','none');
-    $("#divsaludeditar").css('display','none');
+    oculartedicion()
 
 
 }
@@ -725,6 +726,8 @@ function selectauto()
     $("#tipopoliza2").val(2)
     $("#divauto").css('display','block');
     $("#divempresas").css('display','none');
+    oculartedicion()
+    
 }
 function selectempresa()
 {
@@ -732,6 +735,18 @@ function selectempresa()
     $("#tipopoliza3").val(3)
     $("#divauto").css('display','none');
     $("#divempresas").css('display','block');
+    oculartedicion()
+}
+function oculartedicion()
+{
+    if (polizaieditar >0)
+    {
+        let  edipoliza =document.getElementById("edipoliza_"+polizaieditar);
+        edipoliza.checked = false;
+    }
+    $("#divsaludeditar").css('display','none');
+    $("#divsaludeditar").css('display','none');
+    $("#divempresaseditar").css('display','none');
 }
 function guardarsalud()
 {
@@ -1138,7 +1153,7 @@ function generarvistadocumentos(id,doc)
 }
 function editarsiniestrossleccionado(id)
 {
-    console.log('se edita el : ',id,'data',datasiniestros.data[id]);
+    
     $("#descripcionsiniestroeditar").val(datasiniestros.data[id].descripcion);
     $("#montosiniestroeditar").val(datasiniestros.data[id].monto);
     $("#montopagadoeditar").val(datasiniestros.data[id].montopagado);
@@ -1210,14 +1225,16 @@ function editarpoliza(id_insurancepolicies)
     .then(response => response.json())
     .then(response=>{
 
-        let documentos = response.documentos;
         let insurers = response.insurers;
+        let documentos = response.documentos;
         let comentario = response.comentario;
-        let member = response.member;
-        let declarada = response.declarada;
-        let nodeclarada = response.nodeclarada;
         if (  insurers[0].tipopoliza==1)
         {
+           
+            let member = response.member;
+            let declarada = response.declarada;
+            let nodeclarada = response.nodeclarada;
+
             $("#divsaludeditar").css('display','block');
             $("#divsalud").css('display','none');
             $("#tipopoliza").val(1)
@@ -1229,112 +1246,225 @@ function editarpoliza(id_insurancepolicies)
             $("#divempresaseditar").css('display','none');
 
             $("#tablaparentescospolizaseditar").empty();
-            member.map((f,indexFamiliar) =>
+            if (member.length > 0)
             {
-                $("#tablaparentescospolizaseditar").append(`
-                    <tr>
-                        <td>
-                            ${generahtmlparentesco(indexFamiliar,f.status)}
-                        </td>
-                        <td>
-                            ${generahtmlsexo(indexFamiliar,f.gender)}
-                        </td>
-                        <td>
-                            ${generaretornardia(indexFamiliar,f.day)}
-                        </td>
-                        <th>
-                            ${generameses(indexFamiliar,f.mounth)}
-                        </th>
-                        <th>
-                            ${generayy(indexFamiliar, f.year)}
-                        </th>
-                        <th>
-                        <span 
-                            class='icon voyager-trash btn-delete p-3 m-2' 
-                            title='borrar'
-                            onclick="eliminarparentesco(${f.id})" 
-                        ></span>
-                        </th>
-                    </tr>
-                    `);
-                
-            });
+                member.map((f,indexFamiliar) =>
+                {
+                    $("#tablaparentescospolizaseditar").append(`
+                        <tr>
+                            <td>
+                                ${generahtmlparentesco(indexFamiliar,f.status)}
+                            </td>
+                            <td>
+                                ${generahtmlsexo(indexFamiliar,f.gender)}
+                            </td>
+                            <td>
+                                ${generaretornardia(indexFamiliar,f.day)}
+                            </td>
+                            <th>
+                                ${generameses(indexFamiliar,f.mounth)}
+                            </th>
+                            <th>
+                                ${generayy(indexFamiliar, f.year)}
+                            </th>
+                            <th>
+                            <span 
+                                class='icon voyager-trash btn-delete p-3 m-2' 
+                                title='borrar'
+                                onclick="eliminarparentesco(${f.id})" 
+                            >
+                            Eliminar
+                            </span>
+                            </th>
+                        </tr>
+                        `);
+                    
+                });
+            }
+               
 
             $("#tablasaludocumentosdeditar").empty();
-            documentos.map((f,indexFamiliar) =>
+            if (documentos.length > 0)
             {
-                $("#tablasaludocumentosdeditar").append(`
-                    <tr>
-                        <td>
-                         <p> documento cargado ->  ${ f.tipodocumento } </p>
-                        </td>
-                        <td>
-                            <a href="../${ f.documentonombre }" target="_blank"  style ="text-decoration: none;" >
-                                ver
-                            </a>
-                            <a href="#" onclick="eliminardocumento(${ f.id })"  style ="text-decoration: none;" >
-                                Eliminar
-                            </a>
-                        </td>
-                    </tr>
-                    `);
-            });
+                documentos.map((f,indexFamiliar) =>
+                {
+                    $("#tablasaludocumentosdeditar").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p> documento cargado ->  ${ f.tipodocumento } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='Ver'
+                                    >
+                                    <a href="../${ f.documentonombre }" target="_blank"  style ="text-decoration: none;" >
+                                        ver
+                                    </a>
+                                </span>
+
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminardocumento(${ f.id })"
+                                >
+                                    Eliminar
+                                </span>
+                                    
+                            </td>
+                        </tr>
+                        `);
+                });
+            }
+            
 
             $("#tablacomentarioseditar").empty();
-            comentario.map((f,indexFamiliar) =>
+            if (comentario.length > 0)
             {
-                $("#tablacomentarioseditar").append(`
-                    <tr>
-                        <td>
-                         <p> comentario cargado ->  ${ f.comentario } </p>
-                        </td>
-                        <td>
-                            <a href="#" onclick="eliminarcomentario('${ f.id }')"  style ="text-decoration: none;" >
-                                Eliminar
-                            </a>
-                        </td>
-                    </tr>
-                    `);
-            });
+                comentario.map((f,indexFamiliar) =>
+                {
+                    $("#tablacomentarioseditar").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p> comentario cargado ->  ${ f.comentario } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminarcomentario('${ f.id }')"
+                                >
+                                    Eliminar
+                                </span>
+                            </td>
+                        </tr>
+                        `);
+                });
+            }
+            
 
             $("#tabladeclaradaeditar").empty();
-            declarada.map((f,indexFamiliar) =>
+            if (declarada.length > 0)
             {
-                $("#tabladeclaradaeditar").append(`
-                    <tr>
-                        <td>
-                         <p> Patologia delcarada ->  ${ f.descripcion } </p>
-                        </td>
-                        <td>
-                            <a href="#" onclick="eliminardelcarada(${f.id})"  style ="text-decoration: none;" >
-                                Eliminar
-                            </a>
-                        </td>
-                    </tr>
-                `);
-            });
+                declarada.map((f,indexFamiliar) =>
+                {
+                    $("#tabladeclaradaeditar").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p> Patologia delcarada ->  ${ f.descripcion } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminardelcarada(${f.id})"
+                                >
+                                    Eliminar
+                                </span>
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+           
 
             $("#tablanodeclaradaeditar").empty();
-            nodeclarada.map((f,indexFamiliar) =>
+            if (nodeclarada.length > 0)
             {
-                $("#tablanodeclaradaeditar").append(`
-                    <tr>
-                        <td>
-                         <p>  Patologia delcarada ->  ${ f.descripcion } </p>
-                        </td>
-                        <td>
-                            <a href="#" onclick="eliminarnodeclarada(${f.id})"  style ="text-decoration: none;" >
-                                Eliminar
-                            </a>
-                        </td>
-                    </tr>
-                `);
-            });
+                nodeclarada.map((f,indexFamiliar) =>
+                {
+                    $("#tablanodeclaradaeditar").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p>  Patologia delcarada ->  ${ f.descripcion } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminarnodeclarada(${f.id})"
+                                >
+                                    Eliminar
+                                </span>
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+            
                 
         }
         else if (  insurers[0].tipopoliza==2)
         {
-            selectauto();
+            $("#divsaludeditar").css('display','none');
+            $("#divsalud").css('display','none');
+            $("#tipopoliza2").val(2)
+            $("#divautoeditar").css('display','block');
+            $("#divauto").css('display','none');
+
+            $("#divempresas").css('display','none');
+            $("#divempresaseditar").css('display','none');
+
+            $("#tablaautosdocumentos").empty();
+            if (documentos.length > 0)
+            {
+                documentos.map((f,indexFamiliar) =>
+                {
+                    $("#tablaautosdocumentos").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p> documento cargado ->  ${ f.tipodocumento } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='Ver'
+                                    >
+                                    <a href="../${ f.documentonombre }" target="_blank"  style ="text-decoration: none;" >
+                                        ver
+                                    </a>
+                                </span>
+
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminardocumento(${ f.id })"
+                                >
+                                    Eliminar
+                                </span>
+                                    
+                            </td>
+                        </tr>
+                        `);
+                });
+            }
+            
+            let modeloauto =  document.getElementById("modeloauto");
+            modeloauto.innerHTML = insurers[0].descripcionpoliza;
+
+            $("#tablaautoscomentarios").empty();
+            if (comentario.length > 0)
+            {
+                comentario.map((f,indexFamiliar) =>
+                {
+                    $("#tablaautoscomentarios").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p> comentario cargado ->  ${ f.comentario } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminarcomentario('${ f.id }')"
+                                >
+                                    Eliminar
+                                </span>
+                            </td>
+                        </tr>
+                        `);
+                });
+            }
 
         }
         else 
@@ -1526,13 +1656,32 @@ function btnclear(id)
     let savebtn = document.getElementById("savebtn"+id);
     let clearbtn = document.getElementById("clearbtn"+id);
     let btndivadd = document.getElementById("btndivadd"+id);
+    let divadd = document.getElementById("divadd_"+id);
     btndivadd.style.display = "block";
     savebtn.style.display = "none";
     clearbtn.style.display = "none";
+    divadd.style.display ="none";
+    
+
+    
 }
 function btnsaveadd(id)
 {
     console.log(id);
-    let formadd = document.getElementById("formadd"+id);
-    formadd.submit();
+    if (id==1)
+    {
+        let formadd1 = document.getElementById("formparentescoeditaradd");
+        formadd1.submit();
+    }
+    else{
+        let formadd = document.getElementById("formadd"+id);
+        formadd.submit();
+    }
+    
+}
+//
+function btneditautos(id)
+{
+    let divautoedit = document.getElementById("divautoedit_"+id);
+    divautoedit.style.display = "block";
 }

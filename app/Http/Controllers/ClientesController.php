@@ -2641,6 +2641,7 @@ class ClientesController extends Controller
             $member->year =$birthday ;
             $member->save();
         }
+        return back();
     }
     public function adddocumentos(Request $request){
         if ($documentopersonal2 =  $request->file('documentopersonal2'))
@@ -2734,7 +2735,6 @@ class ClientesController extends Controller
                     ]);
             }
         }
-        die;
         return back();
     }
 }
