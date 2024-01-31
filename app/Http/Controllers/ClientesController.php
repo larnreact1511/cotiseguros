@@ -2601,15 +2601,140 @@ class ClientesController extends Controller
     public function eliminardelcarada($id)
     {
         $patologia =array('id'=>$id);
-        DB::table('patologia')->where('id',$id)->delete();
+        DB::table('patologia')->where('pat_id',$id)->delete();
         $res['result']=true;
+       
         return response()->json($res);
     }
     public function eliminarnodeclarada($id)
     {
         $patologia =array('id'=>$id);
-        DB::table('patologia')->where('id',$id)->delete();
+        DB::table('patologia')->where('pat_id',$id)->delete();
         $res['result']=true;
         return response()->json($res);
+    }
+    public function addparentesco(Request $request){
+        for ( $i=0 ; $i <= $request->input("index"); $i++ ) 
+        {
+           
+            $day = $request->input("day_$i");
+            $mounth = $request->input("mounth_$i");
+            $birthday = $request->input("birthday_$i");
+            if ( floatval( $day)  < 10 )
+                 $day ='0'. $day;
+
+            if ( floatval($mounth)  < 10 )
+                $mounth ='0'.$mounth;
+
+            if ( strlen($birthday)  < 4 )
+                $birthday =2000;
+
+            $member = new MemberQuote();
+            $member->status = $request->input("status_$i");
+            $member->gender = $request->input("gender_$i");
+            $member->date = Carbon::parse( $day . "-" . $mounth . "-" . $birthday )->age;
+            $member->birthday = $day . "-" . $mounth . "-" . $birthday;
+            $member->quote_id = 0; 
+            $member->id_insurancepolicies = $request->polisaeditar1;
+            $member->day =$day;
+            $member->month =$mounth;
+            $member->year =$birthday ;
+            $member->save();
+        }
+    }
+    public function adddocumentos(Request $request){
+        if ($documentopersonal2 =  $request->file('documentopersonal2'))
+        {
+            $cn=0;$comen=0;
+            $nombredocumentopersonal2 =$request->input("nombredocumentopersonal2");
+            foreach ($documentopersonal2 as $documento)
+            {
+                $image_name=md5(rand(1000,10000));
+                $ext = strtolower($documento->getClientOriginalExtension() );
+                $image_full_name=$image_name.'.'.$ext;
+                $upload_path ='public/documentos/';
+                $imagen_url = $upload_path.$image_full_name;
+                $tipo ='documento';
+                if ( $nombredocumentopersonal2[$cn] )
+                    $tipo =$nombredocumentopersonal2[$cn];
+                if ($documento->move(public_path('documentos'),$image_full_name))
+                {
+                    $imagen[]=$imagen_url;
+                    Docuemntos::insert(
+                        [
+                            'created_at'=>date("Y-m-d H:i:s"),
+                            'documentonombre'=>$image_full_name,
+                            'tipodocumento'=>$tipo,
+                            'documentonombre'=>'documentos/'.$image_full_name,
+                            'idusuario'=>$request->polisaidusuario2,
+                            'tipo'=>1,
+                            'id_insurancepolicies'=>$request->polisaeditar2
+                        ]);    
+                    session()->flash('message', 'Documento cargado con éxito');              
+                } 
+                else
+                    session()->flash('error_documentos', 'No se pudo subir algunos documentos');
+
+                $cn ++;
+            }
+        } 
+        return back();
+    }
+    public function addcomentario(Request $request){
+        $comentariosalud2 =$request->input("comentariosalud2");
+        if ( count($comentariosalud2) >0 )
+        {
+            foreach ( $comentariosalud2 as $c )
+            {   
+                $comentariospolizas = DB::table('comentariospolizas')->insertGetId(
+                    [
+                        'created_at'=>date("Y-m-d H:i:s"),
+                        'id_insurancepolicies'=>$request->polisaeditar3,
+                        'comentario'=>$c,
+                        'idadmin'=>$request->polisaeditaradmin3,
+                        'idusuario'=>$request->polisaidusuario3,
+                    ]);
+            }
+        }
+        return back();
+    }
+    public function addpatologiasi(Request $request){
+        $patologiacomentadas2 =$request->input("patologiacomentadas2");
+        if ( count($patologiacomentadas2) >0 )
+        {
+            foreach ( $patologiacomentadas2 as $c )
+            {   
+                $patologiasi = DB::table('patologia')->insertGetId(
+                    [
+                        'pat_id_poliza'=>$request->polisaeditar4,
+                        'pat_descripcion'=>$c,
+                        'pat_idadmin'=>$request->polisaeditaradmin4,
+                        'pat_idusuario'=>$request->polisaidusuario4,
+                        'pat_status'=>1,
+                        'created_at'=>date("Y-m-d H:i:s"),
+                    ]);
+            }
+        }
+        return back();
+    }
+    public function addpatologiano(Request $request){
+        $patologiasnocomentadas2 =$request->input("patologianocomentadas2");
+        if ( count($patologiasnocomentadas2) >0 )
+        {
+            foreach ( $patologiasnocomentadas2 as $c )
+            {   
+                $patologiasi = DB::table('patologia')->insertGetId(
+                    [
+                        'pat_id_poliza'=>$request->polisaeditar5,
+                        'pat_descripcion'=>$c,
+                        'pat_idadmin'=>$request->polisaeditaradmin5,
+                        'pat_idusuario'=>$request->polisaidusuario5,
+                        'pat_status'=>0,
+                        'created_at'=>date("Y-m-d H:i:s"),
+                    ]);
+            }
+        }
+        die;
+        return back();
     }
 }

@@ -27,9 +27,11 @@ let  cm =0; // contador miembros
 let ym =parseFloat(year)-parseFloat(99); // año menor
 let ya = new Date().getFullYear(); // año actual
 let datasiniestros =[];
-let urlservidor ='http://127.0.0.1:8000/';
+//let urlservidor ='http://127.0.0.1:8000/';
 //let urlservidor  ='https://dev.cotiseguros.com.ve//';
-//let urlservidor  ='https://www.cotiseguros.com.ve/';
+let urlservidor  ='https://www.cotiseguros.com.ve/';
+
+let polizaieditar =0;
 $( document ).ready(function() 
 {
     miembrosasegurados[cm]=familiar;
@@ -632,8 +634,8 @@ function patologiano()
         <input 
             type="text" 
             class="form-control shadow-none border-0 bg-grey" 
-            name="patologiasnocomentadas[]" 
-            id="patologiasnocomentadas[]" value="" 
+            name="patologiasnocomentadas2[]" 
+            id="patologiasnocomentadas2[]" value="" 
             placeholder="Patología NO comentada">
     </th>
 </tr>`);
@@ -713,6 +715,9 @@ function selectsalud()
     $("#tipopoliza").val(1)
     $("#divauto").css('display','none');
     $("#divempresas").css('display','none');
+    $("#divsaludeditar").css('display','none');
+
+
 }
 function selectauto()
 {
@@ -1200,6 +1205,7 @@ function eliminarqr(id)
 }
 function editarpoliza(id_insurancepolicies)
 {
+    polizaieditar =id_insurancepolicies;
     fetch(urlservidor+"editarpoliza/"+id_insurancepolicies)
     .then(response => response.json())
     .then(response=>{
@@ -1266,7 +1272,7 @@ function editarpoliza(id_insurancepolicies)
                             <a href="../${ f.documentonombre }" target="_blank"  style ="text-decoration: none;" >
                                 ver
                             </a>
-                            <a href="#" onclick="eliminardocumento('${ f.id }')"  style ="text-decoration: none;" >
+                            <a href="#" onclick="eliminardocumento(${ f.id })"  style ="text-decoration: none;" >
                                 Eliminar
                             </a>
                         </td>
@@ -1300,7 +1306,7 @@ function editarpoliza(id_insurancepolicies)
                          <p> Patologia delcarada ->  ${ f.descripcion } </p>
                         </td>
                         <td>
-                            <a href="#" onclick="eliminardelcarada('${ f.id }')"  style ="text-decoration: none;" >
+                            <a href="#" onclick="eliminardelcarada(${f.id})"  style ="text-decoration: none;" >
                                 Eliminar
                             </a>
                         </td>
@@ -1317,7 +1323,7 @@ function editarpoliza(id_insurancepolicies)
                          <p>  Patologia delcarada ->  ${ f.descripcion } </p>
                         </td>
                         <td>
-                            <a href="#" onclick="eliminarnodeclarada('${ f.id }')"  style ="text-decoration: none;" >
+                            <a href="#" onclick="eliminarnodeclarada(${f.id})"  style ="text-decoration: none;" >
                                 Eliminar
                             </a>
                         </td>
@@ -1377,4 +1383,156 @@ function eliminarnodeclarada(id)
     .then(
         location.reload()
     );     
+}
+function btndivadd(id) 
+{
+    let divadd = document.getElementById("divadd_"+id);
+    let savebtn = document.getElementById("savebtn"+id);
+    let clearbtn = document.getElementById("clearbtn"+id);
+    let btndivadd = document.getElementById("btndivadd"+id);
+    let polisaeditar = document.getElementById("polisaeditar"+id);
+    polisaeditar.value=polizaieditar;
+    let polisaeditaradmin = document.getElementById("polisaeditaradmin"+id);
+    polisaeditaradmin.value=$("#idadmin").val();
+
+    let polisaidusuario = document.getElementById("polisaidusuario"+id);
+    polisaidusuario.value=$("#idcliente").val();
+
+
+    divadd.style.display = "block";
+    btndivadd.style.display = "none";
+    savebtn.style.display = "block";
+    clearbtn.style.display = "block";
+    // $( "#formulariosalud" ).append(`<input type="hidden" id="idaminsalud" readonly name="idaminsalud" class="form-control" value ="${$("#idadmin").val()}"/>`);
+    if (id==1) // parentesco
+    {
+        //
+        
+        $("#tablaparentescoadd").empty();
+        miembrosasegurados.map((f,indexFamiliar) =>
+        {
+            if ( indexFamiliar ==0)
+                display ='none';
+            else
+                display ='block';
+            if (f.activo==0)
+            {
+                $("#tablaparentescoadd").append(`
+                <tr>
+                    <td>
+                        ${generahtmlparentesco(indexFamiliar,f.status)}
+                    </td>
+                    <td>
+                        ${generahtmlsexo(indexFamiliar,f.gender)}
+                    </td>
+                    <td>
+                        ${generaretornardia(indexFamiliar,f.day)}
+                    </td>
+                    <th>
+                        ${generameses(indexFamiliar,f.mounth)}
+                    </th>
+                    <th>
+                        ${generayy(indexFamiliar, f.year)}
+                    </th>
+                    <th>
+                        <div  style="display :${display} ; border: 1px solid #fff;"  >
+                        ${generabotonelminar(indexFamiliar)}  
+                        </div>
+                    </th>
+                </tr>
+                `);
+            }
+            
+        });
+        //
+    }
+    if (id==2) // documentos
+    {
+        //
+        $("#tabladocumentosadd").empty();
+        $( "#tabladocumentosadd" ).append(`<tr>
+        <tr>
+            <th>
+            <label class="custom-file-label" for=""> Agrega documento   </label>
+            <input 
+                type="file" 
+                class="custom-file-input" 
+                name="documentopersonal2[]" 
+                accept="pdf,png,jpg" >
+            </th>
+            <th>
+            <label class="custom-file-label" for="">Nombre del documento  </label><br>    
+            <input 
+                    type="text" 
+                    class="custom-file-input" 
+                    name="nombredocumentopersonal2[]" 
+                    
+                >
+            </th>
+        </tr>`);
+        //
+    } 
+    if (id==3) // Comentarios
+    {
+        //
+        $("#tablacomentariosadd").empty();
+        $( "#tablacomentariosadd" ).append(`<tr> 
+            <th>
+                <input 
+                    type="text" 
+                    class="form-control shadow-none border-0 bg-grey" 
+                    name="comentariosalud2[]" 
+                    id="comentariosalud2[]" value="" 
+                    placeholder="Comentario sobre la póliza">
+            </th>
+        </tr>`);
+        //
+    }
+    if (id==4) // patologia si
+    {
+        //
+        $("#tablapatolociasiadd").empty();
+        $( "#tablapatolociasiadd" ).append(`<tr> 
+            <th>
+                <input 
+                    type="text" 
+                    class="form-control shadow-none border-0 bg-grey" 
+                    name="patologiacomentadas2[]" 
+                    id="patologiacomentadas2[]" value="" 
+                    placeholder="Patología declarada">
+            </th>
+        </tr>`);;
+        //
+    }
+    if (id==5) // patologia no
+    {
+        //
+        $("#tablapatolocianoadd").empty();
+        $( "#tablapatolocianoadd" ).append(`<tr> 
+            <th>
+                <input 
+                    type="text" 
+                    class="form-control shadow-none border-0 bg-grey" 
+                    name="patologianocomentadas2[]" 
+                    id="patologianocomentadas2[]" value="" 
+                    placeholder="Patología no declarada">
+            </th>
+        </tr>`);;
+        //
+    }
+}
+function btnclear(id)
+{
+    let savebtn = document.getElementById("savebtn"+id);
+    let clearbtn = document.getElementById("clearbtn"+id);
+    let btndivadd = document.getElementById("btndivadd"+id);
+    btndivadd.style.display = "block";
+    savebtn.style.display = "none";
+    clearbtn.style.display = "none";
+}
+function btnsaveadd(id)
+{
+    console.log(id);
+    let formadd = document.getElementById("formadd"+id);
+    formadd.submit();
 }

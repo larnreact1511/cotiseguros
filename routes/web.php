@@ -85,11 +85,17 @@ Route::get('eliminarqr/{id}', [App\Http\Controllers\ClientesController::class, '
 
 Route::get('editarpoliza/{idinsurancepolicies}', [App\Http\Controllers\ClientesController::class, 'editarpoliza']);
 
-Route::get('eliminarparentesco/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarqr']);
-Route::get('eliminardocumento/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarqr']);
-Route::get('eliminarcomentario/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarqr']);
-Route::get('eliminardelcarada/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarqr']);
-Route::get('eliminarnodeclarada/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarqr']);
+Route::get('eliminarparentesco/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarparentesco']);
+Route::get('eliminardocumento/{id}', [App\Http\Controllers\ClientesController::class, 'eliminardocumento']);
+Route::get('eliminarcomentario/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarcomentario']);
+Route::get('eliminardelcarada/{id}', [App\Http\Controllers\ClientesController::class, 'eliminardelcarada']);
+Route::get('eliminarnodeclarada/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarnodeclarada']);
+
+Route::post('adminstracionclientes/parentescoadd/', [App\Http\Controllers\ClientesController::class, 'addparentesco']);
+Route::post('adminstracionclientes/documentosadd/', [App\Http\Controllers\ClientesController::class, 'adddocumentos']);
+Route::post('adminstracionclientes/comentariosadd/', [App\Http\Controllers\ClientesController::class, 'addcomentario']);
+Route::post('adminstracionclientes/patologiasiadd/', [App\Http\Controllers\ClientesController::class, 'addpatologiasi']);
+Route::post('adminstracionclientes/patologianoadd/', [App\Http\Controllers\ClientesController::class, 'addpatologiano']);
 
 Route::get('asegurado/{code}', [App\Http\Controllers\ClientesController::class, 'qrurl']);
 Route::post('clienteasegura', [App\Http\Controllers\ClientesController::class, 'clienteasegurado']);

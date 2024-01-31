@@ -444,7 +444,7 @@ if ( @$info[0]->numerotelefono )
                         <table id="tablasalud" name="tablasalud" class="table">
                             <tr>
                                 <th>
-                                    <button onClick="addFamiliartabla()" type="button" class="p-3 m-2"> 
+                                    <button onClick="addFamiliartabla()" type="button" class="btn btn-primary mt-2"> 
                                         <span 
                                                 class="ms-3 mon-light">
                                                 Añadir integrante a la póliza
@@ -452,7 +452,7 @@ if ( @$info[0]->numerotelefono )
                                     </button>
                                 </th>
                                 <th>
-                                    <button onClick="addocument()" type="button" class="p-3 m-2"> 
+                                    <button onClick="addocument()" type="button" class="btn btn-primary mt-2"> 
                                         <span 
                                                 class="ms-3 mon-light">
                                                 Añadir documento a la póliza
@@ -460,7 +460,7 @@ if ( @$info[0]->numerotelefono )
                                     </button>
                                 </th>
                                 <th>
-                                    <button onClick="addcoomentario()" type="button" class="p-3 m-2"> 
+                                    <button onClick="addcoomentario()" type="button" class="btn btn-primary mt-2"> 
                                         <span 
                                                 class="ms-3 mon-light">
                                                 Añadir otro comentario
@@ -470,7 +470,7 @@ if ( @$info[0]->numerotelefono )
                             </tr>
                             <tr>
                                 <th>
-                                    <button onClick="patologiasi()" type="button" class="p-3 m-2"> 
+                                    <button onClick="patologiasi()" type="button" class="btn btn-primary mt-2"> 
                                         <span 
                                                 class="ms-3 mon-light">
                                                 Añadir Patología  comentada
@@ -478,7 +478,7 @@ if ( @$info[0]->numerotelefono )
                                     </button>
                                 </th>
                                 <th>
-                                    <button onClick="patologiano()" type="button" class="p-3 m-2"> 
+                                    <button onClick="patologiano()" type="button" class="btn btn-primary mt-2"> 
                                         <span 
                                                 class="ms-3 mon-light">
                                                 Añadir Patología NO comentada
@@ -486,7 +486,7 @@ if ( @$info[0]->numerotelefono )
                                     </button>
                                 </th>
                                 <th>
-                                    <button type="button" onclick="guardarsalud()" class="p-3 m-2">
+                                    <button type="button" onclick="guardarsalud()" class="btn btn-primary mt-2">
                                         Guardar la Póliza
                                     </button> 
                                 </th>
@@ -524,56 +524,242 @@ if ( @$info[0]->numerotelefono )
                         </table>    
                         <button
                             class="btn btn-primary mt-2"
-                            id="addparentesco"
-                            name="addparentesco"
+                             type="button" 
+                            id="btndivadd1"
+                            onClick="btndivadd(1)"  
+                            name="btndivadd1"
+                           
                             >
                             Agregar            
                         </button> 
+                        <button
+                            class="btn btn-primary mt-2"
+                             type="button" 
+                            id="clearbtn1"
+                            onClick="btnclear(1)"  
+                            name="clearbtn1"
+                            style="display : none;"
+                            >
+                            Cancelar            
+                        </button> 
+                        <button
+                            class="btn btn-primary mt-2"
+                             type="button" 
+                            id="savebtn1"
+                            onClick="btnsaveadd(1)"  
+                            name="savebtn1"
+                            style="display : none;"
+                            >
+                            Guardar            
+                        </button> 
+                        <div id ="divadd_1" name="divadd_1" style="display : none;" >
+                            <form action="parentescoadd" 
+                                method="POST"
+                                enctype="multipart/form-data"
+                                id="formadd1"
+                                name="formadd1"
+                                class="container px-4 my-5">
+                                @csrf
+                                <input type="text" id="polisaeditar1" readonly name="polisaeditar1" class="form-control" value =""/>
+                                <input type="text" id="polisaeditaradmin1" readonly name="polisaeditaradmin1" class="form-control" value =""/>
+                                <input type="text" id="polisaidusuario1" readonly name="polisaidusuario1" class="form-control" value =""/>
+                                <table id="tablaparentescoadd" name="tablaparentescoadd" class="table"></table> 
+                            </form>
+                                       
+                        </div>
                         <!-- -->    
                         <hr>
                         <h4> Documentos de la póliza </h4>
                         <table id="tablasaludocumentosdeditar" name="tablasaludocumentosdeditar" class="table"></table>
                         <button
                             class="btn btn-primary mt-2"
-                            id="addocumento"
-                            name="addocumento"
+                             type="button" 
+                            id="btndivadd2"
+                            name="btndivadd2"
+                            onClick="btndivadd(2)"  
                             >
                             Agregar            
                         </button>
+                        <button
+                            class="btn btn-primary mt-2"
+                             type="button" 
+                            id="clearbtn2"
+                            onClick="btnclear(2)"  
+                            name="clearbtn2"
+                            style="display : none;"
+                            >
+                            Cancelar            
+                        </button> 
+                        <button
+                            class="btn btn-primary mt-2"
+                             type="button" 
+                            id="savebtn2"
+                            onClick="btnsaveadd(2)"  
+                            name="savebtn2"
+                            style="display : none;"
+                            >
+                            Guardar            
+                        </button> 
+                        <div id ="divadd_2" name="divadd_2" style="display : none;" >
+                            
+                            <form action="documentosadd" 
+                                method="POST"
+                                enctype="multipart/form-data"
+                                id="formadd2"
+                                name="formadd2"
+                                class="container px-4 my-5">
+                                @csrf
+                                <input type="hidden" id="polisaeditar2" readonly name="polisaeditar2" class="form-control" value =""/>
+                                <input type="hidden" id="polisaeditaradmin2" readonly name="polisaeditaradmin2" class="form-control" value =""/>
+                                <input type="hidden" id="polisaidusuario2" readonly name="polisaidusuario2" class="form-control" value =""/>
+                                <table id="tabladocumentosadd" name="tabladocumentosadd" class="table"></table>
+                            </form>
+                        </div>
                         <!-- -->
                         <hr>
                         <h4> Comentarios de la póliza </h4>
                         <table id="tablacomentarioseditar" name="tablacomentarioseditar" class="table"></table>
                         <button
                             class="btn btn-primary mt-2"
-                            id="addcomentario"
-                            name="addcomentario"
+                             type="button" 
+                            id="btndivadd3"
+                            name="btndivadd3"
+                            onClick="btndivadd(3)"
                             >
                             Agregar            
-                        </button>                
+                        </button>  
+                        <button
+                            class="btn btn-primary mt-2"
+                             type="button" 
+                            id="clearbtn3"
+                            onClick="btnclear(3)"  
+                            name="clearbtn3"
+                            style="display : none;"
+                            >
+                            Cancelar            
+                        </button> 
+                        <button
+                            class="btn btn-primary mt-2"
+                             type="button" 
+                            id="savebtn3"
+                            onClick="btnsaveadd(3)"  
+                            name="savebtn3"
+                            style="display : none;"
+                            >
+                            Guardar            
+                        </button>  
+                        <div id ="divadd_3" name="divadd_3" style="display : none;" >
+                            <form action="comentariosadd" 
+                                method="POST"
+                                enctype="multipart/form-data"
+                                id="formadd3"
+                                name="formadd3"
+                                class="container px-4 my-5">
+                                @csrf
+                                <input type="hidden" id="polisaeditar3" readonly name="polisaeditar3" class="form-control" value =""/>
+                                <input type="hidden" id="polisaeditaradmin3" readonly name="polisaeditaradmin3" class="form-control" value =""/>
+                                <input type="hidden" id="polisaidusuario3" readonly name="polisaidusuario3" class="form-control" value =""/>
+                                <table id="tablacomentariosadd" class="table"></table>
+                            </form>
+                           
+                        </div>            
                         <!-- -->
                         <hr>
                         <h4> Patologías declaradas de la póliza </h4>
                         <table id="tabladeclaradaeditar" class="table"></table>
                         <button
                             class="btn btn-primary mt-2"
-                            id="addpatologia"
-                            name="addpatologia"
+                             type="button" 
+                            id="btndivadd4"
+                            name="btndivadd4"
+                            onClick="btndivadd(4)"
                             >
                             Agregar            
                         </button>
+                        <button
+                            class="btn btn-primary mt-2"
+                             type="button" 
+                            id="clearbtn4"
+                            onClick="btnclear(4)"  
+                            name="clearbtn4"
+                            style="display : none;"
+                            >
+                            Cancelar            
+                        </button> 
+                        <button
+                            class="btn btn-primary mt-2"
+                             type="button" 
+                            id="savebtn4"
+                            onClick="btnsaveadd(4)"  
+                            name="savebtn4"
+                            style="display : none;"
+                            >
+                            Guardar            
+                        </button>
+                        <div id ="divadd_4" name="divadd_4" style="display : none;" >
+                            <form action="patologiasiadd" 
+                                method="POST"
+                                enctype="multipart/form-data"
+                                id="formadd4"
+                                name="formadd4"
+                                class="container px-4 my-5">
+                                @csrf
+                                <input type="hidden" id="polisaeditar4" readonly name="polisaeditar4" class="form-control" value =""/>
+                                <input type="hidden" id="polisaeditaradmin4" readonly name="polisaeditaradmin4" class="form-control" value =""/>
+                                <input type="hidden" id="polisaidusuario4" readonly name="polisaidusuario4" class="form-control" value =""/>
+                                <table id="tablapatolociasiadd" class="table"></table>       
+                            </form>
+                                  
+                        </div>
                         <!-- -->
                         <hr>
                         <h4> Patologías No  declaradas de la póliza </h4>
                         <table id="tablanodeclaradaeditar" class="table"></table>
                         <button
                             class="btn btn-primary mt-2"
-                            id="addpatologiano"
-                            name="addpatologiano"
+                             type="button" 
+                            id="btndivadd5"
+                            name="btndivadd5"
+                            onClick="btndivadd(5)"
                             >
                             Agregar            
                         </button>
-                        <br>
+                        <button
+                            class="btn btn-primary mt-2"
+                             type="button" 
+                            id="clearbtn5"
+                            onClick="btnclear(5)"  
+                            name="clearbtn5"
+                            style="display : none;"
+                            >
+                            Cancelar            
+                        </button> 
+                        <button
+                            class="btn btn-primary mt-2"
+                             type="button" 
+                            id="savebtn5"
+                            onClick="btnsaveadd(5)"  
+                            name="savebtn5"
+                            style="display : none;"
+                            >
+                            Guardar            
+                        </button>
+                        <div id ="divadd_5" name="divadd_5" style="display : none;" >
+                            
+                            <form action="patologianoadd" 
+                                method="POST"
+                                enctype="multipart/form-data"
+                                id="formadd5"
+                                name="formadd5"
+                                class="container px-4 my-5">
+                                @csrf
+                                <input type="hidden" id="polisaeditar5" readonly name="polisaeditar5" class="form-control" value =""/>
+                                <input type="hidden" id="polisaeditaradmin5" readonly name="polisaeditaradmin5" class="form-control" value =""/>
+                                <input type="hidden" id="polisaidusuario5" readonly name="polisaidusuario5" class="form-control" value =""/>
+                                <table id="tablapatolocianoadd" class="table"></table>   
+                            </form>           
+                        </div>
+                        
                         <!-- -->
                                            
                         <!-- -->  
@@ -630,7 +816,7 @@ if ( @$info[0]->numerotelefono )
 
                             <!-- -->
 
-                            <table id="tablacomentariosautos" class="table">
+                            <table id="addautos" class="table">
                                 <tr> 
                                     <th>
                                         <input 
