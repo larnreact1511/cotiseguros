@@ -1522,14 +1522,12 @@ class ClientesController extends Controller
                 $conctactos = DB::table('contactocotiseguros')->get();
                 foreach ($conctactos as $conctac => $c) {
                
-                    $nestedData['id']               = $c->id;
-                    $nestedData['nombre']           = $c->nombre;
-                    $nestedData['cedula']         = $c->cedula;
-                    $nestedData['rif']            = $c->rif;
-                    $nestedData['whatssap']           = $c->whatssap;
+                    $nestedData['id']        = $c->id;
+                    $nestedData['nombre']    = $c->nombre;
+                    $nestedData['cedula']    = $c->cedula;
+                    $nestedData['rif']       = $c->rif;
+                    $nestedData['whatssap']  = $c->whatssap;
                     $nestedData['llamada']   = $c->llamada;
-                  
-                    
                     $datos[] = $nestedData;
                 }
             }
