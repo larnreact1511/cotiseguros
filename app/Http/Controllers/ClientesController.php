@@ -1477,6 +1477,7 @@ class ClientesController extends Controller
                 'insurancepolicies.idinsurers', 
                 'coverages.coverage',
                 'insurers.name',
+                'insurers.image',
                 'insurers.id as idinsurers',
                 'insurancepolicies.tipopoliza',
                 'insurancepolicies.id as id_insurancepolicies',
@@ -1519,7 +1520,7 @@ class ClientesController extends Controller
                 'coverages.id')->get(); 
             $data['footer'] = Footer::first();
 
-            
+            // salud
             if (DB::table('contactocotiseguros')->count() > 0)
             {
                 $conctactos = DB::table('contactocotiseguros')->get();
@@ -2357,6 +2358,19 @@ class ClientesController extends Controller
         }
         return response()->json($data);
     }
+    public function editarfrecuenciapago(Request $request)
+    {
+        if ( isset($request->id)  )
+        {
+            $edit =array(
+                'fechainicio'=>trim($request->fechainici),
+                'idadmin'=>trim($request->fechafin),        
+            );
+            DB::table('frequencyofpayments')->where('id',$request->id)->update($edit);
+        }
+        $data['resul'] =true;
+        return response()->json($data);
+    }
     public function guardarpagpendiente(Request $request)
     {
         //dd($request);
@@ -2721,6 +2735,13 @@ class ClientesController extends Controller
     {
         $patologia =array('id'=>$id);
         DB::table('patologia')->where('pat_id',$id)->delete();
+        $res['result']=true;
+        return response()->json($res);
+    }
+    public function eliminarpoliza($id)
+    {
+       
+        DB::table('insurancepolicies')->where('id',$id)->delete();
         $res['result']=true;
         return response()->json($res);
     }

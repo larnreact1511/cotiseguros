@@ -263,8 +263,8 @@ if ( @$info[0]->numerotelefono )
                     </table>
                     
                     
-                    <button type="submit"> Actualizar Datos Persoanles </button> 
-                    <button type="button" onClick="addocument4()"  type="button" class="my-5 p-3" > Agregar otro documento </button> 
+                    <button type="submit" class="btn btn-primary"> Actualizar Datos Persoanles </button> 
+                    <button type="button" onClick="addocument4()"  type="button" class="btn btn-primary" > Agregar otro documento </button> 
                 </form>
             </div>
             <!-- Crear polizas-->
@@ -299,6 +299,7 @@ if ( @$info[0]->numerotelefono )
                         <?php  
                     }
                 ?>
+                
                 <table class="table">
                     <tr>
                         <th><label> Monto </label></th>
@@ -355,6 +356,16 @@ if ( @$info[0]->numerotelefono )
                         </td>
                     </tr>
                 </table>
+                <!-- --> 
+                <div id="diveliminar" style="display:none;">
+                    <button
+                        onclick="eliminarpoliza()"
+                        class="btn btn-primary mt-2"
+                        >
+
+                        Eliminar poilza
+                    </button>
+                </div>
                 <!-- formulario salud -->
                 <div class="card" id="divsalud" style="display:none;">
                     <form action="polizassalud" 
@@ -531,7 +542,7 @@ if ( @$info[0]->numerotelefono )
                                         id="btndivadd1"
                                         onClick="btndivadd(1)"  
                                         name="btndivadd1"
-                                    
+                                        class="btn btn-primary mt-2"
                                         >
                                         Agregar            
                                     </button>
@@ -543,7 +554,9 @@ if ( @$info[0]->numerotelefono )
                                         id="clearbtn1"
                                         onClick="btnclear(1)"  
                                         name="clearbtn1"
+                                        class="btn btn-primary mt-2"
                                         style="display : none;"
+                                        
                                         >
                                         Cancelar            
                                     </button>
@@ -555,6 +568,7 @@ if ( @$info[0]->numerotelefono )
                                         id="savebtn1"
                                         onClick="btnsaveadd(1)"  
                                         name="savebtn1"
+                                        class="btn btn-primary mt-2"
                                         style="display : none;"
                                         >
                                         Guardar            
@@ -611,6 +625,7 @@ if ( @$info[0]->numerotelefono )
                                         id="clearbtn2"
                                         onClick="btnclear(2)"  
                                         name="clearbtn2"
+                                        class="btn btn-primary mt-2"
                                         style="display : none;"
                                         >
                                         Cancelar            
@@ -623,6 +638,7 @@ if ( @$info[0]->numerotelefono )
                                         id="savebtn2"
                                         onClick="btnsaveadd(2)"  
                                         name="savebtn2"
+                                        class="btn btn-primary mt-2"
                                         style="display : none;"
                                         >
                                         Guardar            
@@ -659,6 +675,7 @@ if ( @$info[0]->numerotelefono )
                                         id="btndivadd3"
                                         name="btndivadd3"
                                         onClick="btndivadd(3)"
+                                        class="btn btn-primary mt-2"
                                         >
                                         Agregar            
                                     </button> 
@@ -670,6 +687,7 @@ if ( @$info[0]->numerotelefono )
                                     id="clearbtn3"
                                     onClick="btnclear(3)"  
                                     name="clearbtn3"
+                                    class="btn btn-primary mt-2"
                                     style="display : none;"
                                     >
                                     Cancelar            
@@ -682,6 +700,7 @@ if ( @$info[0]->numerotelefono )
                                         id="savebtn3"
                                         onClick="btnsaveadd(3)"  
                                         name="savebtn3"
+                                        class="btn btn-primary mt-2"
                                         style="display : none;"
                                         >
                                         Guardar            
@@ -716,6 +735,7 @@ if ( @$info[0]->numerotelefono )
                                         type="button" 
                                         id="btndivadd4"
                                         name="btndivadd4"
+                                        class="btn btn-primary mt-2"
                                         onClick="btndivadd(4)"
                                         >
                                         Agregar            
@@ -728,6 +748,7 @@ if ( @$info[0]->numerotelefono )
                                         id="clearbtn4"
                                         onClick="btnclear(4)"  
                                         name="clearbtn4"
+                                        class="btn btn-primary mt-2"
                                         style="display : none;"
                                         >
                                         Cancelar            
@@ -740,6 +761,7 @@ if ( @$info[0]->numerotelefono )
                                         id="savebtn4"
                                         onClick="btnsaveadd(4)"  
                                         name="savebtn4"
+                                        class="btn btn-primary mt-2"
                                         style="display : none;"
                                         >
                                         Guardar            
@@ -776,6 +798,7 @@ if ( @$info[0]->numerotelefono )
                                         id="btndivadd5"
                                         name="btndivadd5"
                                         onClick="btndivadd(5)"
+                                        class="btn btn-primary mt-2"
                                         >
                                         Agregar            
                                     </button>
@@ -787,6 +810,7 @@ if ( @$info[0]->numerotelefono )
                                         id="clearbtn5"
                                         onClick="btnclear(5)"  
                                         name="clearbtn5"
+                                        class="btn btn-primary mt-2"
                                         style="display : none;"
                                         >
                                         Cancelar            
@@ -799,6 +823,7 @@ if ( @$info[0]->numerotelefono )
                                         id="savebtn5"
                                         onClick="btnsaveadd(5)"  
                                         name="savebtn5"
+                                        class="btn btn-primary mt-2"
                                         style="display : none;"
                                         >
                                         Guardar            
@@ -894,14 +919,14 @@ if ( @$info[0]->numerotelefono )
                             <!-- --> 
                             <button 
                                 onClick="addocument2()"  
-                                type="button" class="p-3 m-3"> 
+                                type="button" class="btn btn-primary mt-2" > 
                                 <span 
                                         class="ms-3 mon-light">
                                         Añadir documento
                                 </span>        
                             </button>
                             <!-- --> 
-                            <button onClick="addcoomentario2()" type="button" class="p-3 m-2"> 
+                            <button onClick="addcoomentario2()" type="button" class="btn btn-primary mt-2"> 
                                 <span 
                                         class="ms-3 mon-light">
                                         Añadir otro comentario
@@ -911,7 +936,7 @@ if ( @$info[0]->numerotelefono )
                             <button 
                                 type="button" 
                                 onclick="guardarpolizaautos()" 
-                                class="p-3 m-3"> 
+                                class="btn btn-primary mt-2"> 
                                 Guardar la Póliza
                             </button>
                     </form>
@@ -935,6 +960,7 @@ if ( @$info[0]->numerotelefono )
                                     id="btneditauto1"
                                     onClick="btneditempresa(1)"  
                                     name="btneditauto1"
+                                    class="btn btn-primary mt-2"
                                     >
                                     Editar            
                                 </button>
@@ -980,6 +1006,7 @@ if ( @$info[0]->numerotelefono )
                                             type="button" 
                                             id="clearatuosedit1"
                                             onClick="btnclearatuosedit(1)"  
+                                            class="btn btn-primary mt-2"
                                             name="clearatuosedit1"
                                             >
                                             Cancelar            
@@ -991,6 +1018,7 @@ if ( @$info[0]->numerotelefono )
                                             type="button" 
                                             id="saveeditautos1"
                                             onClick="btnsaveeditautos(1)"  
+                                            class="btn btn-primary mt-2"
                                             name="saveeditautos1"
                                             >
                                             Guardar            
@@ -1026,6 +1054,7 @@ if ( @$info[0]->numerotelefono )
                                 id="clearatuosedit2"
                                 onClick="btnclearatuosedit(2)"  
                                 name="clearatuosedit2"
+                                
                                 style="display : none;"
                                 >
                                 Cancelar            
@@ -1219,21 +1248,21 @@ if ( @$info[0]->numerotelefono )
                                 </tr>                  
                             </table>    
                         <!-- --> 
-                        <button onClick="addocument3()"  type="button" class="my-5 p-3"> 
+                        <button onClick="addocument3()"  type="button" class="btn btn-primary mt-2"> 
                             <span 
                                     class="ms-3 mon-light">
                                     Añadir documento
                             </span>        
                         </button>
                         <!-- --> 
-                        <button onClick="addcoomentario3()" type="button" class="p-3 m-2"> 
+                        <button onClick="addcoomentario3()" type="button" class="btn btn-primary mt-2"> 
                                 <span 
                                         class="ms-3 mon-light">
                                         Añadir otro comentario
                                 </span>        
                             </button>
                         <!-- -->         
-                        <button type="button" onclick="guardareempresas()" class="my-5 p-3">
+                        <button type="button" onclick="guardareempresas()" class="btn btn-primary mt-2">
                             Guardar la Póliza
                         </button>
                     </form>
@@ -1546,7 +1575,7 @@ if ( @$info[0]->numerotelefono )
                                    
                             </table>
                             <br>
-                            <button type="button" id="guardarpagos" name="guardarpagos" style="display:none;"> Guardar fechas</button>
+                            <button type="button" id="guardarpagos" name="guardarpagos" class="btn btn-primary mt-2" style="display:none;"> Guardar fechas</button>
                         </form>           
                 </div> 
                 <!-- -->
@@ -1596,7 +1625,7 @@ if ( @$info[0]->numerotelefono )
 
                         </table>    
                         <div class="ocultardiv" id="divbtnguardarpagos2" style=" border: 1px solid #fff;">
-                            <button type="button" id="guardarpagpendiente" name="guardarpagpendiente"> Guardar Pagos </button>
+                            <button type="button" id="guardarpagpendiente" name="guardarpagpendiente" class="btn btn-primary mt-2"> Guardar Pagos </button>
                         </div>
                         
                     </form>   
@@ -1688,14 +1717,14 @@ if ( @$info[0]->numerotelefono )
                                 </tr>
                             </table>   
                             <!-- --> 
-                            <button onClick="addocument6()"  type="button"> 
+                            <button onClick="addocument6()"  type="button" class="btn btn-primary mt-2"> 
                                 <span 
                                         class="ms-3 mon-light">
                                         Añadir documento
                                 </span>        
                             </button>
                             <!-- -->         
-                            <button type="button" onclick="guardarsiniestro()">
+                            <button type="button" onclick="guardarsiniestro()" class="btn btn-primary mt-2">
                                 Guardar siniestro
                             </button>
                     </form>
@@ -1770,27 +1799,27 @@ if ( @$info[0]->numerotelefono )
                 
                 <div id="divbotonesguardar" class="ocultardiv" style="border: 1px solid #fff;">
                     <!-- --> 
-                        <button onClick="addocument6()"  type="button"> 
+                        <button onClick="addocument6()"  type="button" class="btn btn-primary mt-2"> 
                         <span 
                                 class="ms-3 mon-light">
                                 Añadir documento
                         </span>        
                     </button>
                     <!-- -->         
-                    <button type="button" onclick="guardarsiniestro()">
+                    <button type="button" onclick="guardarsiniestro()" class="btn btn-primary mt-2">
                         Guardar
                     </button>
                     <!-- --> 
                 </div>
                 <div id="divbotoneseditar" class="ocultardiv">
-                    <button onClick="addocument5()"  type="button"> 
+                    <button onClick="addocument5()"  type="button" class="btn btn-primary mt-2"> 
                         <span 
                                 class="ms-3 mon-light">
                                 Añadir documento (editar)
                         </span>        
                     </button>
                     <!-- -->
-                    <button type="button" onclick="guardardatoseditados()">
+                    <button type="button" onclick="guardardatoseditados()" class="btn btn-primary mt-2" >
                         Guardar Cambios
                     </button>  
                     <!-- -->  

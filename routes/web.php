@@ -90,6 +90,7 @@ Route::get('eliminardocumento/{id}', [App\Http\Controllers\ClientesController::c
 Route::get('eliminarcomentario/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarcomentario']);
 Route::get('eliminardelcarada/{id}', [App\Http\Controllers\ClientesController::class, 'eliminardelcarada']);
 Route::get('eliminarnodeclarada/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarnodeclarada']);
+Route::get('eliminarpoliza/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarpoliza']);
 
 Route::post('adminstracionclientes/parentescoadd/', [App\Http\Controllers\ClientesController::class, 'addparentesco']);
 Route::post('adminstracionclientes/documentosadd/', [App\Http\Controllers\ClientesController::class, 'adddocumentos']);

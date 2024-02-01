@@ -479,9 +479,9 @@ use Illuminate\Support\Facades\DB;
                           $url="whatsapp://send?phone=+".$cn['whatssap']."&text=hola";
                                   
                           ?>
-                            <p class="tituloservicio">
+                            <h4 style="text-align: center; color:#596475 !important;" class="mb-2">
                               {{$cn['nombre']  }} 
-                            </p>
+                       </h4>
                             <p>
                               <a 
                                 class="btn btn-success rounded-pill px-1 mx-sm-0 mb-2 w-100" 
@@ -526,7 +526,16 @@ use Illuminate\Support\Facades\DB;
                           aria-expanded="false" 
                           aria-controls="collapseCotacseguro_{{$idinsurers}}"
                           >
-                          {{$name }}
+                          <img 
+                              class="w-10" 
+                              height="25"  
+                              width ="50" 
+                              src="{{env('APP_URL')}}/storage/{{$poliza->image}}"
+                              >
+                              <strong>
+                              {{$name }}
+                              </strong>
+                          
                         </h6>
                         <div 
                           id="collapseCotacseguro_{{$idinsurers}}" 
@@ -545,22 +554,23 @@ use Illuminate\Support\Facades\DB;
                                   $url="whatsapp://send?phone=+".$con->conta_nrowhat."&text=hola";
                                   
                                   ?>
-                                    <p class="tituloservicio">
-                                      {{ $con->conta_servicio }} 
-                                    </p>
+                                    <h5 class="tituloservicio mb-2" >
+                                      {{ $con->conta_servicio }}  1
+                                    </h5>
+                                    
                                     <p>
                                       <a 
                                         class="btn btn-success rounded-pill px-1 mx-sm-0 mb-2 w-100" 
                                         href=<?= ($con->conta_nrowhat) ? $url : "#"; ?> 
                                         target="_blank">
-                                        whatssap -  {{ $con->conta_nrowhat }} 
+                                        whatssap   {{ $con->conta_nrowhat ?  $con->conta_nrowhat : ' Sin contacto' }} 
                                       </a>
                                     </p>
                                     <p>
                                       <button 
                                         class="btn btn-info rounded-pill px-1 mx-sm-0 mb-2 w-100" 
                                         style="background-color:#3c485a !important; color :#fff;"  >    
-                                      llamada {{ $con->conta_nrocall }} 
+                                      llamada {{ $con->conta_nrocall  ?  $con->conta_nrocall : ' Sin contacto'}} 
                                       </button>
                                     </p>
                                     
@@ -613,14 +623,14 @@ use Illuminate\Support\Facades\DB;
                               class="btn btn-success rounded-pill px-1 mx-sm-0 mb-2 w-100" 
                               href=<?= (@$datacliente[0]->telefonococontacto) ? $url : "#"; ?> 
                               target="_blank">
-                              whatssap -  {{ @$datacliente[0]->telefonococontacto }} 
+                              whatssap -  {{ @$datacliente[0]->telefonococontacto  ?  @$datacliente[0]->telefonococontacto : ' Sin contacto' }} 
                             </a>
                           </p>
                           <p>
                             <button 
                               class="btn btn-info rounded-pill px-1 mx-sm-0 mb-2 w-100" 
                               style="background-color:#3c485a !important; color :#fff;"  >    
-                            llamada {{ @$datacliente[0]->telefonococontacto }} 
+                            llamada - {{ @$datacliente[0]->telefonococontacto  ?  @$datacliente[0]->telefonococontacto : ' Sin contacto' }} 
                             </button>
                           </p>
                           

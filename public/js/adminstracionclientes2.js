@@ -34,6 +34,7 @@ let datasiniestros =[];
 let urlservidor  ='https://www.cotiseguros.com.ve/';
 
 let polizaieditar =0;
+let diveliminar =document.getElementById("diveliminar");
 $( document ).ready(function() 
 {
     miembrosasegurados[cm]=familiar;
@@ -749,6 +750,7 @@ function oculartedicion()
     $("#divsaludeditar").css('display','none');
     $("#divsaludeditar").css('display','none');
     $("#divempresaseditar").css('display','none');
+    $("#diveliminar").css('display','none');	
 }
 function guardarsalud()
 {
@@ -892,15 +894,25 @@ function buscarfrecuencias(id,monto,id_insurancepolicies) //para crear pagos
                 <tr>
                     <th>
                         <label> Fecha inicio</label>
-                        <input class="form-check-input" type="date" name="fechainici[]" id="" value="${f.fechainicio}">
+                        <input class="form-check-input" type="date" name="fechainici[]" id="fechainici_${f.id}" value="${f.fechainicio}" >
                     </th>
                     <th>
                         <label> Fecha fin</label>
-                        <input class="form-check-input" type="date" name="fechafin[]" id="" value="${f.fechafin}">
+                        <input class="form-check-input" type="date" name="fechafin[]" id="fechafin_${f.id}" value="${f.fechafin}">
                     </th>
                     <th>
                         <label> Monto</label>
                         <input class="form-check-input" type="numeric" name="monto[]" id="" value="${f.montoestimado}" size="10">
+                    </th>
+                    <th>
+                    <input 
+                        class="form-check-input" 
+                        type="radio" 
+                        name="editarfrecuencia" 
+                        id="editarfrecuencia_${f.id}" 
+                        onclick="funeditarfrecuencia(${f.id})">
+
+                        editar
                     </th>
                 </tr>
                 `);
@@ -1232,7 +1244,7 @@ function editarpoliza(id_insurancepolicies)
         let comentario = response.comentario;
         if (  insurers[0].tipopoliza==1)
         {
-           
+            $("#diveliminar").css('display','block');
             let member = response.member;
             let declarada = response.declarada;
             let nodeclarada = response.nodeclarada;
@@ -1398,6 +1410,7 @@ function editarpoliza(id_insurancepolicies)
         }
         else if (  insurers[0].tipopoliza==2)
         {
+            $("#diveliminar").css('display','block');
             $("#divsaludeditar").css('display','none');
             $("#divsalud").css('display','none');
             $("#tipopoliza2").val(2)
@@ -1471,6 +1484,8 @@ function editarpoliza(id_insurancepolicies)
         }
         else 
         {
+            
+            $("#diveliminar").css('display','block');
             $("#divsaludeditar").css('display','none');
             $("#divsalud").css('display','none');
             $("#tipopoliza2").val(2)
@@ -1840,4 +1855,49 @@ function btnsaveempresaedit(id)
 {
     let formempresaedit = document.getElementById("formempresaedit"+id);
     formempresaedit.submit();
+}
+
+function funeditarfrecuencia(id)
+{
+    let fechainici = document.getElementById("fechainici_"+id);
+    let fechafin = document.getElementById("fechafin_"+id);
+    console.log(fechafin,fechainici)
+    mostrarcarga()
+    fetch(urlservidor+"api/funeditarfrecuencia", 
+    {
+        headers: 
+        {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // <--- aquí el token
+            "Content-type": "application/json; charset=UTF-8"
+        },
+        method: "POST",
+        body: JSON.stringify(
+        {
+            fechafin: fechafin.value,
+            fechainici: fechainici.value,
+            id: id,
+            
+        }),
+    })
+    .then(r => r.json())
+    .then(r => 
+    {
+        //location.reload()
+        
+    }).finally(()=>
+    {
+        ocultarcarga()
+    });
+}
+function eliminarpoliza()
+{
+   
+    if (polizaieditar > 0)
+    {
+        fetch(urlservidor+"eliminarpoliza/"+polizaieditar)
+        .then(response => response.json())
+        .then(
+            location.reload()
+        ); 
+    }
 }

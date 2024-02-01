@@ -75,6 +75,8 @@ Route::post('/aprobarpoliza', [App\Http\Controllers\InsurancepoliciesController:
 Route::post('/modificardatosquote', [App\Http\Controllers\ClientesController::class, 'modificardatosquote'])->name('modificardatosquote');
 
 Route::post('pagospolizas', [App\Http\Controllers\ClientesController::class, 'pagospolizas'])->name('pagospolizas');
+Route::post('funeditarfrecuencia', [App\Http\Controllers\ClientesController::class, 'editarfrecuenciapago'])->name('editarfrecuenciapago');
+
 Route::post('/buscarsiniestros', [App\Http\Controllers\ClientesController::class, 'buscarsiniestros'])->name('buscarsiniestros');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

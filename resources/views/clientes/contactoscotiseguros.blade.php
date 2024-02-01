@@ -50,7 +50,7 @@
                         </tr>
                     </table>  
                     <button type="button" onclick="guardarcontacto()" class="m-2 p-2">
-                        Guardar la Póliza
+                        Guardar Contacto
                     </button> <br>
                 </form>
                                    

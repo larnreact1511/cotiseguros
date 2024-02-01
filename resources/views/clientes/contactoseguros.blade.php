@@ -60,7 +60,7 @@
                         </tr>
                     </table>  
                     <button type="button" onclick="guardarcontacto()" class="m-2 p-2">
-                        Guardar la Póliza
+                        Guardar la Contacto
                     </button> <br>
                 </form>
                                    
@@ -84,29 +84,6 @@
     </div>
 </div>
 
-<!-- The Modal -->
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Modal Heading</h4>
-                <button type="button" class="close" data-dismiss="modal">×</button>
-            </div>
-            
-            <!-- Modal body -->
-            <div class="modal-body">
-                Modal body..
-            </div>
-            
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-            
-            </div>
-        </div>
-    </div>
+
 
 @endsection
