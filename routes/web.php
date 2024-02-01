@@ -163,3 +163,6 @@ Route::get('cliente/salud', [App\Http\Controllers\ClientesController::class, 'cl
 Route::get('cliente/auto', [App\Http\Controllers\ClientesController::class, 'clienteauto']);
 Route::get('cliente/patrimonio', [App\Http\Controllers\ClientesController::class, 'clientepatrimonio']);
 
+Route::get('importar-usuarios', [App\Http\Controllers\ClientesController::class, 'importarusuarios']);
+Route::post('importausu', [App\Http\Controllers\ClientesController::class, 'importausu']);
+

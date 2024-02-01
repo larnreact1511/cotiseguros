@@ -599,7 +599,35 @@ use Illuminate\Support\Facades\DB;
                   >
                   <div class="accordion-body row">
                     <!-- -->
-                    
+                    <?php 
+                      if ( count($datacliente) > 0 )
+                      {
+                        $url="whatsapp://send?phone=+".@$datacliente[0]->telefonococontacto."&text=hola";
+                                  
+                        ?>
+                          <p class="tituloservicio">
+                          {{ @$datacliente[0]->nombrecontacto }} {{ @$datacliente[0]->apellidocontacto }} 
+                          </p>
+                          <p>
+                            <a 
+                              class="btn btn-success rounded-pill px-1 mx-sm-0 mb-2 w-100" 
+                              href=<?= (@$datacliente[0]->telefonococontacto) ? $url : "#"; ?> 
+                              target="_blank">
+                              whatssap -  {{ @$datacliente[0]->telefonococontacto }} 
+                            </a>
+                          </p>
+                          <p>
+                            <button 
+                              class="btn btn-info rounded-pill px-1 mx-sm-0 mb-2 w-100" 
+                              style="background-color:#3c485a !important; color :#fff;"  >    
+                            llamada {{ @$datacliente[0]->telefonococontacto }} 
+                            </button>
+                          </p>
+                          
+                          
+                        <?php
+                      }
+                    ?>
                     <!-- -->
                   </div>
                 </div>

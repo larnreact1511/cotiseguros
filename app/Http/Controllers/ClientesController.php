@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\clientes;
 use App\Models\Docuemntos;
+
 use Illuminate\Http\Request;
 use App\Footer;
 use App\Quote;
@@ -20,6 +21,8 @@ use App\Insurer;
 use Carbon\Carbon;
 use App\MemberQuote;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Rap2hpoutre\FastExcel\FastExcel;
+use Illuminate\Support\Str;
 
 class ClientesController extends Controller
 {
@@ -2995,5 +2998,119 @@ class ClientesController extends Controller
         DB::table('contactoseguros')->where('id',$id)->delete();
         $res['result']=true;
         return response()->json($res);
+    }
+
+    public function importarusuarios()
+    {
+        return view("admin.importarusuarios");
+    }
+    public function cargarProductos(Request $request)
+    {
+        $archivo = $request->file('excel');
+        $disponibles = array("xlsx", "xls");
+        $file_name = Str::random(30);
+        $ext = strtolower($archivo->getClientOriginalExtension());
+
+        if (!in_array($ext, $disponibles)) {
+            return response()->json(array("result" => false, "msg" => "Documento invalida, por favor suba un excel valido"), 200);
+        }
+        $file_full_name = $file_name . '.' . $ext;
+        $upload_path = 'plantillas/';
+        $file_url = $upload_path . $file_full_name;
+        $success = $archivo->move($upload_path, $file_full_name);
+        $collection = (new FastExcel)->import($file_url);
+
+        for ($i = 1; $i < sizeof($collection); $i++) {
+
+            $iva = $collection[$i]['iva'] ?  $collection[$i]['iva']  : 0;
+            $precioiva = (floatval(@$collection[$i]['precio']) * floatval($iva))/100;
+            $precivoventa = floatval($collection[$i]['precio'])+ floatval($precioiva); 
+            Productos::create([
+                'nombre'=>@$collection[$i]['nombre'],
+                'descripcion_corta'=> utf8_encode(@$collection[$i]['descripcion_corta'])    ,
+                'descripcion_larga'=>utf8_encode(@$collection[$i]['descripcion_larga']),
+                'precio_unitario'=>@$collection[$i]['precio'],
+                'iva'=>@$collection[$i]['iva'],
+                'precio_venta'=>$precivoventa,
+                'imagen'=>@$collection[$i]['img'],
+                'cantidad'=>@$collection[$i]['cantidad'],
+                'tipo'=>@$collection[$i]['tipo'],
+                'proveedor'=>@$collection[$i]['proveedor'],
+            ]);
+        }
+        $data['proveedores']= DB::table('proveedores')->get();
+        return view('productos.subirproductos',$data);  
+    }
+    public function importausu(Request $request)
+    {
+        $archivo = $request->file('excel');
+        $disponibles = array("xlsx", "xls");
+        $file_name = Str::random(30);
+        $ext = strtolower($archivo->getClientOriginalExtension());
+        $data=[];
+        if (!in_array($ext, $disponibles)) {
+            $data['message']='Documento invalida, por favor suba un excel valido';
+        }
+        else{
+            $file_full_name = $file_name . '.' . $ext;
+            $upload_path = 'plantillas/';
+            $file_url = $upload_path . $file_full_name;
+            $success = $archivo->move($upload_path, $file_full_name);
+            $collection = (new FastExcel)->import($file_url);
+           
+            for ($i = 0; $i < sizeof($collection); $i++) 
+            {
+                
+                $nombre = $collection[$i]['nombre'] ;
+                $apellido = $collection[$i]['apellido'] ;
+                $email = $collection[$i]['email'] ;
+                $clave = $collection[$i]['clave'] ;
+                $cedula = $collection[$i]['cedula'] ;
+                $role = $collection[$i]['roles'] ;
+                $telefono = $collection[$i]['telefono'] ;
+                
+                if (($nombre !='') && ($apellido !='') && ($email !='')&& ($clave !='') && ($cedula !='') && ($role !='') && ($telefono !='') )
+                {
+                    $users = DB::table('users')->where('email',$email)->get();
+                   
+                    if ( $users->count() > 0 )
+                    {
+                       
+                    }
+                    else
+                    {
+                        /*
+                        User::create([
+                            'role_id' => 5,
+                            'name' => $nombre,
+                            'lastname' =>$apellido ,
+                            'email' => $email,
+                            'password' => bcrypt($clave),
+                            'phone' =>$telefono
+                        ]);
+                        */
+                        $User = DB::table('users')->insertGetId(
+                            [
+                                'role_id' => 5,
+                                'name' => $nombre,
+                                'lastname' =>$apellido ,
+                                'email' => $email,
+                                'password' => bcrypt($clave),
+                                'phone' =>$telefono
+                            ]);
+                            $user_roles = DB::table('user_roles')->insertGetId(
+                                [
+                                    'user_id' => $User,
+                                    'role_id' => 5
+                                ]);
+                           
+                    }
+                }
+            }
+                
+            $data['message']='Productos cargados con exito';
+        }
+        session()->flash('message', 'Usuarios cargado con exito');
+        return back();
     }
 }
