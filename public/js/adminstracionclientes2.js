@@ -29,16 +29,16 @@ let  cm =0; // contador miembros
 let ym =parseFloat(year)-parseFloat(99); // año menor
 let ya = new Date().getFullYear(); // año actual
 let datasiniestros =[];
-//let urlservidor ='http://127.0.0.1:8000/';
+let urlservidor ='http://127.0.0.1:8000/';
 //let urlservidor  ='https://dev.cotiseguros.com.ve//';
-let urlservidor  ='https://www.cotiseguros.com.ve/';
+//let urlservidor  ='https://www.cotiseguros.com.ve/';
 
 let polizaieditar =0;
 let diveliminar =document.getElementById("diveliminar");
 $( document ).ready(function() 
 {
     miembrosasegurados[cm]=familiar;
-    //generardatosparientes()
+    
     addFamiliartablainicio()
     $("#tipopoliza").val(0);
     $("#tipopoliza2").val(0);
@@ -150,14 +150,17 @@ function ocultarcarga()
 function generardatosparientes()
 {
     datosparientes ='';
+    console.log(miembrosasegurados);
     miembrosasegurados.map((f,indexFamiliar) =>
     {
+        
         if ( indexFamiliar ==0)
             display ='none';
         else
             display ='block';
         if (f.activo==0)
         {
+            console.log( f.activo, f.gender)
             datosparientes +=`
             <div class="row mt-3 p-3 text-center" id="${indexFamiliar}">
                 <div class="col-2 col-md-2 my-3">
@@ -263,6 +266,9 @@ function addFamiliartabla()
                 <td>
                     ${generaretornardia(indexFamiliar,f.day)}
                 </td>
+                <th>
+                    ${generameses(indexFamiliar,f.mounth)}
+                </th>
                 <th>
                     ${generayy(indexFamiliar, f.year)}
                 </th>
@@ -470,8 +476,8 @@ function generabotonelminar(id)
     botonelminar+=`
     <button 
         type="button" 
-        onClick="removeFamiliar(${id})"  
-        class="p-3 ">
+        onclick="removeFamiliar(${id})"  
+        class="btn btn-primary mt-2">
         <span class="ms-3 mon-light"  >Eliminar familiar</span>
     </button>
     `;
@@ -480,8 +486,43 @@ function generabotonelminar(id)
 function removeFamiliar(id)
 {
     miembrosasegurados[id].activo=1;
-    $("#cotizador").html('');
-    generardatosparientes()
+    $("#tablaparentescospolizas").empty();
+    miembrosasegurados.map((f,indexFamiliar) =>
+    {
+        if ( indexFamiliar ==0)
+            display ='none';
+        else
+            display ='block';
+        if (f.activo==0)
+        {
+            $("#tablaparentescospolizas").append(`
+            <tr>
+                <td>
+                    ${generahtmlparentesco(indexFamiliar,f.status)}
+                </td>
+                <td>
+                    ${generahtmlsexo(indexFamiliar,f.gender)}
+                </td>
+                <td>
+                    ${generaretornardia(indexFamiliar,f.day)}
+                </td>
+                <th>
+                    ${generameses(indexFamiliar,f.mounth)}
+                </th>
+                <th>
+                    ${generayy(indexFamiliar, f.year)}
+                </th>
+                <th>
+                    <div  style="display :${display} ; border: 1px solid #fff;"  >
+                    ${generabotonelminar(indexFamiliar)}  
+                    </div>
+                </th>
+            </tr>
+            `);
+        }
+        
+    });
+
 }
 function changeStatus (id)
 {
@@ -905,15 +946,15 @@ function buscarfrecuencias(id,monto,id_insurancepolicies) //para crear pagos
                         <input class="form-check-input" type="numeric" name="monto[]" id="" value="${f.montoestimado}" size="10">
                     </th>
                     <th>
-                    <input 
-                        class="form-check-input" 
-                        type="radio" 
-                        name="editarfrecuencia" 
-                        id="editarfrecuencia_${f.id}" 
-                        onclick="funeditarfrecuencia(${f.id})">
+                        <input 
+                            class="form-check-input" 
+                            type="radio" 
+                            name="editarfrecuencia" 
+                            id="editarfrecuencia_${f.id}" 
+                            onclick="funeditarfrecuencia(${f.id})">
 
-                        editar
-                    </th>
+                            editar
+                        </th>
                 </tr>
                 `);
             });
@@ -996,8 +1037,17 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
                             name="photo_payment[]" 
                             id="photo_payment"
                             accept="png,jpeg,pdf" 
-                            
                         >
+                        <input 
+                            class="form-check-input" 
+                            type="radio" 
+                            name="btneliminarfrecuecia" 
+                            id="btneliminarfrecuecia" 
+                            onclick="eliminarfrecuecia(${f.id})"
+                            >
+
+                        Anular pago
+                    </th>
                     </th>
                 </tr>
                 `);
@@ -1012,6 +1062,10 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
         ocultarcarga()
     });
   
+}
+function eliminarfrecuecia(id)
+{
+    console.log('eliminar frecuencia');
 }
 
 function buscarfrecuencias3(id,monto,id_insurancepolicies) // para realizar pagos

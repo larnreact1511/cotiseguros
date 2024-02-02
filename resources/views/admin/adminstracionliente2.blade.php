@@ -421,7 +421,7 @@ if ( @$info[0]->numerotelefono )
                         <!-- Beneficiarios poliza salud-->
                         <input type="hidden" id="tipopoliza" readonly name="tipopoliza" class="form-control" value =""/>
                         
-                        <div id="cotizador" class="row text-center " hidden> 
+                        <div id="cotizador" class="row text-center " hidden>  
 
                         </div>
                         <table class="table" id="tablaparentescospolizas">
@@ -568,10 +568,6 @@ if ( @$info[0]->numerotelefono )
                         @csrf
                         <!-- Beneficiarios poliza salud-->
                         <input type="hidden" id="tipopoliza" readonly name="tipopoliza" class="form-control" value =""/>
-                        
-                        <div id="cotizador" class="row text-center " hidden> 
-
-                        </div>
                         <hr>
                         <h4> Parentesco de la póliza </h4>
                         <table  id="tablaparentescospolizaseditar" name="tablaparentescospolizaseditar" class="table">
