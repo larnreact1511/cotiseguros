@@ -3137,4 +3137,14 @@ class ClientesController extends Controller
         session()->flash('message', 'Usuarios cargado con exito');
         return back();
     }
+
+    public function nombredocumento(Request $request)
+    {
+        $edita =array(
+            'tipodocumento' =>$request->nombrenuevo,
+           );
+        DB::table('docuemntos')->where('id',$request->id)->update($edita);
+        $data['result'] =true;
+        return $data;
+    }
 }

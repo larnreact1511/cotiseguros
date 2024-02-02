@@ -78,6 +78,7 @@ Route::post('pagospolizas', [App\Http\Controllers\ClientesController::class, 'pa
 Route::post('funeditarfrecuencia', [App\Http\Controllers\ClientesController::class, 'editarfrecuenciapago'])->name('editarfrecuenciapago');
 
 Route::post('/buscarsiniestros', [App\Http\Controllers\ClientesController::class, 'buscarsiniestros'])->name('buscarsiniestros');
+Route::post('/editarnombredocumento', [App\Http\Controllers\ClientesController::class, 'nombredocumento']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

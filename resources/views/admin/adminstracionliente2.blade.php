@@ -223,11 +223,54 @@ if ( @$info[0]->numerotelefono )
                                                     <a href="../<?=$d->documentonombre ?>" target="_blank">
                                                         ver img
                                                     </a>
-                                                    <a href="#" onclick="borrar('{{$d->id}}')">
+                                                    <a href="#" onclick="borrar('{{$d->id}}')" style ="text-decoration: none;">
+                                                        <span 
+                                                        class='icon voyager-trash p-3 m-2' 
+                                                        title='Borrar Documento'
+                                                        
+                                                        ></span>    
                                                         Eliminar
                                                     </a>
+                                                    
+                                                    
                                                 </th>
-                                                
+                                                <th>
+                                                    <a href="#" onclick="editarnombredocumento()" id ="enlaceeditar" style ="text-decoration: none;">
+                                                        <span 
+                                                        class='icon voyager-documentation p-3 m-2' 
+                                                        title='Editar Nombre'
+                                                        onClick="enivarnouevonombre('{{$d->id}}')" 
+                                                        ></span>    
+                                                        Editar (nombre)
+                                                    </a>
+                                                    <div 
+                                                        id ="diveditarnombredocumento"
+                                                        name="diveditarnombredocumento"
+                                                        style= "display: none;"
+                                                        >
+                                                            <input 
+                                                                type="text" 
+                                                                class="text" 
+                                                                name="nuevonombre" 
+                                                                id ="nuevonombre"
+                                                            >
+                                                            <button  
+                                                                id="btnenviarn" 
+                                                                name="btnenviarn" 
+                                                                onclick="btneditarnombre('{{$d->id}}')"  
+                                                                type="button" class="btn btn-primary"> Editar nombre </button> 
+                                                            
+                                                            <button 
+                                                                class="btn btn-primary" 
+                                                                id="btnlimpiar" 
+                                                                name="btnlimpiar" 
+                                                                onclick="btnlimpiaredicionnombre()" 
+                                                                type="button"
+                                                                > 
+                                                                Cancelar 
+                                                                </button> 
+                                                    </div>
+                                                </th>
                                             </tr>
                                         <?php 
                                         $i++;

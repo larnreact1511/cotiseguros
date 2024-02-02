@@ -1901,3 +1901,43 @@ function eliminarpoliza()
         ); 
     }
 }
+function editarnombredocumento()
+{
+    $("#diveditarnombredocumento").css('display','block');
+    $("#enlaceeditar").css('display','none');
+    
+}
+function btneditarnombre(id)
+{
+    mostrarcarga()
+    fetch(urlservidor+"api/editarnombredocumento", 
+    {
+        headers: 
+        {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // <--- aquí el token
+            "Content-type": "application/json; charset=UTF-8"
+        },
+        method: "POST",
+        body: JSON.stringify(
+        {
+            
+            nombrenuevo:$("#nuevonombre").val(),
+            id: id,
+            
+        }),
+    })
+    .then(r => r.json())
+    .then(r => 
+    {
+        location.reload()
+        
+    }).finally(()=>
+    {
+        ocultarcarga()
+    });
+}
+function btnlimpiaredicionnombre()
+{
+    $("#diveditarnombredocumento").css('display','none');
+    $("#enlaceeditar").css('display','block');  
+}
