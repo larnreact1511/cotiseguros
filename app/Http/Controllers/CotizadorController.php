@@ -618,8 +618,8 @@ class CotizadorController extends Controller
             $value =$search['value']; 
             $Quote =Quote::orderBy('id', 'DESC')->where(function ($query) use ($value) {
                 $query->where('name', 'LIKE', "%$value%")
-                    ->orWhere('email', 'LIKE', "%$value%");
-                    //->orWhere('coverage', 'LIKE', "%$value%");      
+                    ->orWhere('email', 'LIKE', "%$value%")
+                    ->orWhere('phone', 'LIKE', "%$value%");      
             })
             ->with("memberquote")
             ->with(["coverages" => function($q)

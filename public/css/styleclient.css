@@ -57,6 +57,16 @@
             color: #000000;
             font-family: "mon-regular";
         }
+        .redondear-4{
+            border: 2px solid #596475;
+            padding: 10px;
+            border-radius: 25px;
+            background-color: #fff !important;
+            border-color:#596475;
+            color: #596475 !important;
+            font-family: "mon-regular";
+            font-weight: bold;
+        }
         .colorbtn
         {
         background-color: #cccccc;
@@ -78,4 +88,7 @@
         .mycheck:checked {
         background-color: #3c485a !important;;
         border-color: #3c485a  !important;;
+        }
+        .tituloh6{
+            color:#6d6d6d !important; font-weight: bold;
         }

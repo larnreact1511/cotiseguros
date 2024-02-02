@@ -5,11 +5,13 @@
         <div class="accordion-item m-2">
             <h6  
                 id=""
-                class="accordion-header collapsed redondear"
+                class="accordion-header collapsed redondear-4"
                 >
-                <a href="{{env('APP_URL')}}/cliente/salud" style ="text-decoration:none; color:#fff;">
+                <a href="{{env('APP_URL')}}/cliente/salud" style ="text-decoration:none; color:#596475;">
                 <i class="bi-person-plus-fill bi--md"></i>
-                Salud
+                
+                <strong>Salud</strong>
+                
                 </a>
                 
             </h6>     
@@ -17,12 +19,12 @@
         <div class="accordion-item m-2">
             <h6  
                 id=""
-                class="accordion-header collapsed redondear"
+                class="accordion-header collapsed redondear-4"
                 >
-                <a href="{{env('APP_URL')}}/cliente/auto" style ="text-decoration:none; color:#fff;">
+                <a href="{{env('APP_URL')}}/cliente/auto" style ="text-decoration:none; color:#596475;">
                 <i class=" bi-truck bi--md"></i>
                 
-                Autos
+                <strong>Autos</strong>
                 </a>
                 
             </h6>     
@@ -30,22 +32,22 @@
         <div class="accordion-item m-2">
             <h6  
                 id=""
-                class="accordion-header collapsed redondear"
+                class="accordion-header collapsed redondear-4"
                 >
-                <a href="{{env('APP_URL')}}/cliente/patrimonio" style ="text-decoration:none; color:#fff;">
+                <a href="{{env('APP_URL')}}/cliente/patrimonio" style ="text-decoration:none; color:#596475;">
                 <i class=" bi-building bi--md"></i>
-                Patrimonio
+                <strong>Patrimonio</strong>
                 </a>
             </h6>     
         </div>
         <div class="accordion-item m-2">
             <h6  
                 id=""
-                class="accordion-header collapsed redondear"
+                class="accordion-header collapsed redondear-4"
                 >
-                <a href="{{env('APP_URL')}}/usuarios" style ="text-decoration:none; color:#fff !important;">
+                <a href="{{env('APP_URL')}}/usuarios" style ="text-decoration:none; color:#596475 !important;">
                 <i class=" bi-skip-start-fill bi--md"></i>
-                Volver
+                <strong>Volver</strong>
                 </a>
                 
             </h6>     
@@ -53,11 +55,11 @@
         <div class="accordion-item m-2">
             <h6  
                 id=""
-                class="accordion-header collapsed redondear"
+                class="accordion-header collapsed redondear-4"
                 >
-                <a href="{{env('APP_URL')}}/logout" style ="text-decoration:none; color:#fff;">
+                <a href="{{env('APP_URL')}}/logout" style ="text-decoration:none; color:#596475;">
                 <i class=" bi bi-power bi--md"></i>
-                Cerrar
+                <strong>Cerrar</strong>
                 </a>
                 
             </h6>     

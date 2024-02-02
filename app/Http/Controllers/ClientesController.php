@@ -1545,6 +1545,7 @@ class ClientesController extends Controller
     }
     public function usuarios()
     {
+        
         if (auth()->id())
         {
             $users =  DB::table('users')->where('id',auth()->id())->get();
@@ -3100,16 +3101,7 @@ class ClientesController extends Controller
                     }
                     else
                     {
-                        /*
-                        User::create([
-                            'role_id' => 5,
-                            'name' => $nombre,
-                            'lastname' =>$apellido ,
-                            'email' => $email,
-                            'password' => bcrypt($clave),
-                            'phone' =>$telefono
-                        ]);
-                        */
+                        
                         $User = DB::table('users')->insertGetId(
                             [
                                 'role_id' => 5,
@@ -3119,10 +3111,21 @@ class ClientesController extends Controller
                                 'password' => bcrypt($clave),
                                 'phone' =>$telefono
                             ]);
-                            $user_roles = DB::table('user_roles')->insertGetId(
+                        $user_roles = DB::table('user_roles')->insertGetId(
+                            [
+                                'user_id' => $User,
+                                'role_id' => 5
+                            ]);
+                            $clientes = DB::table('clientes')->insertGetId(
                                 [
-                                    'user_id' => $User,
-                                    'role_id' => 5
+                                    'created_at' => date("Y-m-d H:i:s"),
+                                    'nombre' => $nombre,
+                                    'apellido' =>$apellido ,
+                                    'cedula' => $cedula,
+                                    'numerotelefono' => $telefono,
+                                    'estado' =>1,
+                                    'idusuario' => $eUsermail,
+                                    'rif' =>''
                                 ]);
                            
                     }
