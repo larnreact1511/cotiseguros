@@ -694,9 +694,9 @@ use Illuminate\Support\Facades\DB;
     
     foreach( $data as $p)
     {
-
+      $ruta = env('APP_URL').'/'.$p->documentonombre;
       $htmlmodal .="<li class='list-group-item active' aria-current='true'>";
-        $htmlmodal .= "<a href='{{env('APP_URL')}}/$p->documentonombre' class='btn btn-secondary colorbtn m-2' target='_blank'>$p->tipodocumento</a> &nbsp;";
+        $htmlmodal .= "<a href='".$ruta."' class='btn btn-secondary colorbtn m-2' target='_blank'>$p->tipodocumento</a> &nbsp;";
       $htmlmodal .=" </li>";
     }
     //$htmlmodal .= "</ul>";

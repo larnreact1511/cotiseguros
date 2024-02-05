@@ -2374,7 +2374,6 @@ class ClientesController extends Controller
     }
     public function guardarpagpendiente(Request $request)
     {
-        //dd($request);
         if( ( $request->idclientefp ) && ( $request->id_insurancepoliciesfp ) && ( $request->idadminfp ))
         {
             $cbox = $request->input('cbox');
@@ -2384,7 +2383,6 @@ class ClientesController extends Controller
                 $monto = $request->input('monto');
                 $photo_payment =  $request->file('photo_payment');
                 $frequencyofpayments = $request->input('frequencyofpayments');
-                //echo "ola "; echo "<pre>"; print_r($photo_payment);die;
                 for ( $i=0; $i < count($fechafin); $i++ )
                 {
                     if (in_array($i, $cbox))
@@ -2403,7 +2401,6 @@ class ClientesController extends Controller
                             );
                             if( $idisnet =DB::table('payments')->insertGetId($vinsert))
                             {
-                                //echo "<pre>"; print_r($photo_payment[$i]);
                                 if (array_key_exists($i, $photo_payment)) 
                                 {
                                     if ($photo_payment[$i]) 
@@ -2436,6 +2433,17 @@ class ClientesController extends Controller
             
         }
         return back();
+    }
+    public function eliminarfrecuecia(Request $request)
+    {
+        $edita =array(
+            'estadodepago' =>0
+           );
+        DB::table('payments')->where('id_frequencyofpayments',$request->id)->delete();
+        DB::table('frequencyofpayments')->where('id',$request->id)->update($edita);
+        $res['result']=true;
+        session()->flash('message', 'Frecuencia eliminada con exito');
+        return response()->json($res);
     }
     public function gudardarsinisestro(Request $request)
     {
@@ -2603,6 +2611,7 @@ class ClientesController extends Controller
         $accidents =array('codeqr'=>'');
         DB::table('clientes')->where('id',$id)->update($accidents);
         $res['result']=true;
+        session()->flash('message', 'Codigo QR eliminado con exito');
         return response()->json($res);
     }
     public function test()

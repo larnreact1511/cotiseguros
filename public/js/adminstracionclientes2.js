@@ -1030,23 +1030,8 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
                             type="numeric" name="monto[]" id="" value="${f.estadodepago ==1 ? f.montopago :f.montoestimado}" size="10">
                     </th>
                     <th>
-                        <input 
-                            ${ f.estadodepago ==1 ?'' : `disabeld` }
-                            type="file" 
-                            class="custom-file-input" 
-                            name="photo_payment[]" 
-                            id="photo_payment"
-                            accept="png,jpeg,pdf" 
-                        >
-                        <input 
-                            class="form-check-input" 
-                            type="radio" 
-                            name="btneliminarfrecuecia" 
-                            id="btneliminarfrecuecia" 
-                            onclick="eliminarfrecuecia(${f.id})"
-                            >
-
-                        Anular pago
+                        ${f.estadodepago ==1 ? inputanularpago(f.id,f.photo_payment ) :inputsubirpago(f.estadodepago )} 
+                        
                     </th>
                     </th>
                 </tr>
@@ -1063,9 +1048,62 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
     });
   
 }
+function inputsubirpago(estadodepago)
+{
+    html =`<input 
+        ${ estadodepago ==1 ?'' : `disabeld` }
+        type="file" 
+        class="custom-file-input" 
+        name="photo_payment[]" 
+        id="photo_payment"
+        accept="png,jpeg,pdf" 
+    >`;
+    return html;
+}
+function inputanularpago(id,photo_payment)
+{
+    html ='';
+    html =`<input 
+    class="form-check-input" 
+    type="radio" 
+    name="btneliminarfrecuecia" 
+    id="btneliminarfrecuecia" 
+    onclick="eliminarfrecuecia(${id})"
+    >
+
+    Anular pago
+    
+    <a href="${photo_payment}" target="_blank">
+    ver img
+    </a>
+    
+    `;
+    return html;
+}
 function eliminarfrecuecia(id)
 {
-    console.log('eliminar frecuencia');
+    mostrarcarga()
+    fetch(urlservidor+"api/eliminarfrecuecia", 
+    {
+        headers: 
+        {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // <--- aquí el token
+            "Content-type": "application/json; charset=UTF-8"
+        },
+        method: "POST",
+        body: JSON.stringify(
+        {
+            id: id
+        }),
+    })
+    .then(r => r.json())
+    .then(r => 
+    {   
+        location.reload();
+    }).finally(()=>
+    {
+        ocultarcarga()
+    });
 }
 
 function buscarfrecuencias3(id,monto,id_insurancepolicies) // para realizar pagos
