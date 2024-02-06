@@ -175,3 +175,4 @@ Route::post('agregarclinica', [App\Http\Controllers\ClientesController::class, '
 Route::get('listarclinicas', [App\Http\Controllers\ClientesController::class, 'listarclinicas']);
 
 Route::get('eliminarclinica/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarclinica']);
+Route::get('editarclinica/{id}', [App\Http\Controllers\ClientesController::class, 'datoseditarclinica']);

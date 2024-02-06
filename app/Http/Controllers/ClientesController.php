@@ -3189,18 +3189,37 @@ class ClientesController extends Controller
     function agregarclinica(Request $request)
     {
         //  
-        $agregarcliente = DB::table('clinicasservicios')->insertGetId(
-            [
-                
-                'id_seguro'=>$request->id_seguro,
-                'id_poliza'=>0,
-                'id_estado'=>$request->id_estado,
-                'id_municipio'=>$request->id_municipio,
-                'id_ciudad'=>$request->id_ciudad,
-                'direccion'=>$request->direccion,
-                'nombre'=>$request->nombre,
-                
-            ]);
+        if ( isset($request->id_clinica)){
+            session()->flash('message', 'Clinica Actulizada con exito');
+
+            $edita =array(
+                    'id_seguro'=>@$request->id_seguro,
+                    'id_poliza'=>0,
+                    'id_estado'=>@$request->id_estado,
+                    'id_municipio'=>@$request->id_municipio,
+                    'id_ciudad'=>@$request->id_ciudad,
+                    'direccion'=>@$request->direccion,
+                    'nombre'=>@$request->nombre,
+               );
+            DB::table('clinicasservicios')->where('id',@$request->id_clinica)->update($edita);
+        }
+        else
+        {
+            $agregarcliente = DB::table('clinicasservicios')->insertGetId(
+                [
+                    
+                    'id_seguro'=>@$request->id_seguro,
+                    'id_poliza'=>0,
+                    'id_estado'=>@$request->id_estado,
+                    'id_municipio'=>@$request->id_municipio,
+                    'id_ciudad'=>@$request->id_ciudad,
+                    'direccion'=>@$request->direccion,
+                    'nombre'=>@$request->nombre,
+                    
+                ]);
+                session()->flash('message', 'Clinica Agregada con exito');
+        }
+        
             return back();
     }  
 
@@ -3280,11 +3299,36 @@ class ClientesController extends Controller
         $dataresponce['data'] = $data;
         return response()->json($dataresponce);
     }
-    public function eliminarclinica(Request $request)
+    public function eliminarclinica($id)
     {
         $eliminarparentesco =array('id'=>$id);
         DB::table('clinicasservicios')->where('id',$id)->delete();
         $res['result']=true;
+        return response()->json($res);
+    }
+
+    public function datoseditarclinica($id)
+    {
+        $listmunicipios = DB::table('municipios')->where('id_estado',$id)->get();
+        $listciudades = DB::table('ciudades')->where('id_estado',$id)->get();
+        $datam =[];
+        $datec =[];
+        foreach(  $listmunicipios as  $muni => $m)
+        {
+             $data1['id']  = $m->id_municipio;    
+             $data1['text']  = $m->municipio;
+ 
+             $datam[]=$data1;
+        }
+        foreach(  $listciudades as  $ciu => $c)
+        {
+             $data2['id']  = $c->id_ciudad;    
+             $data2['text']  = $c->ciudad;
+ 
+             $datec[]=$data2;
+        }
+        $res['municipios'] = $datam;
+        $res['ciudades'] = $datec;
         return response()->json($res);
     }
 }

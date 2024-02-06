@@ -5,6 +5,9 @@
 <script src="{{ asset('js/sweetalert2.js') }}" defer></script>
 <script src="{{ asset('js/jquery.dataTables.min.js') }}" defer></script>
 <script src="{{ asset('js/clinicas.js') }}" defer></script>
+<div class="col-12" id="">
+        <div class="custom-loader" id ="carga" sytyle="display:none"></div>
+    </div>
 <div class="container">
     <div class="row">
         <div  
