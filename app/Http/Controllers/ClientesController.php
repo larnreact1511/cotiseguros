@@ -3099,6 +3099,11 @@ class ClientesController extends Controller
                 $cedula = $collection[$i]['cedula'] ;
                 $role = $collection[$i]['roles'] ;
                 $telefono = $collection[$i]['telefono'] ;
+                if ($collection[$i]['estado'] )
+                    $locacion = $collection[$i]['estado'] ;
+                else
+                    $locacion =0;
+                
                 
                 if (($nombre !='') && ($apellido !='') && ($email !='')&& ($clave !='') && ($cedula !='') && ($role !='') && ($telefono !='') )
                 {
@@ -3125,6 +3130,7 @@ class ClientesController extends Controller
                                 'user_id' => $User,
                                 'role_id' => 5
                             ]);
+                            
                             $clientes = DB::table('clientes')->insertGetId(
                                 [
                                     'created_at' => date("Y-m-d H:i:s"),
@@ -3134,7 +3140,8 @@ class ClientesController extends Controller
                                     'numerotelefono' => $telefono,
                                     'estado' =>1,
                                     'idusuario' => $eUsermail,
-                                    'rif' =>''
+                                    'rif' =>'',
+                                    'locacion' => $locacion
                                 ]);
                            
                     }
