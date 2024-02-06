@@ -3156,4 +3156,135 @@ class ClientesController extends Controller
         $data['result'] =true;
         return $data;
     }
+    public function clinicas()
+    {
+        $data['estados'] = DB::table('estados')->get();
+        $data['insurers'] = Insurer::select(["*"])->get();
+        return view("clinicas.clinicas",$data);
+    }
+    public function changeselectestado($id)
+    {
+       $listmunicipios = DB::table('municipios')->where('id_estado',$id)->get();
+       $listciudades = DB::table('ciudades')->where('id_estado',$id)->get();
+       $datam =[];
+       $datec =[];
+       foreach(  $listmunicipios as  $muni => $m)
+       {
+            $data1['id']  = $m->id_municipio;    
+            $data1['text']  = $m->municipio;
+
+            $datam[]=$data1;
+       }
+       foreach(  $listciudades as  $ciu => $c)
+       {
+            $data2['id']  = $c->id_ciudad;    
+            $data2['text']  = $c->ciudad;
+
+            $datec[]=$data2;
+       }
+       $res['municipios'] = $datam;
+       $res['ciudades'] = $datec;
+       return response()->json($res);
+    } 
+    function agregarclinica(Request $request)
+    {
+        //  
+        $agregarcliente = DB::table('clinicasservicios')->insertGetId(
+            [
+                
+                'id_seguro'=>$request->id_seguro,
+                'id_poliza'=>0,
+                'id_estado'=>$request->id_estado,
+                'id_municipio'=>$request->id_municipio,
+                'id_ciudad'=>$request->id_ciudad,
+                'direccion'=>$request->direccion,
+                'nombre'=>$request->nombre,
+                
+            ]);
+            return back();
+    }  
+
+    public function listarclinicas(Request $request)
+    {
+        
+        $data=[];
+        $search = $request->input('search'); 
+        if ($search['value']=='')
+        {
+            $clinicasservicios = DB::table('clinicasservicios')
+            ->leftJoin('estados','clinicasservicios.id_estado', '=', 'estados.id_estado')
+            ->leftJoin('ciudades','clinicasservicios.id_ciudad', '=', 'ciudades.id_ciudad')
+            ->leftJoin('municipios','clinicasservicios.id_municipio', '=', 'municipios.id_municipio')
+            ->select(
+                'clinicasservicios.id as id_clinica',
+                'clinicasservicios.nombre',
+                'clinicasservicios.direccion',
+                'ciudades.ciudad',
+                'estados.estado',
+                'municipios.municipio',
+                'ciudades.id_ciudad',
+                'estados.id_estado',
+                'municipios.id_municipio')
+            ->skip($request->input('start'))->take($request->input('length'))
+            ->orderBy('clinicasservicios.id', 'DESC')
+            ->get();
+        }
+        else
+        {
+            $value= $search['value'];
+            $clinicasservicios = DB::table('clinicasservicios')
+            ->leftJoin('estados','clinicasservicios.id_estado', '=', 'estados.id_estado')
+            ->leftJoin('ciudades','clinicasservicios.id_ciudad', '=', 'ciudades.id_ciudad')
+            ->leftJoin('municipios','clinicasservicios.id_municipio', '=', 'municipios.id_municipio')
+            ->Where('clinicasservicios.nombre', 'LIKE', "%$value%")
+            ->orWhere('ciudades.ciudad', 'LIKE', "%$value%")
+            ->orWhere('municipios.municipio', 'LIKE', "%$value%")
+            ->select(
+                'clinicasservicios.id as id_clinica',
+                'clinicasservicios.nombre',
+                'clinicasservicios.direccion',
+                'ciudades.ciudad',
+                'estados.estado',
+                'municipios.municipio',
+                'ciudades.id_ciudad',
+                'estados.id_estado',
+                'municipios.id_municipio')
+            ->skip($request->input('start'))->take($request->input('length'))
+            ->orderBy('clinicasservicios.id', 'DESC')
+            ->get();
+        }
+    
+        if ( $clinicasservicios->count() > 0)
+        {
+            $i=0;
+            
+            foreach ($clinicasservicios as $clinica => $cli)
+            {
+                
+                $datos['id'] = $cli->id_clinica;
+                $datos['nombre'] = $cli->nombre;
+                $datos['direccion'] = $cli->direccion;
+                $datos['ciudad'] = $cli->ciudad;
+                $datos['estado'] = $cli->estado;
+                $datos['municipio'] = $cli->municipio;
+
+                $datos['id_ciudad'] = $cli->id_ciudad;
+                $datos['id_estado'] = $cli->id_estado;
+                $datos['id_municipio'] = $cli->id_municipio;
+                $data[]=$datos;
+            }
+        }
+        $dataresponce['draw'] = $request->input('draw');
+        $dataresponce['recordsTotal'] = $clinicasservicios->count() >0 ? $clinicasservicios->count() : 0;
+        $dataresponce['recordsFiltered'] = $clinicasservicios->count() >0 ? $clinicasservicios->count() : 0;
+        $dataresponce['data'] = $data;
+        return response()->json($dataresponce);
+    }
+    public function eliminarclinica(Request $request)
+    {
+        $eliminarparentesco =array('id'=>$id);
+        DB::table('clinicasservicios')->where('id',$id)->delete();
+        $res['result']=true;
+        return response()->json($res);
+    }
 }

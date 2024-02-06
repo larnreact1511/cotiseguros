@@ -167,3 +167,11 @@ Route::get('cliente/patrimonio', [App\Http\Controllers\ClientesController::class
 Route::get('importar-usuarios', [App\Http\Controllers\ClientesController::class, 'importarusuarios']);
 Route::post('importausu', [App\Http\Controllers\ClientesController::class, 'importausu']);
 
+
+Route::get('Agregar-Clinicas', [App\Http\Controllers\ClientesController::class, 'clinicas']);
+Route::get('changeselectestado/{id}', [App\Http\Controllers\ClientesController::class, 'changeselectestado']);
+
+Route::post('agregarclinica', [App\Http\Controllers\ClientesController::class, 'agregarclinica']);
+Route::get('listarclinicas', [App\Http\Controllers\ClientesController::class, 'listarclinicas']);
+
+Route::get('eliminarclinica/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarclinica']);
