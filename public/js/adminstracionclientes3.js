@@ -1324,10 +1324,359 @@ function eliminarqr(id)
        // location.reload()
     );
 }
-function editarpoliza(id_insurancepolicies)
+async function editarpoliza(id_insurancepolicies) {
+    try {
+      // ⛔️ TypeError: Failed to fetch
+      // 👇️ incorrect or incomplete URL
+      polizaieditar =id_insurancepolicies;
+      const response = await fetch(urlservidor+"editarpoliza/"+id_insurancepolicies);
+  
+      if (!response.ok) {
+        alert (' errorr cors ')
+        throw new Error(`Error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      //
+     
+    
+        let insurers = result.insurers;
+        let documentos = result.documentos;
+        let comentario = result.comentario;
+        if (  insurers[0].tipopoliza==1)
+        {
+            $("#diveliminar").css('display','block');
+            let member = result.member;
+            let declarada = result.declarada;
+            let nodeclarada = result.nodeclarada;
+
+            $("#divsaludeditar").css('display','block');
+            $("#divsalud").css('display','none');
+            $("#tipopoliza").val(1)
+
+            $("#divauto").css('display','none');
+            $("#divempresas").css('display','none');
+
+            $("#divautoeditar").css('display','none');
+            $("#divempresaseditar").css('display','none');
+
+            $("#tablaparentescospolizaseditar").empty();
+            if (member.length > 0)
+            {
+                member.map((f,indexFamiliar) =>
+                {
+                    $("#tablaparentescospolizaseditar").append(`
+                        <tr>
+                            <td>
+                                ${generahtmlparentesco(indexFamiliar,f.status)}
+                            </td>
+                            <td>
+                                ${generahtmlsexo(indexFamiliar,f.gender)}
+                            </td>
+                            <td>
+                                ${generaretornardia(indexFamiliar,f.day)}
+                            </td>
+                            <th>
+                                ${generameses(indexFamiliar,f.mounth)}
+                            </th>
+                            <th>
+                                ${generayy(indexFamiliar, f.year)}
+                            </th>
+                            <th>
+                            <span 
+                                class='icon voyager-trash btn-delete p-3 m-2' 
+                                title='borrar'
+                                onclick="eliminarparentesco(${f.id})" 
+                            >
+                            Eliminar
+                            </span>
+                            </th>
+                        </tr>
+                        `);
+                    
+                });
+            }
+               
+
+            $("#tablasaludocumentosdeditar").empty();
+            if (documentos.length > 0)
+            {
+                documentos.map((f,indexFamiliar) =>
+                {
+                    $("#tablasaludocumentosdeditar").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p> documento cargado ->  ${ f.tipodocumento } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-documentation btn-delete p-3 m-2' 
+                                    title='Ver'
+                                    >
+                                    <a href="../${ f.documentonombre }" target="_blank"  style ="text-decoration: none;" >
+                                        ver
+                                    </a>
+                                </span>
+
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminardocumento(${ f.id })"
+                                >
+                                    Eliminar
+                                </span>
+                                    
+                            </td>
+                        </tr>
+                        `);
+                });
+            }
+            
+
+            $("#tablacomentarioseditar").empty();
+            if (comentario.length > 0)
+            {
+                comentario.map((f,indexFamiliar) =>
+                {
+                    $("#tablacomentarioseditar").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p> comentario cargado ->  ${ f.comentario } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminarcomentario(${ f.id })"
+                                >
+                                    Eliminar
+                                </span>
+                            </td>
+                        </tr>
+                        `);
+                });
+            }
+            
+
+            $("#tabladeclaradaeditar").empty();
+            if (declarada.length > 0)
+            {
+                declarada.map((f,indexFamiliar) =>
+                {
+                    $("#tabladeclaradaeditar").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p> Patologia delcarada ->  ${ f.descripcion } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminardelcarada(${f.id})"
+                                >
+                                    Eliminar
+                                </span>
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+           
+
+            $("#tablanodeclaradaeditar").empty();
+            if (nodeclarada.length > 0)
+            {
+                nodeclarada.map((f,indexFamiliar) =>
+                {
+                    $("#tablanodeclaradaeditar").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p>  Patologia delcarada ->  ${ f.descripcion } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminarnodeclarada(${f.id})"
+                                >
+                                    Eliminar
+                                </span>
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+            
+                
+        }
+        else if (  insurers[0].tipopoliza==2)
+        {
+            $("#diveliminar").css('display','block');
+            $("#divsaludeditar").css('display','none');
+            $("#divsalud").css('display','none');
+            $("#tipopoliza2").val(2)
+            $("#divautoeditar").css('display','block');
+            $("#divauto").css('display','none');
+
+            $("#divempresas").css('display','none');
+            $("#divempresaseditar").css('display','none');
+
+            $("#tablaautosdocumentos").empty();
+            if (documentos.length > 0)
+            {
+                documentos.map((f,indexFamiliar) =>
+                {
+                    $("#tablaautosdocumentos").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p> documento cargado ->  ${ f.tipodocumento } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-documentation btn-delete p-3 m-2' 
+                                    title='Ver'
+                                    >
+                                    <a href="../${ f.documentonombre }" target="_blank"  style ="text-decoration: none;" >
+                                        ver
+                                    </a>
+                                </span>
+
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminardocumento(${ f.id })"
+                                >
+                                    Eliminar
+                                </span>
+                                    
+                            </td>
+                        </tr>
+                        `);
+                });
+            }
+            
+            let modeloauto =  document.getElementById("modeloauto");
+            modeloauto.innerHTML = insurers[0].descripcionpoliza;
+
+            $("#tablaautoscomentarios").empty();
+            if (comentario.length > 0)
+            {
+                comentario.map((f,indexFamiliar) =>
+                {
+                    $("#tablaautoscomentarios").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p> comentario cargado ->  ${ f.comentario } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminarcomentario('${ f.id }')"
+                                >
+                                    Eliminar
+                                </span>
+                            </td>
+                        </tr>
+                        `);
+                });
+            }
+
+        }
+        else 
+        {
+            
+            $("#diveliminar").css('display','block');
+            $("#divsaludeditar").css('display','none');
+            $("#divsalud").css('display','none');
+            $("#tipopoliza2").val(2)
+            $("#divautoeditar").css('display','none');
+            $("#divauto").css('display','none');
+
+            $("#divempresas").css('display','none');
+            $("#divempresaseditar").css('display','block');
+            
+            let descripcionpolizaempresa =  document.getElementById("descripcionpolizaempresa");
+            descripcionpolizaempresa.innerHTML ='';
+            descripcionpolizaempresa.innerHTML = insurers[0].descripcionpoliza;
+
+            let dimensionesedit =  document.getElementById("dimensionesedit");
+            dimensionesedit.innerHTML ='';
+            dimensionesedit.innerHTML = 'Dimensiones '+ insurers[0].dimensiones;
+
+            let ubicacion =  document.getElementById("ubicacionedit");
+            ubicacion.innerHTML ='';
+            ubicacion.innerHTML ='Ubicación '+insurers[0].ubicacion;
+
+            if (documentos.length > 0)
+            {
+                documentos.map((f,indexFamiliar) =>
+                {
+                    $("#tabladocumentosempresaseidtar").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p> documento cargado ->  ${ f.tipodocumento } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-documentation btn-delete p-3 m-2' 
+                                    title='Ver'
+                                    >
+                                    <a href="../${ f.documentonombre }" target="_blank"  style ="text-decoration: none;" >
+                                        ver
+                                    </a>
+                                </span>
+
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminardocumento(${ f.id })"
+                                >
+                                    Eliminar
+                                </span>
+                                    
+                            </td>
+                        </tr>
+                        `);
+                });
+            }
+            if (comentario.length > 0)
+            {
+                comentario.map((f,indexFamiliar) =>
+                {
+                    $("#tablacomentariosempresaeditar").append(`
+                        <tr>
+                            <td width ="70%">
+                            <p> comentario cargado ->  ${ f.comentario } </p>
+                            </td>
+                            <td>
+                                <span 
+                                    class='icon voyager-trash btn-delete p-3 m-2' 
+                                    title='borrar'
+                                    onclick="eliminarcomentario('${ f.id }')"
+                                >
+                                    Eliminar
+                                </span>
+                            </td>
+                        </tr>
+                        `);
+                });
+            }
+        }
+      //
+    } catch (err) {
+      console.log(err);
+    }
+  }
+function editarpolizaold(id_insurancepolicies)
 {
+    /* 
+    fetch('http://ip-api.com/json', { method: "GET", mode: 'cors', headers: { 'Content-Type': 'application/json',}}).then(response => response.json())
+    */
     polizaieditar =id_insurancepolicies;
-    fetch(urlservidor+"editarpoliza/"+id_insurancepolicies)
+    console.log(polizaieditar)
+    alert(polizaieditar);
+    fetch(urlservidor+"editarpoliza/"+id_insurancepolicies,{ method: "GET", mode: 'cors', headers: { 'Content-Type': 'application/json',}})
     .then(response => response.json())
     .then(response=>{
 

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{ asset('/css/lloader.css') }}">
 <script src="{{ asset('js/jquery-3.5.1.js') }}" defer></script>
 <script src="{{ asset('js/sweetalert.js') }}" defer></script>
-<script src="{{ asset('js/adminstracionclientes2.js') }}" defer></script>
+<script src="{{ asset('js/adminstracionclientes3.js') }}" defer></script>
 <!-- --> 
 <?php 
 $code = '';
@@ -159,7 +159,15 @@ if ( @$info[0]->numerotelefono )
                                 </select>
                             </td>
                             <td>
-                                
+                                <label>Fecha de nacimiento </label><br>
+                                <input 
+                                        name="fecha_nacimiento" 
+                                        id="fecha_nacimiento"
+                                        type="date" 
+                                        class="form-control shadow-none border-0 bg-grey"
+                                        placeholder="Fecha de Nacimiento" 
+                                        value="<?= @$info[0]->fecha_nacimiento; ?>"
+                                        >
                             </td>
                             <td>
                                 

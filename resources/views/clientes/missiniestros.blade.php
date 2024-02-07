@@ -8,9 +8,8 @@ use Illuminate\Support\Facades\DB;
     {
         
         ?>
-            <div style="height:70vh;">
-                <!-- -->
-                <div class="accordion accordion-flush" id="accordionFlushExample" style="text-align: center;">   
+            <!-- -->
+            <div class="accordion accordion-flush" id="accordionFlushExample" style="text-align: center;">   
                     <?php 
                         foreach ($insurers as $insurer)
                         {
@@ -135,13 +134,15 @@ use Illuminate\Support\Facades\DB;
                                                         if ($t->id != $ultimo )
                                                         {
                                                             ?>
-                                                            <a 
-                                                                href="<?=$ruta?>" 
-                                                                target='_blank' 
-                                                                title= " Siniestro anterior " 
-                                                                class="btn btn-primary mt-2 redondear-3" >
-                                                                Siniestro anterior
-                                                            </a>
+                                                            <div>
+                                                                <a 
+                                                                    href="<?=$ruta?>" 
+                                                                    title= " Siniestro anterior " 
+                                                                    class="btn btn-primary mt-2 redondear-3" >
+                                                                    Siniestro anterior
+                                                                </a>
+                                                            </div>
+                                                            
                                                             <?php
                                                         }
                                                     }
@@ -195,7 +196,6 @@ use Illuminate\Support\Facades\DB;
                         </a>
                     </div>
                 </div>
-            </div>
         <?php
         
     }

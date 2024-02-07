@@ -180,3 +180,5 @@ Route::get('editarclinica/{id}', [App\Http\Controllers\ClientesController::class
 
 
 Route::get('siniestro/{id}', [App\Http\Controllers\ClientesController::class, 'siniestro']);
+Route::get('cumpleañeros-del-mes', [App\Http\Controllers\ClientesController::class, 'birthdaydate']);
+Route::get('listbirthdaydate', [App\Http\Controllers\ClientesController::class, 'listbirthdaydate']);

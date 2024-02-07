@@ -516,6 +516,7 @@ class ClientesController extends Controller
                     'apellido'=>$request->apellido,
                     'cedula'=>$request->cedula,
                     'rif'=>$request->rif,
+                    'fecha_nacimiento'=>@$request->fecha_nacimiento,
                     'numerotelefono'=>$numero,
                     'nombrecontacto'=>@$request->nombrecontacto,
                     'telefonococontacto'=>@$request->telefonococontacto,
@@ -1788,7 +1789,35 @@ class ClientesController extends Controller
     //
     public function siniestro($id)
     {
-       echo $id;
+        if (auth()->id())
+        {
+            $users =  DB::table('users')->where('id',auth()->id())->get();
+            $role_id =$users[0]->role_id;
+            $data["footer"]=Footer::first();
+            $data['accidents'] =  DB::table('accidents')
+            ->join('insurancepolicies', 'accidents.id_insurancepolicies', '=', 'insurancepolicies.id')
+            ->join('insurers', 'insurancepolicies.idinsurers', '=', 'insurers.id')
+            ->join('coverages', 'insurancepolicies.idcoverages', '=', 'coverages.id')
+            ->where('accidents.id',$id)
+            ->where('accidents.idusuario',auth()->id())
+            ->select(
+                'accidents.id as id_accidents',
+                'accidents.descripcion',
+                'accidents.monto',
+                'accidents.montopagado',
+                'accidents.estado',
+
+                'insurers.name',
+                'insurers.note',
+                'insurers.plazos',
+                'coverages.coverage',
+                )
+            ->get(); 
+                            
+            return view("clientes.siniestro",$data);
+        }
+        else
+            return view("errors.nologin");
     }
     //
     function moroso($id)
@@ -3155,6 +3184,7 @@ class ClientesController extends Controller
                 $cedula = $collection[$i]['cedula'] ;
                 $role = $collection[$i]['roles'] ;
                 $telefono = $collection[$i]['telefono'] ;
+                $fecha_nacimiento = @$collection[$i]['fecha_nacimiento'] ;
                 if ($collection[$i]['estado'] )
                     $locacion = $collection[$i]['estado'] ;
                 else
@@ -3197,6 +3227,7 @@ class ClientesController extends Controller
                                     'estado' =>1,
                                     'idusuario' => $eUsermail,
                                     'rif' =>'',
+                                    'fecha_nacimiento' =>@$fecha_nacimiento,
                                     'locacion' => $locacion
                                 ]);
                            
@@ -3393,5 +3424,50 @@ class ClientesController extends Controller
         $res['municipios'] = $datam;
         $res['ciudades'] = $datec;
         return response()->json($res);
+    }
+
+    public function birthdaydate ()
+    {
+       
+        return view("admin.birthdaydate");
+    }
+    public function listbirthdaydate (Request $request)
+    {
+       
+        $mes =date('m');
+        $year =date('Y');
+
+        $mes_actual =$year.'-'.$mes.'-01';
+       
+        $fin_de_mes = date("Y-m-d",strtotime($mes_actual."+ 1 month")); 
+       
+        $clientes = DB::table('clientes')
+        //->whereBetween('fecha_nacimiento', [$from, $to])
+        ->get();
+        $con =0;
+        $data =[];
+        foreach ( $clientes as $cliente => $cli)
+        {
+            if ($cli->fecha_nacimiento)
+            {
+                //1988-07-24
+                $mes_cumple = substr($cli->fecha_nacimiento, 5, 2); 
+                if ($mes_cumple ==$mes )
+                {
+                    $datos['id'] = $cli->id;
+                    $datos['nombre'] = $cli->nombre;
+                    $datos['apellido'] = $cli->apellido;
+                    $datos['fecha_nacimiento'] = $cli->fecha_nacimiento;
+                    $datos['numerotelefono'] = $cli->numerotelefono;
+                    $data[]=$datos;
+                    $con++;
+                }
+            }
+        }
+        $dataresponce['draw'] = $request->input('draw');
+        $dataresponce['recordsTotal']       =   $con;
+        $dataresponce['recordsFiltered']    =   $con;
+        $dataresponce['data']               =   $data;
+        return response()->json($dataresponce);
     }
 }

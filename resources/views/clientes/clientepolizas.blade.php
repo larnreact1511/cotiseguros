@@ -8,8 +8,13 @@
                 class="accordion-header collapsed redondear-4"
                 >
                 <a href="{{env('APP_URL')}}/cliente/salud" style ="text-decoration:none; color:#596475;">
-                <i class="bi-person-plus-fill bi--md"></i>
                 
+                <img 
+                    class="w-10" 
+                    height="30"  
+                    width ="30" 
+                    src="{{env('APP_URL')}}/imqr/latido_del_corazon.png"
+                    >
                 <strong>Pólizas de Salud</strong>
                 
                 </a>
@@ -22,9 +27,14 @@
                 class="accordion-header collapsed redondear-4"
                 >
                 <a href="{{env('APP_URL')}}/cliente/auto" style ="text-decoration:none; color:#596475;">
-                <i class=" bi-truck bi--md"></i>
+                <img 
+                    class="w-10" 
+                    height="30"  
+                    width ="30" 
+                    src="{{env('APP_URL')}}/imqr/coche_electrico.png"
+                    >
                 
-                <strong>Pólizas deAutos</strong>
+                <strong>Pólizas de Autos</strong>
                 </a>
                 
             </h6>     
@@ -35,7 +45,12 @@
                 class="accordion-header collapsed redondear-4"
                 >
                 <a href="{{env('APP_URL')}}/cliente/patrimonio" style ="text-decoration:none; color:#596475;">
-                <i class=" bi-building bi--md"></i>
+                <img 
+                    class="w-10" 
+                    height="30"  
+                    width ="30" 
+                    src="{{env('APP_URL')}}/imqr/casa.png"
+                    >
                 <strong>Pólizas Patrimonniales</strong>
                 </a>
             </h6>     
