@@ -197,16 +197,7 @@ use Illuminate\Support\Facades\DB;
                                       <h5 class="card-title"> <?=number_format($poliza->coverage).' USD '; ?></h5>
                                       
                                       <?php 
-                                      if ( count($comentarios) >0 )
-                                      {
-                                        foreach($comentarios as $c)
-                                        {
-                                          ?>
-                                          <h6 class="card-title">Nota : <?=@$c->comentario?></h6>
-                                          <?php 
-                                        }
                                       
-                                      }
                                       if ( count($documentos) >0 )
                                       {
                                         ?>
@@ -214,7 +205,7 @@ use Illuminate\Support\Facades\DB;
                                           class="btn btn-primary m-2 colorbtn" 
                                           data-bs-toggle="modal" 
                                           data-bs-target="#modaldocumentopoliza_<?=$poliza->id_poliza ?>">
-                                          Documentos Poliza 
+                                          Documentos Póliza 
                                         </button>
                                           <?php  generamoaldocumentos($poliza->id_poliza,$documentos) ?>
                                         
@@ -250,6 +241,18 @@ use Illuminate\Support\Facades\DB;
                                           </h6>
                                           <div id="flush-collapseinforp_2" class="accordion-collapse collapse" aria-labelledby="flush-headinginforperson_2" data-bs-parent="#accordionFlushExample_2" style="">
                                             <div class="accordion-body row">
+                                              <?php 
+                                              if ( count($comentarios) >0 )
+                                              {
+                                                foreach($comentarios as $c)
+                                                {
+                                                  ?>
+                                                  <h6 class="card-title" style="color :black;">Nota : <?=@$c->comentario?></h6>
+                                                  <?php 
+                                                }
+                                              
+                                              }
+                                              ?>
                                               <!--  --> 
                                               <div class ="card m-2">
                                                 <h6  style ="color:green !important;">
@@ -409,11 +412,14 @@ use Illuminate\Support\Facades\DB;
                                 
                                                         <div class="row">
                                                             <div class="col-12 d-flex justify-content-center">
-                                                                <div class="form-check">
-                                                                    <input class="mycheck" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                
+                                                                <div >
+                                                                    <input 
+                                                                      class="mycheck" 
+                                                                      type="checkbox" 
+                                                                      name="remember" 
+                                                                      id="remember" {{ old('remember') ? 'checked' : '' }}>
                                                                     <label class="form-check-label mon-light" for="remember">
-                                                                    Mantener sesión iniciada
+                                                                      Mantener sesión iniciada
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -533,7 +539,7 @@ use Illuminate\Support\Facades\DB;
                               src="{{env('APP_URL')}}/storage/{{$poliza->image}}"
                               >
                               <strong>
-                              {{$name }}
+                              <!--{{$name }}-->
                               </strong>
                           
                         </h6>
@@ -687,7 +693,7 @@ use Illuminate\Support\Facades\DB;
     $htmlmodal .= "<div class='modal-dialog'>";
     $htmlmodal .= "<div class='modal-content'>";
     $htmlmodal .= "<div class='modal-header'>";
-    $htmlmodal .= "<h1 class='modal-title fs-5'>Documentos Poliza</h1>";
+    $htmlmodal .= "<h1 class='modal-title fs-5'>Documentos Póliza</h1>";
     $htmlmodal .= "<button type='button' class='btn-close colorbtn' data-bs-dismiss='modal' aria-label='Close'></button>";
     $htmlmodal .= "</div>";
     $htmlmodal .= "<div class='modal-body'>";
