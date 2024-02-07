@@ -6,6 +6,11 @@
     if (count($autos) >0 )
     {
       ?>
+          <!--  -->
+          <h6 class="tituloh6" style="color:#911d1b !important;">
+            Póliza de Autos
+          </h6>
+          <!-- --> 
           <div 
             class="accordion accordion-flush" 
             id="acoordeoplolizasclientesalud" 

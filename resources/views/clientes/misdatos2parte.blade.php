@@ -50,12 +50,12 @@
                 <form action="actualizarmisdatos" 
                         method="post">
                         @csrf
-                    <div class="page-header pt-3">
+                    <div class="page-header pt-3" hidden>
                         <h2>
                             Perfil de Cliente
                         </h2>
                     </div>
-                    <div class="row mb-4" >
+                    <div class="row mb-4" hidden>
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="nombre">Nombre</label>
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-4" >
+                    <div class="row mb-4" hidden>
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="letra1">&nbsp</label>
@@ -94,7 +94,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-4" >
+                    <div class="row mb-4" hidden>
                         <div class="col">
                             <div class="form-outline">
                                     <label class="form-label" for="code1"> &nbsp; </label>
@@ -122,12 +122,12 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="page-header pt-3" hidden>
+                    <div class="page-header pt-3">
                         <h2>
                             Contacto de Emergencia
                         </h2>
                     </div>
-                    <div class="row mb-4" hidden>
+                    <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-outline">
                                 <label class="form-label" for="nombreconatacto">Nombre</label>
@@ -143,7 +143,7 @@
                             </div>
                         </div>
                     </div>    
-                    <div class="row mb-4" hidden>
+                    <div class="row mb-4">
                         <div class="col-md-3">
                             <div class="form-outline">
                                 <label class="form-label" for="letra2"> &nbsp; </label>
@@ -228,7 +228,7 @@
         <div class ="row">
             <div class="col-md-12 p-2">
                 <a 
-                    href="{{env('APP_URL')}}/usuarios" 
+                    href="{{env('APP_URL')}}/cliente/mis-datos" 
                     style ="text-decoration:none; color:#911d1b !important;" 
                     class ="d-flex justify-content-center"
                     >
@@ -238,20 +238,7 @@
                     </strong>   
                 </a>
             </div>
-        </div>
-        <div class ="row">
-            <div class="col-md-12 p-2">
-                <a 
-                    href="{{env('APP_URL')}}/cliente/mis-datos-parte-2" 
-                    style ="text-decoration:none; color:#911d1b !important;" 
-                    class ="d-flex justify-content-center"
-                    >
-                    <i class=" bi bi-caret-right-fill bi--3xl"></i>
-                    <strong> 
-                    Ver Contactos
-                    </strong>   
-                </a>
-            </div>
+            
         </div>
     </div>
 @endsection

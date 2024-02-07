@@ -10,7 +10,7 @@
                 <a href="{{env('APP_URL')}}/cliente/salud" style ="text-decoration:none; color:#596475;">
                 <i class="bi-person-plus-fill bi--md"></i>
                 
-                <strong>Salud</strong>
+                <strong>Pólizas de Salud</strong>
                 
                 </a>
                 
@@ -24,7 +24,7 @@
                 <a href="{{env('APP_URL')}}/cliente/auto" style ="text-decoration:none; color:#596475;">
                 <i class=" bi-truck bi--md"></i>
                 
-                <strong>Autos</strong>
+                <strong>Pólizas deAutos</strong>
                 </a>
                 
             </h6>     
@@ -36,7 +36,7 @@
                 >
                 <a href="{{env('APP_URL')}}/cliente/patrimonio" style ="text-decoration:none; color:#596475;">
                 <i class=" bi-building bi--md"></i>
-                <strong>Patrimonio</strong>
+                <strong>Pólizas Patrimonniales</strong>
                 </a>
             </h6>     
         </div>

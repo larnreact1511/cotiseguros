@@ -1,7 +1,11 @@
 @extends('layouts.clientesseguro')
 @section('content')
 <div class="row d-flex justify-content-center" style="text-align: center; height:70vh;">
-    <!--  -->  
+    <!--  -->
+    <h6 class="tituloh6" style="color:#911d1b !important;">
+            Póliza de Patrimoniales
+          </h6>
+          <!-- --> 
     <div 
       class="accordion accordion-flush" 
       id="acoordeoplolizasclientesalud" 
@@ -40,7 +44,7 @@
                               class="w-10" 
                               height="30"  
                               width ="50" 
-                              src="https://cotiseguros.com.ve/storage/{{$poliza->image}}"
+                              src="{{env('APP_URL')}}/storage/{{$poliza->image}}"
                               >
                                 {{ $poliza->name }}  {{ number_format($poliza->coverage, 2, ',', '.') }} USD
                         </h6> 

@@ -159,6 +159,7 @@ Route::get('cliente/mis-polizas', [App\Http\Controllers\ClientesController::clas
 Route::get('cliente/mis-siniestros', [App\Http\Controllers\ClientesController::class, 'sinisestros']);
 Route::get('cliente/mis-pagos', [App\Http\Controllers\ClientesController::class, 'mispagos']);
 Route::get('cliente/mis-datos', [App\Http\Controllers\ClientesController::class, 'misdatos']);
+Route::get('cliente/mis-datos-parte-2', [App\Http\Controllers\ClientesController::class, 'misdatosparte2']);
 
 Route::get('cliente/salud', [App\Http\Controllers\ClientesController::class, 'clientesalud']);
 Route::get('cliente/auto', [App\Http\Controllers\ClientesController::class, 'clienteauto']);
@@ -176,3 +177,6 @@ Route::get('listarclinicas', [App\Http\Controllers\ClientesController::class, 'l
 
 Route::get('eliminarclinica/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarclinica']);
 Route::get('editarclinica/{id}', [App\Http\Controllers\ClientesController::class, 'datoseditarclinica']);
+
+
+Route::get('siniestro/{id}', [App\Http\Controllers\ClientesController::class, 'siniestro']);

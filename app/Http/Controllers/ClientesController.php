@@ -1766,11 +1766,29 @@ class ClientesController extends Controller
             $data["footer"]=Footer::first();
             $data['user'] =  DB::table('clientes')->where('idusuario',auth()->id())->get(); 
             $data['accidents'] = DB::table('accidents')->where('idusuario',auth()->id())->get();
+            $data['insurers'] =DB::table('insurancepolicies')
+            ->join('coverages', 'insurancepolicies.idcoverages', '=', 'coverages.id')
+            ->join('insurers', 'insurancepolicies.idinsurers', '=', 'insurers.id')
+            ->where('insurancepolicies.idusuario',auth()->id())
+            ->select(
+                'coverages.coverage',
+                'insurers.name',
+                'insurers.id as id_insurers',
+                'insurers.image',
+                'insurancepolicies.id as id_insurancepolicies',
+                )->get(); 
+                            
+                            
             return view("clientes.missiniestros",$data);
         }
         else
             return view("errors.nologin");
         
+    }
+    //
+    public function siniestro($id)
+    {
+       echo $id;
     }
     //
     function moroso($id)
@@ -1966,6 +1984,44 @@ class ClientesController extends Controller
             'member_quotes.birthday')
             ->get();    
             return view("clientes.misdatos",[
+                "footer" => Footer::first(),
+                "url" =>'https://cotiseguros.com.ve/',
+                "clientes" => $clientes,
+                "memberquotes" =>$memberquotes,
+                "user" => $users
+            ]);
+        }
+        else
+            return view("errors.nologin");
+    }
+    public function misdatosparte2()
+    {
+       
+        if (auth()->id())
+        {
+            $users =  DB::table('clientes')->where('idusuario',auth()->id())->get();
+            $clientes =  DB::table('clientes')
+            ->leftJoin('users', 'users.id', '=', 'clientes.idusuario')
+            ->where('clientes.idusuario',auth()->id())
+            ->select('clientes.nombre',
+            'clientes.apellido',
+            'clientes.cedula',
+            'clientes.numerotelefono',
+            'clientes.nombrecontacto',
+            'clientes.apellidocontacto',
+            'clientes.telefonococontacto',
+            'clientes.cedulacontacto',
+            'users.email')
+            ->get();
+            $memberquotes = DB::table('member_quotes')
+            ->leftJoin('insurancepolicies', 'member_quotes.id_insurancepolicies', '=', 'insurancepolicies.id')
+            ->where('insurancepolicies.idusuario', '=',auth()->id() )
+            ->select('member_quotes.status',
+            'member_quotes.gender',
+            'member_quotes.date',
+            'member_quotes.birthday')
+            ->get();    
+            return view("clientes.misdatos2parte",[
                 "footer" => Footer::first(),
                 "url" =>'https://cotiseguros.com.ve/',
                 "clientes" => $clientes,

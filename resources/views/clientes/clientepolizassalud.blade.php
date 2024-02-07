@@ -6,7 +6,11 @@
     if (count($salud) >0 )
     {
       ?>
-          <!--  --> 
+          <!--  -->
+          <h6 class="tituloh6" style="color:#911d1b !important;">
+            Póliza de Salud
+          </h6>
+          <!-- --> 
           <div 
             class="accordion accordion-flush" 
             id="acoordeoplolizasclientesalud" 
@@ -38,9 +42,9 @@
                                     class="w-10" 
                                     height="30"  
                                     width ="50" 
-                                    src="https://cotiseguros.com.ve/storage/{{$poliza->image}}"
+                                    src="{{env('APP_URL')}}storage/{{$poliza->image}}"
                                     >
-                                      {{ $poliza->name }}  {{ number_format($poliza->coverage, 2, ',', '.') }} USD
+                                    {{ number_format($poliza->coverage, 2, ',', '.') }} USD
                               </h6>     
                               <div 
                                   id="collapsePoliza_{{$poliza->idinsurers}}" 
@@ -62,32 +66,13 @@
                                                       <p> 
                                                             {{ $m->status}}  {{ $m->gender}} ( {{ $m->date}}  años )
                                                       </p>  
-                                                            
-                                                        
                                                     <?php 
                                                 }
                                             }
                                           ?>
                                          
                                       </div>
-                                      <div class ="card m-2">
-                                          <h6 class="tituloh6">
-                                            Comentarios  de la póliza
-                                          </h6>
-                                          <?php  
-                                            if ( count($comentarios) >0 )
-                                            {
-                                                foreach ($comentarios as $comentario => $c)
-                                                {
-                                                    ?>
-                                                      <p> 
-                                                            {{ $c->comentario}} 
-                                                            </p>
-                                                    <?php 
-                                                }
-                                            }
-                                          ?>
-                                      </div>
+                                      
                                       <div class ="card m-2">
                                         <h6 class="tituloh6">
                                             Documentos  de la póliza
@@ -138,8 +123,22 @@
                                                 data-bs-parent="#accordionnotas"
                                                 >
                                                 <div class="accordion-body row">
+                                                    <!-- --> 
+                                                    <?php 
+                                                    if ( count($comentarios) >0 )
+                                                    {
+                                                      foreach($comentarios as $c)
+                                                      {
+                                                        ?>
+                                                        <h7 class="card-title" style="color :black;">Nota : <?=@$c->comentario?></h7>
+                                                        <?php 
+                                                      }
+                                                    
+                                                    }
+                                                    ?>
                                                     <!--  --> 
                                                     <div class ="card m-2">
+                                                      
                                                       <h6  style ="color:green !important;">
                                                         Patologias Declaradas
                                                       </h6>

@@ -29,9 +29,9 @@ let  cm =0; // contador miembros
 let ym =parseFloat(year)-parseFloat(99); // año menor
 let ya = new Date().getFullYear(); // año actual
 let datasiniestros =[];
-let urlservidor ='http://127.0.0.1:8000/';
+//let urlservidor ='http://127.0.0.1:8000/';
 //let urlservidor  ='https://dev.cotiseguros.com.ve//';
-//let urlservidor  ='https://www.cotiseguros.com.ve/';
+let urlservidor  ='https://www.cotiseguros.com.ve/';
 
 let polizaieditar =0;
 let diveliminar =document.getElementById("diveliminar");
