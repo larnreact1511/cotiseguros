@@ -533,9 +533,9 @@ use Illuminate\Support\Facades\DB;
                           aria-controls="collapseCotacseguro_{{$idinsurers}}"
                           >
                           <img 
-                              class="w-10" 
-                              height="25"  
-                              width ="50" 
+                              
+                              height="30"  
+                              width ="100" 
                               src="{{env('APP_URL')}}/storage/{{$poliza->image}}"
                               >
                               <strong>

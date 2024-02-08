@@ -242,7 +242,7 @@
     {
       ?>
       <div  class="row d-flex justify-content-center" style="text-align: center; height:50vh; background-image: url('{{env('APP_URL')}}/saludo.jpg');">
-
+      
       </div>
       <div 
             class="accordion accordion-flush mt-2" 

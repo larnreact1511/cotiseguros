@@ -17,7 +17,7 @@
     <div class="container-fluid  mt-3 mb-5">
         <div class="row">
             <div class="col-md-12 p-1  d-flex justify-content-center">
-                <img src="{{env('APP_URL')}}/LOGORGBColor.png" alt="">
+                <img src="{{env('APP_URL')}}/imqr/LOGO_RGB_Color.png"   width ="200"  height="50"   alt="">
             </div>
         </div>
         <div class="row">

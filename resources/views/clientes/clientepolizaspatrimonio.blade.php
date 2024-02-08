@@ -65,7 +65,13 @@
               }
             }
             else
-            echo " En estos momentos, no tiene pólizas patrimoniales inscritas ";
+            {
+              ?>
+              <h1 style="color:blue;">
+                  Este Usuario no tiene pólizas disponibles de este tipo
+              </h1>
+               <?php  
+            }
         ?>
     </div>
     <!--  --> 

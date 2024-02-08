@@ -126,7 +126,7 @@
                 ?>
                 <div>
                 <h1>
-                No encontramos pólizas a su nombre 
+                    Este Usuario no tiene pólizas disponibles de este tipo
                 </h1>
                 </div>
                 <?php 
