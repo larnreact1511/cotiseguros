@@ -73,7 +73,10 @@ use Illuminate\Support\Facades\DB;
                 <h6 
                   id="flush-headinginforperson"
                   class="accordion-header collapsed redondear"
-                  data-bs-toggle="collapse" data-bs-target="#flush-collapseinforp" aria-expanded="false" aria-controls="flush-collapseinforp"
+                  data-bs-toggle="collapse" 
+                  data-bs-target="#flush-collapseinforp" 
+                  aria-expanded="false" 
+                  aria-controls="flush-collapseinforp"
                   >
                   Información personal
                 </h6>
@@ -458,62 +461,77 @@ use Illuminate\Support\Facades\DB;
                 > Números de contacto <h4>
               <h>
               <!-- Numeros de Cotiseguros --> 
-              <div class="accordion-item m-2" >
-                <h6 
-                  id="headingContactoCotiseguros"
-                  class="accordion-header collapsed redondear-3"
-                  data-bs-toggle="collapse" 
-                  data-bs-target="#collapseCotiNumero" 
-                  aria-expanded="false" 
-                  aria-controls="collapseCotiNumero"
-                  >
-                  Cotiseguros
-                </h6>
-                <div 
-                  id="collapseCotiNumero" 
-                  class="accordion-collapse collapse" 
-                  aria-labelledby="headingContactoCotiseguros" 
-                  data-bs-parent="#accordionFlushExample"
-                  >
-                  <div class="accordion-body row">
-                    <!-- -->
-                    <?php 
-                      if ( count($contactocotiseguros) > 0 )
-                      {
-                       foreach ($contactocotiseguros as $contact =>$cn )
-                       {
-                          $url="whatsapp://send?phone=+".$cn['whatssap']."&text=hola";
-                                  
-                          ?>
-                            <h4 style="text-align: center; color:#596475 !important;" class="mb-2">
-                              {{$cn['nombre']  }} 
-                       </h4>
-                            <p>
-                              <a 
-                                class="btn btn-success rounded-pill px-1 mx-sm-0 mb-2 w-100" 
-                                href=<?= ($cn['whatssap']) ? $url : "#"; ?> 
-                                target="_blank">
-                                whatssap -  {{ $cn['whatssap'] }} 
-                              </a>
-                            </p>
-                            <p>
-                              <button 
-                                class="btn btn-info rounded-pill px-1 mx-sm-0 mb-2 w-100" 
-                                style="background-color:#3c485a !important; color :#fff;"  >    
-                              llamada {{ $cn['llamada']}} 
-                              </button>
-                            </p>
-                            
-                            
+              <?php 
+              if ( count($contactocotiseguros) > 0 )
+              {
+                ?>
+                    <div class="accordion-item m-2" >
+                      <h6 
+                        id="headingContactoCotiseguros"
+                        class="accordion-header collapsed redondear-3"
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#collapseCotiNumero" 
+                        aria-expanded="false" 
+                        aria-controls="collapseCotiNumero"
+                        >
+                        Cotiseguros
+                      </h6>
+                      <div 
+                        id="collapseCotiNumero" 
+                        class="accordion-collapse collapse" 
+                        aria-labelledby="headingContactoCotiseguros" 
+                        data-bs-parent="#accordionFlushExample"
+                        >
+                        <div class="accordion-body row">
+                          <!-- -->
                           <?php 
-                       }
-                      }
-                    ?>
-                    
-                    <!-- -->
-                  </div>
-                </div>
-              </div>
+                            foreach ($contactocotiseguros as $contact =>$cn )
+                            {
+                                $url="whatsapp://send?phone=+".$cn['whatssap']."&text=hola";
+                                        
+                                ?>
+                                  <h4 style="text-align: center; color:#596475 !important;" class="mb-2">
+                                    {{$cn['nombre']  }} 
+                                </h4>
+                                  <?php  
+                                  if ($cn['whatssap'] )
+                                  {
+                                    ?>
+                                      <p> 
+                                        <a 
+                                          class="btn btn-success rounded-pill px-1 mx-sm-0 mb-2 w-100" 
+                                          href=<?= ($cn['whatssap']) ? $url : "#"; ?> 
+                                          target="_blank">
+                                          whatssap -  {{ $cn['whatssap'] }} 
+                                        </a>
+                                      </p>
+                                    
+                                    <?php  
+                                  }
+                                  if ($cn['llamada'] )
+                                  {
+                                    ?>
+                                    <p>
+                                      <button 
+                                        class="btn btn-info rounded-pill px-1 mx-sm-0 mb-2 w-100" 
+                                        style="background-color:#3c485a !important; color :#fff;"  >    
+                                      llamada {{ $cn['llamada']}} 
+                                      </button>
+                                    </p>
+                                    <?php  
+                                  }
+  
+                            }
+                          ?>
+                          
+                          <!-- -->
+                        </div>
+                      </div>
+                    </div>
+                <?php 
+              }
+              ?>
+              
               <!-- Numeros de seguros --> 
               <?php 
                 if ( count($salud) > 0) 
@@ -596,58 +614,153 @@ use Illuminate\Support\Facades\DB;
               ?>
               
               <!-- Numeros de Emergencia --> 
-              <div class="accordion-item m-2" >
-                <h6 
-                  id="headingContacemergencia"
-                  class="accordion-header collapsed redondear"
-                  data-bs-toggle="collapse" 
-                  data-bs-target="#collapseCotacEmergencia" 
-                  aria-expanded="false" 
-                  aria-controls="collapseCotacEmergencia"
-                  >
-                  Nro de emergencia
-                </h6>
-                <div 
-                  id="collapseCotacEmergencia" 
-                  class="accordion-collapse collapse" 
-                  aria-labelledby="headingContacemergencia" 
-                  data-bs-parent="#accordionFlushExample"
-                  >
-                  <div class="accordion-body row">
-                    <!-- -->
-                    <?php 
-                      if ( count($datacliente) > 0 )
-                      {
-                        $url="whatsapp://send?phone=+".@$datacliente[0]->telefonococontacto."&text=hola";
-                                  
-                        ?>
-                          <p class="tituloservicio">
-                          {{ @$datacliente[0]->nombrecontacto }} {{ @$datacliente[0]->apellidocontacto }} 
-                          </p>
-                          <p>
-                            <a 
-                              class="btn btn-success rounded-pill px-1 mx-sm-0 mb-2 w-100" 
-                              href=<?= (@$datacliente[0]->telefonococontacto) ? $url : "#"; ?> 
-                              target="_blank">
-                              whatssap -  {{ @$datacliente[0]->telefonococontacto  ?  @$datacliente[0]->telefonococontacto : ' Sin contacto' }} 
-                            </a>
-                          </p>
-                          <p>
-                            <button 
-                              class="btn btn-info rounded-pill px-1 mx-sm-0 mb-2 w-100" 
-                              style="background-color:#3c485a !important; color :#fff;"  >    
-                            llamada - {{ @$datacliente[0]->telefonococontacto  ?  @$datacliente[0]->telefonococontacto : ' Sin contacto' }} 
-                            </button>
-                          </p>
-                          
-                          
-                        <?php
-                      }
+              <?php   
+               if ( count($datacliente) > 0 )
+               {
+                  if (@$datacliente[0]->telefonococontacto)
+                  {
                     ?>
-                    <!-- -->
-                  </div>
-                </div>
+                        <div class="accordion-item m-2" >
+                          <h6 
+                            id="headingContacemergencia"
+                            class="accordion-header collapsed redondear"
+                            data-bs-toggle="collapse" 
+                            data-bs-target="#collapseCotacEmergencia" 
+                            aria-expanded="false" 
+                            aria-controls="collapseCotacEmergencia"
+                            >
+                            Nro de emergencia
+                          </h6>
+                          <div 
+                            id="collapseCotacEmergencia" 
+                            class="accordion-collapse collapse" 
+                            aria-labelledby="headingContacemergencia" 
+                            data-bs-parent="#accordionFlushExample"
+                            >
+                            <div class="accordion-body row">
+                              <!-- -->
+                              <?php 
+                                if ( count($datacliente) > 0 )
+                                {
+                                  $url="whatsapp://send?phone=+".@$datacliente[0]->telefonococontacto."&text=hola";
+                                            
+                                  ?>
+                                    <p class="tituloservicio">
+                                    {{ @$datacliente[0]->nombrecontacto }} {{ @$datacliente[0]->apellidocontacto }} 
+                                    </p>
+                                    <p>
+                                      <a 
+                                        class="btn btn-success rounded-pill px-1 mx-sm-0 mb-2 w-100" 
+                                        href=<?= (@$datacliente[0]->telefonococontacto) ? $url : "#"; ?> 
+                                        target="_blank">
+                                        whatssap -  {{ @$datacliente[0]->telefonococontacto  ?  @$datacliente[0]->telefonococontacto : ' Sin contacto' }} 
+                                      </a>
+                                    </p>
+                                    <p>
+                                      <button 
+                                        class="btn btn-info rounded-pill px-1 mx-sm-0 mb-2 w-100" 
+                                        style="background-color:#3c485a !important; color :#fff;"  >    
+                                      llamada - {{ @$datacliente[0]->telefonococontacto  ?  @$datacliente[0]->telefonococontacto : ' Sin contacto' }} 
+                                      </button>
+                                    </p>
+                                    
+                                    
+                                  <?php
+                                }
+                              ?>
+                              <!-- -->
+                            </div>
+                          </div>
+                        </div>
+                    <?php 
+                  }
+               }
+              ?>
+              <!-- clinicas --> 
+              <?php 
+              if ( count($salud) > 0) 
+              {
+                ?>
+                <h4 style="text-align: center; color:#596475 !important;">
+                Clínicas asociadas
+                </h4>
+                <!-- --> 
+                
+                    <div 
+                      class="accordion accordion-flush" 
+                      id="acoordeoplolizasclientesalud" 
+                      style="text-align: center;"
+                      >   
+                      <?php 
+                        foreach ($salud as $poliza)
+                        {
+                          ?>
+                          <!-- --> 
+                              <div class="accordion-item m-2 ">
+                                <h6 
+                                  id="flush-heading_{{$poliza->id_insurancepolicies}}" 
+                                  class="accordion-header collapsed redondear" 
+                                  data-bs-toggle="collapse" 
+                                  data-bs-target="#collapsenumero_{{$poliza->id_insurancepolicies}}" 
+                                  aria-expanded="false" 
+                                  aria-controls="collapsenumero_{{$poliza->id_insurancepolicies}}">
+                                  <?=$poliza->name; ?>
+                                </h6>
+                                <div 
+                                  id="collapsenumero_{{$poliza->id_insurancepolicies}}" 
+                                  class="accordion-collapse collapse" 
+                                  aria-labelledby="flush-heading_{{$poliza->id_insurancepolicies}}" 
+                                  data-bs-parent="#accordionFlushExample"
+                                  >
+                                  <div class="accordion-body row">
+                                    <!-- idinsurers  --> 
+                                    <?php  
+                                       $numero = DB::table('clinicasservicios')
+                                       ->where('clinicasservicios.id_seguro',$poliza->idinsurers)
+                                       ->get(); 
+                                       if (  $numero->count() >0 )
+                                       {
+                                        foreach ( $numero as  $nun => $n)
+                                        {
+                                          ?>
+                                            <p class="tituloservicio mb-2" > 
+                                            {{ $n->nombre }}
+                                            </p>
+                                            <p class="tituloservicio mb-2" > 
+                                            {{ $n->direccion }}  
+                                            </p>
+                                          <?php 
+                                        }
+                                         
+                                       }
+                                      
+                                    ?>
+                                    <!--  -->
+                                  </div>
+                                </div>
+                              </div>
+                          <!-- --> 
+                          <?php 
+                        }
+                      ?>
+                    </div>
+                <!-- -->
+                <?php 
+              }
+              ?>
+              <!-- boton enlace-->
+              <div class="accordion-item m-2">
+                <h6  
+                  id=""
+                  class="accordion-header collapsed redondear"
+                  >
+                  <a href="https://carnet.plus/r/2xaHXfgdkj" style ="text-decoration:none; color:#fff;" target='_blank'>
+                  Aprovecha nuestros descuentos
+                  </a>
+                  
+                </h6>     
               </div>
+              <!-- --> 
           </div>
           
       <?php 

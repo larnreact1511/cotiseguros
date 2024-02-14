@@ -1377,7 +1377,7 @@ async function editarpoliza(id_insurancepolicies) {
                                 ${generaretornardia(indexFamiliar,f.day)}
                             </td>
                             <th>
-                                ${generameses(indexFamiliar,f.mounth)}
+                                ${generameses(indexFamiliar,f.month)}
                             </th>
                             <th>
                                 ${generayy(indexFamiliar, f.year)}

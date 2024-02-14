@@ -814,6 +814,32 @@ class ClientesController extends Controller
     {
         return view("admin.listadoclientes");
     }
+    public function eliminarclietne($id)
+    {
+        $cliente = DB::table('clientes')->where('id',$id)->get();
+        $idusuario = $cliente[0]->idusuario;
+        DB::table('clientes')->where('clientes.id',$id)->delete();
+        DB::table('users')->where('users.id',$idusuario)->delete();
+
+        $dataresponce['resullt'] = true;
+        return response()->json($dataresponce);
+    }
+    public function deletselct(Request $request)
+    {
+        if ( $request->input('data') )
+        {
+            $data = $request->input('data'); 
+            foreach($data as $d)
+            {
+                $cliente = DB::table('clientes')->where('id',$d)->get();
+                $idusuario = $cliente[0]->idusuario;
+                DB::table('clientes')->where('clientes.id',$d)->delete();
+                DB::table('users')->where('users.id',$idusuario)->delete();
+            }
+        }
+        $dataresponce['resullt'] = true;
+        return response()->json($dataresponce);
+    }
     public function listarclientes(Request $request)
     {
         $users = DB::table('users')->where('role_id',5)->get();
@@ -3225,7 +3251,7 @@ class ClientesController extends Controller
                                     'cedula' => $cedula,
                                     'numerotelefono' => $telefono,
                                     'estado' =>1,
-                                    'idusuario' => $eUsermail,
+                                    'idusuario' => $User,
                                     'rif' =>'',
                                     'fecha_nacimiento' =>@$fecha_nacimiento,
                                     'locacion' => $locacion

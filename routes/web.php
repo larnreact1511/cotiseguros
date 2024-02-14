@@ -56,6 +56,11 @@ Route::get('nota/{id}', [App\Http\Controllers\NotificationsController::class, 'i
 Route::get('listarclientes/', [App\Http\Controllers\ClientesController::class, 'listarclientes'])->name('listacliente'); // lista de los clientes
 Route::get('listaclientes', [App\Http\Controllers\ClientesController::class, 'listaclientes'])->name('listacliente'); // vista clientes adminstracion
 
+
+Route::get('eliminarclietne/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarclietne'])->name('eliminarclietne'); // lista de los clientes
+Route::post('deletselct/', [App\Http\Controllers\ClientesController::class, 'deletselct'])->name('deletselct');
+
+
 Route::get('perfilcliente/{id}', [App\Http\Controllers\ClientesController::class, 'perfilcliente'])->name('perfilcliente');
 Route::get('adminstracionclientes/{id}', [App\Http\Controllers\ClientesController::class, 'adminstracionclientes'])->name('adminstracionclientes');
 Route::post('perfilcliente/adminfiles2/', [App\Http\Controllers\ClientesController::class, 'uploadFile2']); 
