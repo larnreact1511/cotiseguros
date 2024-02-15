@@ -2954,6 +2954,7 @@ class ClientesController extends Controller
     }
     public function addpatologiasi(Request $request){
         $patologiacomentadas2 =$request->input("patologiacomentadas2");
+        //dd($patologiacomentadas2);
         if ( count($patologiacomentadas2) >0 )
         {
             foreach ( $patologiacomentadas2 as $c )
@@ -3223,7 +3224,36 @@ class ClientesController extends Controller
                    
                     if ( $users->count() > 0 )
                     {
-                       
+                       $id_usario =$users[0]->id;
+                       $cliente = DB::table('clientes')->where('idusuario',$id_usario)->get();
+                       if ( $cliente->count() > 0)
+                       {
+                            $id_cliente =$cliente[0]->id;
+                            $datauser =array(
+                                'role_id' => 5,
+                                'name' => $nombre,
+                                'lastname' =>$apellido ,
+                                'phone' =>$telefono
+                               );
+                               DB::table('users')->where('id',$id_usario)->update($datauser);
+                            //
+                            $datacliente =array(
+                            
+                                'nombre' => $nombre,
+                                'apellido' =>$apellido ,
+                                'cedula' => $cedula,
+                                'numerotelefono' => $telefono,
+                                'estado' =>1,
+                                'rif' =>'',
+                                'fecha_nacimiento' =>@$fecha_nacimiento,
+                                'locacion' => $locacion
+                               );
+                               DB::table('clientes')->where('id',$id_cliente)->update($datacliente);
+                       }
+                       else
+                       {
+
+                       }
                     }
                     else
                     {

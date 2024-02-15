@@ -648,7 +648,7 @@ class CotizadorSaludController extends Controller
         $res = PDF::loadView('cotizador.cotizacion.comparar', [
                 "cotizacion" => $coverages,
                 "valor" =>$request->input("valor"),
-                "dominio" =>env('APP_URL'),
+                "dominio" =>'https://www.cotiseguros.com.ve',
                 "frecuencies" => Frequency::all()
             ])
         //->download('mi-archivo.pdf');

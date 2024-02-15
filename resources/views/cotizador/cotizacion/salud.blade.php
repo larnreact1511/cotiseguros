@@ -142,7 +142,7 @@ table tr:nth-child(even) {
                 <img width="80%" style="left: 10% ;" src="https://cotiseguros.com.ve/storage/LOGO%20RGB_Color.png" alt="">
             </td>
             <td width="33%">
-                <img width="80%" style="left: 10% ;" src="<?=env('APP_URL').'/storage/'.$cotizacion['image']; ?>" alt="">
+                <img width="80%" style="left: 10% ;" src="<?='https://www.cotiseguros.com.ve/storage/'.$cotizacion['image']; ?>" alt="">
             </td>
             <td width="33%" style="text-align: right ;">
                 <div class="content-time">{{ date("d-m-y") }}</div>
