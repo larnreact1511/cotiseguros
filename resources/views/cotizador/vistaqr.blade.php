@@ -723,12 +723,14 @@ use Illuminate\Support\Facades\DB;
                                         foreach ( $numero as  $nun => $n)
                                         {
                                           ?>
-                                            <p class="tituloservicio mb-2" > 
-                                            {{ $n->nombre }}
-                                            </p>
-                                            <p class="tituloservicio mb-2" > 
-                                            {{ $n->direccion }}  
-                                            </p>
+                                            <div class="card m-2">
+                                              <p class="tituloservicio mb-2" > 
+                                                {{ $n->nombre }}
+                                                </p>
+                                                <p class="tituloservicio mb-2" > 
+                                                {{ $n->direccion }}  
+                                                </p>
+                                            </div>
                                           <?php 
                                         }
                                          
@@ -814,8 +816,12 @@ use Illuminate\Support\Facades\DB;
     foreach( $data as $p)
     {
       $ruta = env('APP_URL').'/'.$p->documentonombre;
+      $rutaojo = env('APP_URL').'/eye_cotiseguros.png';
+      $ojo = ' <img src="'.$rutaojo.'" alt="" height="20">';
       $htmlmodal .="<li class='list-group-item active' aria-current='true'>";
-        $htmlmodal .= "<a href='".$ruta."' class='btn btn-secondary colorbtn m-2' target='_blank'>$p->tipodocumento</a> &nbsp;";
+        $htmlmodal .= "<a href='".$ruta."' class='btn btn-secondary colorbtn m-2' target='_blank'>$p->tipodocumento  ". $ojo." </a> &nbsp; ";
+       
+       
       $htmlmodal .=" </li>";
     }
     //$htmlmodal .= "</ul>";

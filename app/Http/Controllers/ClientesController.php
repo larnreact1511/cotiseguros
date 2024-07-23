@@ -512,10 +512,11 @@ class ClientesController extends Controller
                 $numero =  $request->code.$request->numerotelefono;
                 $data =array(
                     'updated_at'=>date("Y-m-d H:i:s"),
-                    'nombre'=>$request->nombre,
-                    'apellido'=>$request->apellido,
-                    'cedula'=>$request->cedula,
-                    'rif'=>$request->rif,
+                    'nombre'=>@$request->nombre,
+                    'apellido'=>@$request->apellido,
+                    'nacionalidad'=>@$request->nacionalidad,
+                    'cedula'=>@$request->cedula,
+                    'rif'=>@$request->rif,
                     'fecha_nacimiento'=>@$request->fecha_nacimiento,
                     'numerotelefono'=>$numero,
                     'nombrecontacto'=>@$request->nombrecontacto,
@@ -1739,6 +1740,7 @@ class ClientesController extends Controller
                 'insurancepolicies.comentario',
                 'coverages.coverage',
                 'insurers.name',
+                'insurers.image',
                 'insurancepolicies.tipopoliza',
                 'insurancepolicies.id as id_insurancepolicies',
                 'insurancepolicies.descripcionpoliza',
@@ -1773,6 +1775,7 @@ class ClientesController extends Controller
                 'insurancepolicies.comentario',
                 'coverages.coverage',
                 'insurers.name',
+                'insurers.image',
                 'insurancepolicies.tipopoliza',
                 'insurancepolicies.id as id_insurancepolicies',
                 'insurancepolicies.descripcionpoliza',
@@ -2090,14 +2093,14 @@ class ClientesController extends Controller
     public function actualizarmisdatos(Request $request)
     {
         $accliente =array(
-            'nombre'=>$request->nombre,
-            'apellido'=>$request->apellido,
-            'cedula'=>$request->letra1.'-'.$request->cedula,
-            'numerotelefono'=>$request->code1.$request->numerotelefono,
-            'nombrecontacto'=>$request->nombrecontacto,
-            'apellidocontacto'=>$request->apellidocontacto,
-            'telefonococontacto'=>$request->code2.$request->nrotelefonocontacto,
-            'cedulacontacto'=>$request->letra2.$request->cedulacontacto);
+            'nombre'=>@$request->nombre,
+            'apellido'=>@$request->apellido,
+            'cedula'=>@$request->letra1.'-'.@$request->cedula,
+            'numerotelefono'=>@$request->code1.@$request->numerotelefono,
+            'nombrecontacto'=>@$request->nombrecontacto,
+            'apellidocontacto'=>@$request->apellidocontacto,
+            'telefonococontacto'=>@$request->code2.@$request->nrotelefonocontacto,
+            'cedulacontacto'=>@$request->letra2.@$request->cedulacontacto);
             
             if ( (DB::table('clientes')->where('idusuario',auth()->id())->update($accliente)) )
                 session()->flash('message', 'Datos actualizados con éxito');
@@ -2476,6 +2479,7 @@ class ClientesController extends Controller
         {
             $edit =array(
                 'fechainicio'=>trim($request->fechainici),
+                'fechafin'=>trim($request->fechafin),
                 'idadmin'=>trim($request->fechafin),        
             );
             DB::table('frequencyofpayments')->where('id',$request->id)->update($edit);
@@ -3384,6 +3388,7 @@ class ClientesController extends Controller
             ->leftJoin('estados','clinicasservicios.id_estado', '=', 'estados.id_estado')
             ->leftJoin('ciudades','clinicasservicios.id_ciudad', '=', 'ciudades.id_ciudad')
             ->leftJoin('municipios','clinicasservicios.id_municipio', '=', 'municipios.id_municipio')
+            ->leftJoin('insurers','clinicasservicios.id_seguro', '=', 'insurers.id')
             ->select(
                 'clinicasservicios.id as id_clinica',
                 'clinicasservicios.nombre',
@@ -3393,7 +3398,8 @@ class ClientesController extends Controller
                 'municipios.municipio',
                 'ciudades.id_ciudad',
                 'estados.id_estado',
-                'municipios.id_municipio')
+                'municipios.id_municipio',
+                'insurers.name as nombreseguro')
             ->skip($request->input('start'))->take($request->input('length'))
             ->orderBy('clinicasservicios.id', 'DESC')
             ->get();
@@ -3405,9 +3411,11 @@ class ClientesController extends Controller
             ->leftJoin('estados','clinicasservicios.id_estado', '=', 'estados.id_estado')
             ->leftJoin('ciudades','clinicasservicios.id_ciudad', '=', 'ciudades.id_ciudad')
             ->leftJoin('municipios','clinicasservicios.id_municipio', '=', 'municipios.id_municipio')
+            ->leftJoin('insurers','clinicasservicios.id_seguro', '=', 'insurers.id')
             ->Where('clinicasservicios.nombre', 'LIKE', "%$value%")
             ->orWhere('ciudades.ciudad', 'LIKE', "%$value%")
             ->orWhere('municipios.municipio', 'LIKE', "%$value%")
+            ->orWhere('insurers.name', 'LIKE', "%$value%")
             ->select(
                 'clinicasservicios.id as id_clinica',
                 'clinicasservicios.nombre',
@@ -3417,7 +3425,8 @@ class ClientesController extends Controller
                 'municipios.municipio',
                 'ciudades.id_ciudad',
                 'estados.id_estado',
-                'municipios.id_municipio')
+                'municipios.id_municipio',
+                'insurers.name as nombreseguro')
             ->skip($request->input('start'))->take($request->input('length'))
             ->orderBy('clinicasservicios.id', 'DESC')
             ->get();
@@ -3440,6 +3449,7 @@ class ClientesController extends Controller
                 $datos['id_ciudad'] = $cli->id_ciudad;
                 $datos['id_estado'] = $cli->id_estado;
                 $datos['id_municipio'] = $cli->id_municipio;
+                $datos['nombre_seguro'] = $cli->nombreseguro;
                 $data[]=$datos;
             }
         }

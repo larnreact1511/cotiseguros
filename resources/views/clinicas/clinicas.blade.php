@@ -120,6 +120,7 @@
                 <tr>
                     <th>Id</th>
                     <th>Nombre</th>
+                    <th>Seguro</th>
                     <th>Dirección </th>
                     <th>Estado </th>
                     <th>Ciudad </th>

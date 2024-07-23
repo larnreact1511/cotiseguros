@@ -119,6 +119,13 @@ if ( @$info[0]->numerotelefono )
                                             value="<?=$numero ?>">
                             </td>
                             <td>
+                                <label> Nacionalidad </label><br> 
+                                <select class="form-select" name="nacionalidad" id="nacionalidad" aria-label="Default select example">
+                                    <option value="V"  <?= @$info[0]->nacionalidad =="V" ?  'selected':'' ; ?>> V</option>
+                                    <option value="E" <?= @$info[0]->nacionalidad =="E" ?  'selected':'' ; ?> > E </option>
+                                </select>
+                            </td>
+                            <td>
                                 <label> Cédula </label>
                                 <input 
                                     name="cedula" 

@@ -16,17 +16,24 @@
             $cedula = ''; // nro cedula cliente
             $letra2 = '';
             $cedulacontacto = ''; // nro cedula contacto cliente
+            $letra1 ='V';
+            if ( @$clientes[0]->nacionalidad )
+            {
+                $letra1 =$clientes[0]->nacionalidad;
+            }
             if ( @$clientes[0]->numerotelefono )
             {
                 $cantidad =strlen(@$clientes[0]->numerotelefono);
                 $code =substr(@$clientes[0]->numerotelefono,0,3);
                 $numerotelefono =substr(@$clientes[0]->numerotelefono,3,$cantidad);
             }
+
             if ( @$clientes[0]->cedula )
             {
-                $cantidad =strlen(@$clientes[0]->cedula);
-                $letra1 =substr(@$clientes[0]->cedula,0,1);
-                $cedula =substr(@$clientes[0]->cedula,3,$cantidad);
+                //$cantidad =strlen(@$clientes[0]->cedula);
+                //$letra1 =substr(@$clientes[0]->cedula,0,1);
+                //$cedula =substr(@$clientes[0]->cedula,2,$cantidad);
+                $cedula=  @$clientes[0]->cedula; 
             }
             if ( @$clientes[0]->telefonococontacto )
             {
@@ -38,7 +45,8 @@
             {
                 $cantidad =strlen(@$clientes[0]->cedulacontacto);
                 $letra2 =substr(@$clientes[0]->cedulacontacto,0,1);
-                $cedulacontacto =substr(@$clientes[0]->cedulacontacto,3,$cantidad);
+                //$cedulacontacto =substr(@$clientes[0]->cedulacontacto,3,$cantidad); 
+                $cedulacontacto=  @$clientes[0]->cedulacontacto; 
             }
 
         ?>

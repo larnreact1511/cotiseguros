@@ -451,8 +451,8 @@ class CotizadorController extends Controller
                     $listCoverages = $rows[$i][1];
                     $listRates = $rows[$i];
                     //return $listRates;
-                    Coverage::where("insurer_id",$insurer->id)->delete();
-                    Rate::where('insure_id', $insurer->id)->delete();
+                    //Coverage::where("insurer_id",$insurer->id)->delete();
+                    //Rate::where('insure_id', $insurer->id)->delete();
                     for($indexCoverage = 1; $indexCoverage < count($listCoverages) ;$indexCoverage++){
                         if((int)$listCoverages[$indexCoverage] != 0 || (int)$listCoverages[$indexCoverage] == null ){
                             $coverage = new Coverage();

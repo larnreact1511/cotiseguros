@@ -114,6 +114,7 @@ Route::post('adminstracionclientes/editarcomentarioempresa/', [App\Http\Controll
 Route::get('asegurado/{code}', [App\Http\Controllers\ClientesController::class, 'qrurl']);
 Route::post('clienteasegura', [App\Http\Controllers\ClientesController::class, 'clienteasegurado']);
 Route::post('actualizarmisdatos', [App\Http\Controllers\ClientesController::class, 'actualizarmisdatos']);
+Route::post('cliente/actualizarmisdatos', [App\Http\Controllers\ClientesController::class, 'actualizarmisdatos']);
 
 Route::get('mispolizas', [App\Http\Controllers\ClientesController::class, 'mispolizas']);
 Route::get('missninestros', [App\Http\Controllers\ClientesController::class, 'missninestros']);

@@ -14,6 +14,7 @@ $(document).ready(function ()
         columns: [
             { data: 'id' },
             { data: 'nombre' },
+            { data: 'nombre_seguro' },
             { data: 'direccion' },
             { data: 'estado' },
             { data: 'ciudad' },
