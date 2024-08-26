@@ -63,6 +63,11 @@ Route::post('deletselct/', [App\Http\Controllers\ClientesController::class, 'del
 
 Route::get('perfilcliente/{id}', [App\Http\Controllers\ClientesController::class, 'perfilcliente'])->name('perfilcliente');
 Route::get('adminstracionclientes/{id}', [App\Http\Controllers\ClientesController::class, 'adminstracionclientes'])->name('adminstracionclientes');
+
+Route::get('update-1', [App\Http\Controllers\ClientesController::class, 'update1']);
+Route::post('adminstracionclientes/renovarpoliza', [App\Http\Controllers\ClientesController::class, 'renovarpoliza']);
+Route::post('adminstracionclientes/continuidad', [App\Http\Controllers\ClientesController::class, 'continuidad']);
+
 Route::post('perfilcliente/adminfiles2/', [App\Http\Controllers\ClientesController::class, 'uploadFile2']); 
 Route::post('perfilcliente/adminfiles3/', [App\Http\Controllers\ClientesController::class, 'uploadFilecontrato']); 
 Route::post('adminfiles2/', [App\Http\Controllers\ClientesController::class, 'uploadFile3']); 

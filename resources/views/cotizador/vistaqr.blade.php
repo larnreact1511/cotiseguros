@@ -197,7 +197,7 @@ use Illuminate\Support\Facades\DB;
                                   <div class="card text-center" style="width:100%;">
                                     <div class="card-body text-center">
                                       <h5 class="card-title"> <?=$poliza->name; ?></h5>
-                                      <h5 class="card-title"> <?=number_format($poliza->coverage).' USD '; ?></h5>
+                                      <h5 class="card-title"> <?=number_format($poliza->idcoverages).' USD '; ?></h5>
                                       
                                       <?php 
                                       

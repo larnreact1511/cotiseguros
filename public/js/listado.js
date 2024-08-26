@@ -1,15 +1,24 @@
 let arreglo =[];
 $(document).ready(function () 
 {
-    $('#example').DataTable({
+   let example=  $('#example').DataTable({
         responsive: true,
         processing: true,
         serverSide: true,
-        ajax: `listartabla/`,
+        //ajax: `listartabla/`,
+        'ajax': {
+            'url':'listartabla',
+            'data': function(data) {
+                let buscar_inicio = $('#buscar_inicio').val();
+                let buscar_fin = $('#buscar_fin').val();
+                data.buscarFechaInicio = buscar_inicio;
+                data.buscarFechaFin = buscar_fin;
+            }
+        },
         language:
-            {
-				"url": "json/Spanish.json"
-			},
+              {
+          "url": "json/Spanish.json"
+        },
         columns: [
             //{ data: 'id' },
             { data: 'name' },
@@ -24,7 +33,6 @@ $(document).ready(function ()
               defaultContent:'',
               render: function(data, type, row, meta) 
               {
-                
                 return  `${row.fecha}`;
               }
             },
@@ -118,8 +126,8 @@ $(document).ready(function ()
       {
         //
         //let url  ="https://dev.cotiseguros.com.ve/";
-        //let url  ='http://127.0.0.1:8000/';
-        let url  ='https://www.cotiseguros.com.ve/';
+        let url  ='http://127.0.0.1:8000/';
+        //let url  ='https://www.cotiseguros.com.ve/';
         $("#carga").css('display','block');
         $("#divtabla").css('display','none');
         let modal = document.getElementById("myModal");
@@ -165,6 +173,16 @@ $(document).ready(function ()
 
     });
     $("#carga").css('display','none');
+
+    $("#btnsearchbydate " ).on( "click", function() {
+        example.draw();
+    });
+    $("#btnclear " ).on( "click", function() {
+      $("#buscar_inicio").val('');
+      $("#buscar_fin").val('');
+      example.draw();
+  });
+   
 });
 
 function mostrarbeneficiarios(id)
@@ -340,3 +358,4 @@ function cambiarcorreo(id,name)
   $("#nombremodificar").val(name);
   $("#mjserrormodicicar").html('');
 }
+

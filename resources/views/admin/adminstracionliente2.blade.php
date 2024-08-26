@@ -343,7 +343,7 @@ if ( @$info[0]->numerotelefono )
                                 $tipopoliza =" Empresa ";
                                 break;
                         }
-                        $monto = number_format($i->coverage) .' USD ( '.$i->name.' :'.$tipopoliza.' ) '
+                        $monto = number_format($i->idcoverages) .' USD ( '.$i->name.' :'.$tipopoliza.' ) '
                         ?>
                             <input 
                                 class="form-check-input" 
@@ -366,23 +366,13 @@ if ( @$info[0]->numerotelefono )
                     </tr>
                     <tr>
                         <td>
-                            <select 
-                                name="mnontocobertura" 
+                            <input 
+                                type="number" 
                                 id="mnontocobertura" 
-                                class="form-select shadow-none border-0 bg-grey w-25 align-self-start" 
-                                aria-label="Default select example" 
-                                
-                                >
-                                <option value="0">Seleccione</option> 
-                                <?php  
-                                    foreach ($coverages as $c )
-                                    {
-                                        ?>
-                                            <option value="{{ $c->id }}">{{ number_format( $c->coverage ) }} USD</option> 
-                                        <?php  
-                                    }
-                                ?>
-                            </select>
+                                name="mnontocobertura" 
+                                value=""
+                            >
+                           
                         </td>
                         <td>
                             <select 
@@ -415,15 +405,247 @@ if ( @$info[0]->numerotelefono )
                     </tr>
                 </table>
                 <!-- --> 
-                <div id="diveliminar" style="display:none;">
-                    <button
-                        onclick="eliminarpoliza()"
-                        class="btn btn-primary mt-2"
-                        >
+                <div  id="diveliminar" style="display:none; border: 0px;">
+                    <table class="table">
+                        <tr>
+                            <th>
+                                <button
+                                        onclick="eliminarpoliza()"
+                                        class="btn btn-primary mt-2"
+                                        >
 
-                        Eliminar poilza
-                    </button>
+                                        Eliminar poilza
+                                    </button>
+                            </th>
+                            <th>
+                                <button
+                                        onclick="renovarpoliza()"
+                                        class="btn btn-primary mt-2"
+                                        >
+
+                                        Renovar poilza
+                                    </button>
+                            </th>
+                            <th>
+                                <button
+                                        onclick="crearcontinuidad()"
+                                        class="btn btn-primary mt-2"
+                                        >
+
+                                        Continudad de la   poilza
+                                    </button>
+                            </th>
+                        </tr>
+                    
+                    </table>
+
                 </div>
+                <!-- div para renovar -->
+                <div id ='divrenovar'style="display:none; border: 0px;" >
+                    <form 
+                        action="renovarpoliza" 
+                        method="POST"
+                        enctype="multipart/form-data"
+                        id="formrenovar"
+                        name="formrenovar"
+                        class="container px-4 my-5"
+                        >
+                        @csrf
+                            <input type="hidden" name="idpolozarenovar" id='idpolozarenovar' value="">
+                            <table class="table">
+                                <tr>
+                                        <th colspan="2">
+                                            <label> 
+                                                monto renovar polizar 
+                                            </label><br>
+                                            <input type="number" id="montorenovarpoliza" name="montorenovarpoliza" value="">
+                                        </th>
+
+                                </tr>
+
+
+                                <tr>
+                                    <th>
+                                        <label>
+                                        ¿Desea la renovación con el mismo seguro?
+                                        </label>
+                                        <br>  
+                                        <input type="radio" id="segurosi" name="seguro" value="si">
+                                        <label for="html">Si</label><br>
+                                        <input type="radio" id="segurono" name="seguro" value="no">
+                                        <label for="css">No</label><br>
+                                    
+                                    
+                                    </th>
+                                    <th>
+                                        <label>
+                                        ¿Mismas frecuencias de pago?
+                                        </label>
+                                        <br>  
+                                        <input type="radio" id="frecuenciassi" name="frecuencias" value="si">
+                                        <label for="html">Si</label><br>
+                                        <input type="radio" id="frecuenciasno" name="frecuencias" value="no">
+                                        <label for="css">No</label><br>
+                                    </th>
+                                
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">
+                                        <div id='div_segurorenovacion' style="display:none; border: 0px;">
+                                            <select 
+                                                name="segurorenovacion" 
+                                                id="segurorenovacion" 
+                                                class="form-select shadow-none border-0 bg-grey w-25 align-self-start" 
+                                                aria-label="Default select example"     
+                                            >
+                                                    <option value="0">Seleccione</option> 
+                                                    <?php  
+                                                        foreach ($insurers as $i )
+                                                        {
+                                                            ?>
+                                                                <option value="{{ $i->id }}">{{  $i->name }} </option> 
+                                                            <?php  
+                                                        }
+                                                    ?>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr> 
+
+                                <tr>
+                                    <td colspan="2">
+                                        <div 
+                                            class="m-0 row justify-content-center" 
+                                            id="div_frecuencias_renovacion"
+                                            name="div_frecuencias_renovacion"
+                                            style="display:none;"
+                                            >
+                                            <?php 
+                                                foreach ($frequencies as $frequencie) 
+                                                { 
+                                                    ?> 
+                                                        <input 
+                                                            
+                                                            style="padding:5px;"
+                                                            type="radio" 
+                                                            name="frequencierenovacion" 
+                                                            id="frequenciepagosrenovacion" 
+                                                            onclick="frecuenciarenovacion(<?=$frequencie->frequency ?>)"
+                                                        >
+                                                            
+                                                            <label class="form-check-label" for="frequenciepagos">
+                                                                <?php echo $frequencie->name; ?> 
+                                                            </label>
+                                                    <?php 
+                                                } 
+                                            ?>  
+                                            <label>Fecha de Inicio pagos </label>
+                                            <input 
+                                                class="form-check-input"  
+                                                type="date" 
+                                                name="fechainicio" 
+                                                id="fechainicio" value="<?= date('Y-m-d'); ?>"
+                                                >
+                                                <button 
+                                                    type="button" 
+                                                    id="calcularpagosrenovacion" 
+                                                    name="calcularpagosrenovacion"> 
+                                                        Calcular
+                                                </button>
+                                                <div  
+                                                    style="border: 0px solid #fff;"
+                                                    >
+                                                        <form  id ="formulariospagorealizar2" 
+                                                            name="formulariospagorealizar2" 
+                                                            method="POST"
+                                                            class=""
+                                                            action="frecuenciapagos" 
+                                                            
+                                                        >
+                                                            @csrf 
+                                                            <table id="tablacontenidoformuariopago2renovacion" class="table">
+                                                            </table>   
+                                                        </form>           
+                                                </div>      
+                                        </div>  
+                                        
+                                    </td>
+                                </tr> 
+                                                    
+                                <tr>
+                                    <th>
+                                        <button
+                                                onclick="generarrenovacion()"
+                                                class="btn btn-primary mt-2"
+                                                
+                                                >
+                                                Genere renovación
+                                            </button>
+                                    </th>
+                                    <th></th>
+
+                                </tr>
+                            
+                            </table>
+                    </form>
+
+
+                </div>
+                <div id ="divcontinuidad" style="display:none; border: 0px;">
+                    <form 
+                            action="continuidad" 
+                            method="POST"
+                            enctype="multipart/form-data"
+                            id="formcontinuidad"
+                            name="formcontinuidad"
+                            class="container px-4 my-5"
+                            >
+                            @csrf
+                            <input type="hidden" name="idpolizacontinuidad" id='idpolizacontinuidad' value="">
+                            <table>
+                                <tr>
+                                    <th colspan="2">
+                                        <label> 
+                                            Seguro de la continuidad
+                                        </label><br>
+                                        <select 
+                                                name="segurocontinuidad" 
+                                                id="segurocontinuidad" 
+                                                class="form-select shadow-none border-0 bg-grey w-25 align-self-start" 
+                                                aria-label="Default select example"     
+                                            >
+                                                    <option value="0">Seleccione</option> 
+                                                    <?php  
+                                                        foreach ($insurers as $i )
+                                                        {
+                                                            ?>
+                                                                <option value="{{ $i->id }}">{{  $i->name }} </option> 
+                                                            <?php  
+                                                        }
+                                                    ?>
+                                            </select>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th colspan="2">
+                                        <button
+                                            onclick="generecontinuidad()"
+                                            class="btn btn-primary mt-2"
+                                            
+                                            >
+                                            Genere continuidad
+                                        </button>
+                                    </th>
+                                </tr>
+
+
+                            </table>
+                    </form>
+
+
+                </div>
+                
                 <!-- formulario salud -->
                 <div class="card" id="divsalud" style="display:none;">
                     <form action="polizassalud" 
@@ -1571,14 +1793,14 @@ if ( @$info[0]->numerotelefono )
                                 $tipopoliza =" Empresa ";
                                 break;
                         }
-                        $monto = number_format($i->coverage) .' USD ( '.$i->name.' :'.$tipopoliza.' ) '
+                        $monto = number_format($i->idcoverages) .' USD ( '.$i->name.' :'.$tipopoliza.' ) '
                         ?>
                             <input 
                                 class="form-check-input" 
                                 type="radio" 
                                 name="flexRadioDefault" 
                                 id="flexRadioDefault2" 
-                                onclick="buscarfrecuencias(<?=$i->id ?>,<?=$i->coverage?>,<?=$i->id_insurancepolicies ?>)">
+                                onclick="buscarfrecuencias(0,<?=$i->idcoverages?>,<?=$i->id_insurancepolicies ?>)">
                             <label class="form-check-label" for="flexRadioDefault2">
                                 {{ $monto }}
                             </label>
@@ -1652,14 +1874,14 @@ if ( @$info[0]->numerotelefono )
                                 $tipopoliza =" Empresa ";
                                 break;
                         }
-                        $monto = number_format($i->coverage) .' USD ( '.$i->name.' :'.$tipopoliza.' ) '
+                        $monto = number_format($i->idcoverages) .' USD ( '.$i->name.' :'.$tipopoliza.' ) '
                         ?>
                             <input 
                                         class="form-check-input" 
                                         type="radio" 
                                         name="flexRadioDefault3" 
                                         id="flexRadioDefault3" 
-                                        onclick="buscarfrecuencias2(<?=$i->id ?>,<?=$i->coverage?>,<?=$i->id_insurancepolicies ?>)">
+                                        onclick="buscarfrecuencias2(0,<?=$i->idcoverages?>,<?=$i->id_insurancepolicies ?>)">
                                     <label class="form-check-label" for="flexRadioDefault3">
                                         {{ $monto }}
                                     </label>
@@ -1701,14 +1923,14 @@ if ( @$info[0]->numerotelefono )
                                 $tipopoliza =" Empresa ";
                                 break;
                         }
-                        $monto = number_format($i->coverage) .' USD ( '.$i->name.' :'.$tipopoliza.' ) '
+                        $monto = number_format($i->idcoverages) .' USD ( '.$i->name.' :'.$tipopoliza.' ) '
                         ?>
                             <input 
                                         class="form-check-input" 
                                         type="radio" 
                                         name="flexRadioDefault3" 
                                         id="flexRadioDefault3" 
-                                        onclick="buscarfrecuencias3(<?=$i->id ?>,<?=$i->coverage?>,<?=$i->id_insurancepolicies ?>)">
+                                        onclick="buscarfrecuencias3(0,<?=$i->idcoverages?>,<?=$i->id_insurancepolicies ?>)">
                                     <label class="form-check-label" for="flexRadioDefault3">
                                         {{ $monto }}
                                     </label>
@@ -1774,12 +1996,12 @@ if ( @$info[0]->numerotelefono )
                             <button onClick="addocument6()"  type="button" class="btn btn-primary mt-2"> 
                                 <span 
                                         class="ms-3 mon-light">
-                                        Añadir documento
+                                        Añadir documento 1
                                 </span>        
                             </button>
                             <!-- -->         
                             <button type="button" onclick="guardarsiniestro()" class="btn btn-primary mt-2">
-                                Guardar siniestro
+                                Guardar siniestro 1
                             </button>
                     </form>
                 </div>

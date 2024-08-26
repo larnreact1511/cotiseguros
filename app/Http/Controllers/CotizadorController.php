@@ -171,9 +171,11 @@ class CotizadorController extends Controller
         $getCotizacion2 ='';
         $user =false;
         $lock =0;
+       
         if (in_array(trim($p), $nros_excluidos)) 
         {
-            $getCotizacion2= $this->getCoverageData($p); //echo " aa".$p; die;
+            $getCotizacion2= $this->getCoverageData($p); 
+            //dd($getCotizacion2);
             return view("cotizador.cotizacionpersonal",
             [
                 "coverages"=>Coverage::select(["coverage"])->groupBy("coverage")->orderBy("coverage","ASC")->get(),
@@ -192,12 +194,14 @@ class CotizadorController extends Controller
         {
             
             $getCotizacion2= $this->getCoverageData($p);
+            //dd($getCotizacion2);
             
         } 
         else 
         {
             //echo " no es user ";
             $phone = Phone::where("phone",$p)->first();
+            //dd($phone);
             if( $phone->lock == 1 )
             {
                 $lock=1; 
@@ -591,60 +595,130 @@ class CotizadorController extends Controller
     public function listartabla(Request $request)
     {
         $search = $request->input('search'); 
+        $from = $request->input('buscarFechaInicio');
+        $to = $request->input('buscarFechaFin');
         if ($search['value']=='')
         {
-            $Quote =Quote::orderBy('id', 'DESC')
-            ->with("memberquote")
-            ->with(["coverages" => function($q){
-                $q->with("rates")->with(["insurer" => function($queryInsurer){
-                    $queryInsurer->with(["benefitsInsurer" => function($queryBenefitsInsurer){
-                        $queryBenefitsInsurer->with(["payBenefit","benefit"]);
+            if (($from == "" ) && ($to == "" )) 
+            {
+                $Quote =Quote::orderBy('id', 'DESC')
+                    ->with("memberquote")
+                    ->with(["coverages" => function($q){
+                        $q->with("rates")->with(["insurer" => function($queryInsurer){
+                            $queryInsurer->with(["benefitsInsurer" => function($queryBenefitsInsurer){
+                                $queryBenefitsInsurer->with(["payBenefit","benefit"]);
+                            }]);
+                        }]);
+                    }])
+                    ->skip($request->input('start'))
+                    ->take($request->input('length'))
+                    ->get();
+                //
+                $quote = $Quote;
+                $count = $Quote->count() ;
+            }
+            else
+            {
+                $from = $from.' 00:00:00';
+                $to = $to.' 23:59:59'; 
+                $value =$search['value']; 
+                $Quote =Quote::orderBy('id', 'DESC')
+                ->where(function ($query) use ($from, $to) {
+                    $query->whereBetween('created_at', [$from, $to]);
+                })
+                ->with("memberquote")
+                ->with(["coverages" => function($q){
+                    $q->with("rates")->with(["insurer" => function($queryInsurer){
+                        $queryInsurer->with(["benefitsInsurer" => function($queryBenefitsInsurer){
+                            $queryBenefitsInsurer->with(["payBenefit","benefit"]);
+                        }]);
                     }]);
-                }]);
-            }])->skip($request->input('start'))->take($request->input('length'))->get();
-            //
-            $count =Quote::orderBy('id', 'DESC')
-            ->with("memberquote")
-            ->with(["coverages" => function($q){
-                $q->with("rates")->with(["insurer" => function($queryInsurer){
-                    $queryInsurer->with(["benefitsInsurer" => function($queryBenefitsInsurer){
-                        $queryBenefitsInsurer->with(["payBenefit","benefit"]);
-                    }]);
-                }]);
-            }])->count();
+                }])->skip($request->input('start'))->take($request->input('length'))->get();
+                //
+                $quote = $Quote;
+                $count = $Quote->count() ;
+            }
         }
         else
         {
             $value =$search['value']; 
-            $Quote =Quote::orderBy('id', 'DESC')->where(function ($query) use ($value) {
-                $query->where('name', 'LIKE', "%$value%")
+            if (($from == "" ) && ($to == "" )) 
+            {
+                $Quote =Quote::orderBy('id', 'DESC')->where(function ($query) use ($value) {
+                    $query
+                    ->Where('name', 'LIKE', "%$value%")
                     ->orWhere('email', 'LIKE', "%$value%")
                     ->orWhere('phone', 'LIKE', "%$value%");      
-            })
-            ->with("memberquote")
-            ->with(["coverages" => function($q)
+                })
+                ->with("memberquote")
+                ->with(["coverages" => function($q)
+                {
+                    $q->with("rates")->with(["insurer" => function($queryInsurer){
+                        $queryInsurer->with(["benefitsInsurer" => function($queryBenefitsInsurer){
+                            $queryBenefitsInsurer->with(["payBenefit","benefit"]);
+                        }]);
+                    }]);
+                }])
+                ->skip($request->input('start'))
+                ->take($request->input('length'))
+                ->get();
+                $quote = $Quote;
+                $count = $Quote->count() ;
+            }
+            else
             {
-                $q->with("rates")->with(["insurer" => function($queryInsurer){
-                    $queryInsurer->with(["benefitsInsurer" => function($queryBenefitsInsurer){
-                        $queryBenefitsInsurer->with(["payBenefit","benefit"]);
+                $from = $from.' 00:00:00';
+                $to = $to.' 23:59:59';
+                $QuoteQuery = Quote::whereBetween('created_at', [$from, $to]);
+                $QuoteQuery->where(function ($query) use ($value) {
+                    $query->where('name', 'LIKE', "%$value%")
+                          ->orWhere('email', 'LIKE', "%$value%")
+                          ->orWhere('phone', 'LIKE', "%$value%");
+                });
+                $QuoteQuery->orderBy('id', 'DESC');
+                $QuoteQuery->with([
+                    'memberquote',
+                    'coverages' => function ($q) {
+                        $q->with('rates')
+                          ->with(['insurer' => function ($queryInsurer) {
+                              $queryInsurer->with(['benefitsInsurer' => function ($queryBenefitsInsurer) {
+                                  $queryBenefitsInsurer->with(['payBenefit', 'benefit']);
+                              }]);
+                          }]);
+                    }
+                ]);
+                $quote = $QuoteQuery->skip($request->input('start'))
+                    ->take($request->input('length'))
+                    ->get();
+                /*
+                $Quote =Quote::orderBy('id', 'DESC')->where(function ($query) use ($from, $to,$value) {
+                    $query->whereBetween('created_at', [$from, $to])
+                    ->orWhere('name', 'LIKE', "%$value%")
+                    ->orWhere('email', 'LIKE', "%$value%")
+                    ->orWhere('phone', 'LIKE', "%$value%");      
+                })
+                ->with("memberquote")
+                ->with(["coverages" => function($q)
+                {
+                    $q->with("rates")->with(["insurer" => function($queryInsurer){
+                        $queryInsurer->with(["benefitsInsurer" => function($queryBenefitsInsurer){
+                            $queryBenefitsInsurer->with(["payBenefit","benefit"]);
+                        }]);
                     }]);
-                }]);
-            }])->get();
-           
+                }])
+                ->skip($request->input('start'))
+                ->take($request->input('length'))
+                ->get();
+                $quote = $Quote;
+                $count = $Quote->count() ;
+                */
+            }
             //
-            $count =Quote::orderBy('id', 'DESC')
-            ->with("memberquote")
-            ->with(["coverages" => function($q){
-                $q->with("rates")->with(["insurer" => function($queryInsurer){
-                    $queryInsurer->with(["benefitsInsurer" => function($queryBenefitsInsurer){
-                        $queryBenefitsInsurer->with(["payBenefit","benefit"]);
-                    }]);
-                }]);
-            }])->count();
+            
         }
         $i = 0;
         $datos=[];
-        foreach( $Quote  as $q)
+        foreach( $quote  as $q)
         {
             $vbuscar =array('email'=>$q->email);
             $vbuscar2 =array('idquote'=>$q->id);
@@ -683,7 +757,8 @@ class CotizadorController extends Controller
 
     public function checkPhone($phone)
     {
-        $data = Phone::where("phone",$phone)->first();
+        $data = Phone::where("phone",$phone)->first(); 
+        
         if( $data )
         {
             if( $data->status == 1 )

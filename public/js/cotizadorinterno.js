@@ -281,23 +281,80 @@ function changeStatus (id)
 }
 function changeGender(id)
 {
-    let valor =$("#gender_"+id).val();
-    miembrosasegurados[id].gender=valor; 
+    let gender =$("#gender_"+id).val();
+    miembrosasegurados[id].gender=gender; 
+    //
+    let status =$("#status_"+id).val();
+    miembrosasegurados[id].status=status;
+    //
+    let day =$("#day_"+id).val();
+    miembrosasegurados[id].day=day; 
+    //
+    let mounth =$("#mounth_"+id).val();
+    miembrosasegurados[id].mounth=mounth;  
+    //
+    let birthday =$("#birthday_"+id).val();
+    miembrosasegurados[id].year=birthday; 
+    //
+    
+
 }
 function changeday(id)
 {
-    let valor =$("#day_"+id).val();
-    miembrosasegurados[id].day=valor; console.log(miembrosasegurados)
+    let gender =$("#gender_"+id).val();
+    miembrosasegurados[id].gender=gender; 
+    //
+    let status =$("#status_"+id).val();
+    miembrosasegurados[id].status=status;
+    //
+    let day =$("#day_"+id).val();
+    miembrosasegurados[id].day=day; 
+    //
+    let mounth =$("#mounth_"+id).val();
+    miembrosasegurados[id].mounth=mounth;  
+    //
+    let birthday =$("#birthday_"+id).val();
+    miembrosasegurados[id].year=birthday; 
+    //
+    
 }
 function changemounth(id)
 {
-    let valor =$("#mounth_"+id).val();
-    miembrosasegurados[id].mounth=valor;  console.log(miembrosasegurados)
+    let gender =$("#gender_"+id).val();
+    miembrosasegurados[id].gender=gender; 
+    //
+    let status =$("#status_"+id).val();
+    miembrosasegurados[id].status=status;
+    //
+    let day =$("#day_"+id).val();
+    miembrosasegurados[id].day=day; 
+    //
+    let mounth =$("#mounth_"+id).val();
+    miembrosasegurados[id].mounth=mounth;  
+    //
+    let birthday =$("#birthday_"+id).val();
+    miembrosasegurados[id].year=birthday; 
+    //
+    
 }
 function changebirthday(id)
 {
-    let valor =$("#birthday_"+id).val();
-    miembrosasegurados[id].year=valor;  
+    let gender =$("#gender_"+id).val();
+    miembrosasegurados[id].gender=gender; 
+    //
+    let status =$("#status_"+id).val();
+    miembrosasegurados[id].status=status;
+    //
+    let day =$("#day_"+id).val();
+    miembrosasegurados[id].day=day; 
+    //
+    let mounth =$("#mounth_"+id).val();
+    miembrosasegurados[id].mounth=mounth;  
+    //
+    let birthday =$("#birthday_"+id).val();
+    miembrosasegurados[id].year=birthday; 
+    //
+    
     
 }
 function sendCot()

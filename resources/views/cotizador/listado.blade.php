@@ -13,8 +13,40 @@
 <script src="{{ asset('js/listado.js') }}" defer></script>
 <div class="container">
     <div class="row">
-        <div class="col-12" id="">
+        <div class="col-md-12" id="">
             <div class="custom-loader" id ="carga" sytyle="display:none"></div>
+        </div>
+        <div class="col-md-2" id="">
+            <label>
+                Fecha incio
+            </label>
+            <input type="date" id="buscar_inicio" name="buscar_inicio">
+        </div>
+        <div class="col-md-2" id="">
+            <label>
+                Fecha fin
+            </label>
+            <input type="date" id="buscar_fin" name="buscar_fin">
+        </div>
+        <div class="col-md-2" id="">
+            <button 
+                class="btn btn-primary"  
+                type ="button"
+                id="btnsearchbydate"
+                name="btnsearchbydate">
+                    Buscar por fecha
+            </button>
+
+        </div>
+        <div class="col-md-2" id="">
+            <button 
+                class="btn btn-primary"  
+                type ="button"
+                id="btnclear"
+                name="btnclear">
+                    limpiar
+            </button>
+            
         </div>
         <div class="col-12" id="divtabla">
             <table id="example" class="table" >

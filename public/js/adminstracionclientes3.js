@@ -29,9 +29,9 @@ let  cm =0; // contador miembros
 let ym =parseFloat(year)-parseFloat(99); // año menor
 let ya = new Date().getFullYear(); // año actual
 let datasiniestros =[];
-//let urlservidor ='http://127.0.0.1:8000/';
+let urlservidor ='http://127.0.0.1:8000/';
 //let urlservidor  ='https://dev.cotiseguros.com.ve//';
-let urlservidor  ='https://www.cotiseguros.com.ve/';
+//let urlservidor  ='https://www.cotiseguros.com.ve/';
 
 let polizaieditar =0;
 let diveliminar =document.getElementById("diveliminar");
@@ -116,6 +116,74 @@ $( document ).ready(function()
             Swal.fire('Debe escoger una cotización y frecuencia de pago de la misma');
         }
     });
+    $( "#calcularpagosrenovacion" ).on( "click", function() 
+    {
+        let frecuencia = localStorage.getItem("frecuencia");
+        let idcotizacionpagar = localStorage.getItem("idcotizacionpagar");
+        let montocotizacionpagar = localStorage.getItem("montocotizacionpagar");
+        let id_insurancepolicies = localStorage.getItem("id_insurancepolicies");
+        let fechainicio =$("#fechainicio").val();
+        if (  (localStorage.getItem("frecuencia") > 0)  && (localStorage.getItem("montocotizacionpagar") > 0 ) && (localStorage.getItem("id_insurancepolicies") > 0 ) )
+        {
+            //
+            mostrarcarga()
+            fetch(urlservidor+"api/calcularcuotas", 
+            {
+                headers: 
+                {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // <--- aquí el token
+                    "Content-type": "application/json; charset=UTF-8"
+                },
+                method: "POST",
+                body: JSON.stringify(
+                {
+                    frecuencia: frecuencia,
+                    idcotizacionpagar: idcotizacionpagar,
+                    montocotizacionpagar: montocotizacionpagar,
+                    fechainicio: fechainicio,
+                    id_insurancepolicies:id_insurancepolicies
+                    
+                }),
+            })
+            .then(r => r.json())
+            .then(r => 
+            {
+                if (r.result)
+                {
+                    let fre=r.data;
+                    $("#tablacontenidoformuariopago2renovacion").html('');
+                    fre.map((f,index) =>
+                    {
+                    
+                    $("#tablacontenidoformuariopago2renovacion").append(`
+                    <tr>
+                        <th>
+                            <label> Fecha inicio</label>
+                            <input class="form-check-input" type="date" name="fechainicirenovacion[]" id="" value="${f.fechaini}">
+                        </th>
+                        <th>
+                            <label> Fecha fin</label>
+                            <input class="form-check-input" type="date" name="fechafinrenovacion[]" id="" value="${f.fechafin}">
+                        </th>
+                        <th>
+                            <label> Monto</label>
+                            <input class="form-check-input" type="numeric" name="montorenovacion[]" id="" value="" size="10">
+                        </th>
+                    </tr>
+                        `);
+                    });
+                }
+            }).finally(()=>
+            {
+                ocultarcarga()
+            });
+            //
+        }
+        else
+        {
+            Swal.fire('Debe escoger una cotización y frecuencia de pago de la misma');
+        }
+    });
     //
     $("#guardarpagos").on("click",function()
     {
@@ -135,8 +203,25 @@ $( document ).ready(function()
         formulario.submit();
     });
     $("#carga").css('display','none');
-});
 
+    //
+
+    $('#segurono').click(function() {  $("#div_segurorenovacion").css('display','block');  });
+    $('#segurosi').click(function() {  $("#div_segurorenovacion").css('display','none');  });
+
+    $('#frecuenciassi').click(function() {  $("#div_frecuencias_renovacion").css('display','none');  });
+    $('#frecuenciasno').click(function() {  $("#div_frecuencias_renovacion").css('display','block');  });
+});
+function renovarpoliza()
+{
+    $("#divrenovar").css('display','block');
+    $("#divcontinuidad").css('display','none');
+}
+function crearcontinuidad()
+{
+    $("#divcontinuidad").css('display','block');
+    $("#divrenovar").css('display','none');
+}
 function mostrarcarga()
 {
     $("#carga").css('display','block');
@@ -1147,6 +1232,7 @@ function buscarfrecuencias3(id,monto,id_insurancepolicies) // para realizar pago
                 cancelButtonText: 'Agregar',
                 reverseButtons: true
             }).then((result) => {
+                //divbotonesguardar
                     if (result.isConfirmed) 
                     {
                         $("#divformulariossiniestronuevo").css('display','none');  
@@ -1158,7 +1244,7 @@ function buscarfrecuencias3(id,monto,id_insurancepolicies) // para realizar pago
                     else if ( result.dismiss === Swal.DismissReason.cancel ) 
                     {
                         $("#divformulariossiniestronuevo").css('display','block');
-                        $("#divbotonesguardar").css('display','block');
+                        $("#divbotonesguardar").css('display','none');
                         $("#divbotoneseditar").css('display','none');
                     }
                 });
@@ -1179,6 +1265,10 @@ function buscarfrecuencias3(id,monto,id_insurancepolicies) // para realizar pago
   
 }
 function frecuencia(frecuencia) // frecuencia de pagar la cotizacion
+{
+  localStorage.setItem("frecuencia",frecuencia);
+}
+function frecuenciarenovacion(frecuencia) // frecuencia de pagar la cotizacion
 {
   localStorage.setItem("frecuencia",frecuencia);
 }
@@ -1324,13 +1414,19 @@ function eliminarqr(id)
        // location.reload()
     );
 }
+function generarrenovacion()
+{
+    
+}
+
 async function editarpoliza(id_insurancepolicies) {
     try {
       // ⛔️ TypeError: Failed to fetch
       // 👇️ incorrect or incomplete URL
       polizaieditar =id_insurancepolicies;
       const response = await fetch(urlservidor+"editarpoliza/"+id_insurancepolicies);
-  
+      $("#idpolozarenovar").val(id_insurancepolicies)
+      $("#idpolizacontinuidad").val(id_insurancepolicies)
       if (!response.ok) {
         alert (' errorr cors ')
         throw new Error(`Error! status: ${response.status}`);

@@ -114,6 +114,36 @@ class ClientesController extends Controller
     {
         //
     }
+
+    function update1()
+    {
+        $insurancepolicies = DB::table('insurancepolicies')->get();
+        foreach ($insurancepolicies as $insurancepolicie )
+        {
+            $id =$insurancepolicie->id;
+            $idcoverages = $insurancepolicie->idcoverages;
+            $count =  DB::table('coveragesres')->where('id',$idcoverages);
+            if($count->count() > 0 )
+            {
+               
+
+                $coverage = $count->get();
+                $coverage = $coverage[0]->coverage;
+                $data =array(
+                    
+                    'idcoverages'=>$coverage
+                ); 
+                DB::table('insurancepolicies')->where('id',$id)->update($data);
+                //echo $coverage .'  ';
+            }
+            else
+            {
+                echo ' no '. $id;
+            }
+        }
+        
+    }
+
     public function uploadFile(Request $request) 
     {
         $imagen =array();
@@ -1364,7 +1394,7 @@ class ClientesController extends Controller
     {
         
         $frecuencia =$request->frecuencia;
-        $idcotizacionpagar =$request->idcotizacionpagar;
+        //$idcotizacionpagar =$request->idcotizacionpagar;
         $montocotizacionpagar=$request->montocotizacionpagar;
         $vector=[];
         if ( @$request->frecuencia)
@@ -1432,8 +1462,8 @@ class ClientesController extends Controller
             $responce["result"]=false;
         
         $responce["data"] =$vector;
-        $responce["idcotizacionpagar"] =$idcotizacionpagar;
-        $responce["idcotizacionpagar"] =$idcotizacionpagar;
+        //$responce["idcotizacionpagar"] =$idcotizacionpagar;
+        //$responce["idcotizacionpagar"] =$idcotizacionpagar;
         $responce["id_insurancepolicies"] =$request->id_insurancepolicies;
         return response()->json($responce);
        
@@ -1495,7 +1525,7 @@ class ClientesController extends Controller
                 'idusuario'=>$datacliente[0]->idusuario,
                 'tipopoliza'=>1);
             $data['salud'] =DB::table('insurancepolicies')
-            ->join('coverages', 'insurancepolicies.idcoverages', '=', 'coverages.id')
+            //->join('coverages', 'insurancepolicies.idcoverages', '=', 'coverages.id')
             ->join('insurers', 'insurancepolicies.idinsurers', '=', 'insurers.id')
             ->where($buscarsalud)
             ->select(
@@ -1503,18 +1533,19 @@ class ClientesController extends Controller
                 'insurancepolicies.comentario', 
                 'insurancepolicies.idcoverages', 
                 'insurancepolicies.idinsurers', 
-                'coverages.coverage',
+                //'coverages.coverage',
                 'insurers.name',
                 'insurers.image',
                 'insurers.id as idinsurers',
                 'insurancepolicies.tipopoliza',
                 'insurancepolicies.id as id_insurancepolicies',
-                'coverages.id')->get();    
+                //'coverages.id'
+                )->get();    
             $buscarautos= array(
                 'idusuario'=>$datacliente[0]->idusuario,
                 'tipopoliza'=>2);
             $data['autos'] =DB::table('insurancepolicies')
-            ->join('coverages', 'insurancepolicies.idcoverages', '=', 'coverages.id')
+            //->join('coverages', 'insurancepolicies.idcoverages', '=', 'coverages.id')
             ->join('insurers', 'insurancepolicies.idinsurers', '=', 'insurers.id')
             ->where($buscarautos)
             ->select(
@@ -1522,12 +1553,13 @@ class ClientesController extends Controller
                 'insurancepolicies.idinsurers', 
                 'insurancepolicies.id as id_poliza', 
                 'insurancepolicies.comentario',
-                'coverages.coverage',
+                //'coverages.coverage',
                 'insurers.name',
                 'insurancepolicies.tipopoliza',
                 'insurancepolicies.id as id_insurancepolicies',
                 'insurancepolicies.descripcionpoliza',
-                'coverages.id')->get(); 
+                //'coverages.id'
+                )->get(); 
             $buscarempresa= array(
                 'idusuario'=>$datacliente[0]->idusuario,
                 'tipopoliza'=>3);
@@ -1540,12 +1572,13 @@ class ClientesController extends Controller
                 'insurancepolicies.idinsurers', 
                 'insurancepolicies.id as id_poliza', 
                 'insurancepolicies.comentario',
-                'coverages.coverage',
+                //'coverages.coverage',
                 'insurers.name',
                 'insurancepolicies.tipopoliza',
                 'insurancepolicies.id as id_insurancepolicies',
                 'insurancepolicies.descripcionpoliza',
-                'coverages.id')->get(); 
+                //'coverages.id'
+                )->get(); 
             $data['footer'] = Footer::first();
 
             // salud
@@ -2153,14 +2186,14 @@ class ClientesController extends Controller
         $insurers = Insurer::select(["*"])->get();
         $data['info'] = DB::table('clientes')->where('id', $request->id)->get();
         $insurancepolicies =DB::table('insurancepolicies')
-        ->join('coverages', 'insurancepolicies.idcoverages', '=', 'coverages.id')
+        //->join('coverages', 'insurancepolicies.idcoverages', '=', 'coverages.id')
         ->join('insurers', 'insurancepolicies.idinsurers', '=', 'insurers.id')
         ->where('insurancepolicies.idusuario',$data['info'][0]->idusuario)
-        ->select('insurancepolicies.idcoverages', 
-        'insurancepolicies.idinsurers', 'coverages.coverage','insurers.name',
-        'insurancepolicies.tipopoliza','insurancepolicies.id as id_insurancepolicies',
-        'coverages.id')->get();    
-        
+        ->where('insurancepolicies.estado','=',0)
+        ->select('insurancepolicies.idcoverages',
+        'insurancepolicies.idinsurers','insurers.name',
+        'insurancepolicies.tipopoliza','insurancepolicies.id as id_insurancepolicies')->get();    
+        //dd($insurancepolicies);
         $info =$this->inforcliente($request->id);
         
        return view("admin.adminstracionliente2",[
@@ -2619,7 +2652,7 @@ class ClientesController extends Controller
     {
         if ( (DB::table('accidents')->where('id_insurancepolicies',$request->id_insurancepolicies)->count()) >0  )
         {
-            $accidents= DB::table('accidents')->where('id_insurancepolicies',$request->id_insurancepolicies)->get();
+            $accidents= DB::table('accidents')->where('id_insurancepolicies',$request->id_insurancepolicies) ->orderBy('accidents.id', 'DESC')->get();
             $i=0;
             $doc=[];
             foreach ($accidents as $acc )
@@ -3535,5 +3568,173 @@ class ClientesController extends Controller
         $dataresponce['recordsFiltered']    =   $con;
         $dataresponce['data']               =   $data;
         return response()->json($dataresponce);
+    }
+
+    public function renovarpoliza(Request $request)
+    {
+        
+        $idpolozarenovar = $request->idpolozarenovar;
+        $montorenovarpoliza = $request->montorenovarpoliza;
+
+        $seguro = $request->seguro;
+        $frequencierenovacion = $request->frequencierenovacion;
+
+        $frecuencias = $request->frecuencias;
+       
+        $frequencierenovacion = $request->fechainicirenovacion;
+
+        $fechainicio = $request->fechainicio;
+        // pasar a terminada la poliza y renovada frequencyofpayments
+        $insurancepolicie = DB::table('insurancepolicies')->where('id',$idpolozarenovar)->get();
+        $data =array('estado'=>2);
+        DB::table('insurancepolicies')->where('id',$idpolozarenovar)->update($data);
+        //
+        $tipopoliza =$insurancepolicie[0]->tipopoliza;
+        $comentario =$insurancepolicie[0]->comentario;
+        $descripcionpoliza =$insurancepolicie[0]->descripcionpoliza;
+        $idusuario =$insurancepolicie[0]->idusuario;
+        $idadmin =$insurancepolicie[0]->idadmin;
+        $dimensiones =$insurancepolicie[0]->dimensiones;
+        $ubicacion =$insurancepolicie[0]->ubicacion;
+        $idinsurers =$insurancepolicie[0]->idinsurers;
+        //
+        $montorenovarpoliza = $request->montorenovarpoliza;
+        if ($seguro=='no')
+        {
+            
+            $segurorenovacion = $request->segurorenovacion;
+            $polisarenovada = DB::table('insurancepolicies')->insertGetId(
+                [
+                    'created_at'=>date("Y-m-d H:i:s"),
+                    'idusuario'=>$idusuario,
+                    'idadmin'=>$idadmin,
+                    'idcoverages' =>$montorenovarpoliza,
+                    'idinsurers' =>$segurorenovacion,
+                    'tipopoliza'=>$tipopoliza,
+                    'dimensiones' =>$dimensiones,
+                    'ubicacion' =>$ubicacion,
+                    'comentario'=>$comentario,
+                ]);
+        }
+        else
+        {
+            $polisarenovada = DB::table('insurancepolicies')->insertGetId(
+                [
+                    'created_at'=>date("Y-m-d H:i:s"),
+                    'idusuario'=>$idusuario,
+                    'idadmin'=>$idadmin,
+                    'idcoverages' =>$montorenovarpoliza,
+                    'idinsurers' =>$idinsurers,
+                    'tipopoliza'=>$tipopoliza,
+                    'dimensiones' =>$dimensiones,
+                    'ubicacion' =>$ubicacion,
+                    'comentario'=>$comentario,
+                ]);
+        }
+        $orden=0; 
+       
+        if (DB::table('frequencyofpayments')->find(\DB::table('frequencyofpayments')->where('id_insurancepolicies',$idpolozarenovar)->max('id')) )
+            $orden =$orden + 1;
+        
+        $fechaincio =$request->fechainicirenovacion;
+        $fechafin =$request->fechafinrenovacion;
+        $monto =$request->montorenovacion;
+        $idadmin =0;
+        for ( $i=0; $i < count($fechaincio); $i++ )
+        {
+            $vec=array(
+                'created_at'=>date('Y-m-d'),
+                'idquote'=>0,
+                'fechainicio'=>$fechaincio[$i],
+                'fechafin'=>$fechafin[$i],
+                'montoestimado'=> $monto[$i] >0 ? $monto[$i] :0,
+                'idadmin'=>0,
+                'id_insurancepolicies'=>$polisarenovada,
+                'estadodepago'=>0,
+                'orden'=>$orden
+            );
+            DB::table('frequencyofpayments')->insert($vec);
+        }
+        // comentarios
+        $comentariospolizas = DB::table('comentariospolizas')->where('id_insurancepolicies',$idpolozarenovar)->get();
+
+        foreach ( $comentariospolizas as $c)
+        {
+            $add = DB::table('comentariospolizas')->insertGetId(
+                [
+                    'created_at'=>date("Y-m-d H:i:s"),
+                    'id_insurancepolicies'=>$polisarenovada,
+                    'comentario'=>$c->comentario,
+                    'idadmin'=>$c->idadmin,
+                    'idusuario'=>$c->idusuario,
+                ]);
+        }
+        // documentos
+        $documentos = DB::table('docuemntos')->where('id_insurancepolicies',$idpolozarenovar)->get();
+        foreach ( $documentos as $c)
+        {
+            $add = DB::table('docuemntos')->insertGetId(
+                [
+                    'created_at'=>date("Y-m-d H:i:s"),
+                    'id_insurancepolicies'=>$polisarenovada,
+                    'documentonombre'=>$c->documentonombre,
+                    'tipodocumento'=>$c->tipodocumento,
+                    'url'=>$c->url,
+                    'idusuario'=>$c->idusuario,
+                    'tipo'=>$c->tipo,
+                    'id_accidente'=>$c->id_accidente,
+                ]);
+        }
+        // patologia
+        $patologia = DB::table('patologia')->where('pat_id_poliza',$idpolozarenovar)->get();
+        foreach ( $patologia as $c)
+        {
+            $add = DB::table('patologia')->insertGetId(
+                [
+                    'created_at'=>date("Y-m-d H:i:s"),
+                    'pat_id_poliza'=>$polisarenovada,
+                    'pat_descripcion'=>$c->pat_descripcion,
+                    'pat_status'=>$c->pat_status,
+                    'pat_idusuario'=>$c->pat_idusuario,
+                    'pat_idadmin'=>$c->pat_idadmin,
+                ]);
+        }
+        // member_quotes
+        $member_quotes =DB::table('member_quotes')->where('id_insurancepolicies',$idpolozarenovar)->get();
+        foreach ( $member_quotes as $c)
+        {
+            $add = DB::table('member_quotes')->insertGetId(
+                [
+                    'created_at'=>date("Y-m-d H:i:s"),
+                    'id_insurancepolicies'=>$polisarenovada,
+                    'status'=>$c->status,
+                    'gender'=>$c->gender,
+                    'date'=>$c->date,
+                    'birthday'=>$c->birthday,
+                    'quote_id'=>$c->quote_id,
+                    'day'=>$c->day,
+                    'month'=>$c->month,
+                    'year'=>$c->year,
+                    'total'=>$c->total,
+                ]);
+        }
+        session()->flash('message', 'Poliza renovada con exito');    
+        return back();
+    }
+
+    public function continuidad(Request $request)
+    {
+        if ( isset($request->idpolizacontinuidad) && isset($request->segurocontinuidad) )
+        {
+            $data =array('idinsurers'=>$request->segurocontinuidad);
+            DB::table('insurancepolicies')->where('id',$request->idpolizacontinuidad)->update($data);
+            session()->flash('message', 'Continuidad generada con exito');    
+            return back();
+        }
+        else
+        {
+            session()->flash('message', 'porfavor intentelo de nuevo');    
+            return back();
+        }
     }
 }
