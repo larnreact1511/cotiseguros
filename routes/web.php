@@ -39,8 +39,8 @@ Route::group(['prefix' => 'cotizador'], function ()
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('/home2', [App\Http\Controllers\HomeController::class, 'home2'])->name('home2');
 Route::get('/autos', [App\Http\Controllers\HomeController::class, 'autos'])->name('autos');
 Route::get('/patrimonio', [App\Http\Controllers\HomeController::class, 'patrimonio'])->name('patrimonio');
@@ -54,7 +54,7 @@ Route::get('cotizar/', [App\Http\Controllers\CotizadorController::class, 'cotiza
 Route::get('listartabla/', [App\Http\Controllers\CotizadorController::class, 'listartabla'])->name('listar'); // ver las cotizaciones
 Route::get('nota/{id}', [App\Http\Controllers\NotificationsController::class, 'index'])->name('notas'); // crear nota a una quota
 Route::get('listarclientes/', [App\Http\Controllers\ClientesController::class, 'listarclientes'])->name('listacliente'); // lista de los clientes
-Route::get('listaclientes', [App\Http\Controllers\ClientesController::class, 'listaclientes'])->name('listacliente'); // vista clientes adminstracion
+Route::get('listaclientes', [App\Http\Controllers\ClientesController::class, 'listaclientes']); // vista clientes adminstracion
 
 
 Route::get('eliminarclietne/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarclietne'])->name('eliminarclietne'); // lista de los clientes
@@ -76,11 +76,11 @@ Route::post('adminstracionclientes/actualizardatos/', [App\Http\Controllers\Clie
 Route::post('perfilcliente/adminpagos/', [App\Http\Controllers\ClientesController::class, 'agregarpagos']);
 Route::get('comparar', [App\Http\Controllers\CotizadorController::class, 'comparar']);
 Route::post('perfilcliente/frecuenciapagos/', [App\Http\Controllers\ClientesController::class, 'frecuenciapagos'])->name('frecuenciapagos');
-Route::post('adminstracionclientes/frecuenciapagos/', [App\Http\Controllers\ClientesController::class, 'frecuenciapagos'])->name('frecuenciapagos');
+Route::post('adminstracionclientes/frecuenciapagos/', [App\Http\Controllers\ClientesController::class, 'frecuenciapagos']);
 Route::post('perfilcliente/generateqr/', [App\Http\Controllers\ClientesController::class, 'generateqr']);
 Route::post('adminstracionclientes/generateqr/', [App\Http\Controllers\ClientesController::class, 'generateqr']);
 Route::get('listarpagospendientes', [App\Http\Controllers\ClientesController::class, 'listarpagospendientesclientes'])->name('pagospendientes'); // vista 
-Route::get('pagospendientes', [App\Http\Controllers\ClientesController::class, 'pagospendientes'])->name('pagospendientes'); 
+Route::get('pagospendientes', [App\Http\Controllers\ClientesController::class, 'pagospendientes']);
 Route::get('/usuarios', [App\Http\Controllers\ClientesController::class, 'usuarios'])->name('usuarios');
 
 Route::post('adminstracionclientes/polizassalud', [App\Http\Controllers\ClientesController::class, 'polizassalud'])->name('polizassalud');
@@ -126,11 +126,21 @@ Route::get('missninestros', [App\Http\Controllers\ClientesController::class, 'mi
 Route::get('misdatos', [App\Http\Controllers\ClientesController::class, 'misdatos']);
 Route::get('mispagos', [App\Http\Controllers\ClientesController::class, 'mispagos']);
 Route::get('/test', [App\Http\Controllers\ClientesController::class, 'test']);
+
+
+// colectivos
+Route::get('colectivos', [App\Http\Controllers\ClientesController::class, "colectivos" ]);
+
+
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/excel', [App\Http\Controllers\CotizadorController::class, "insurerExcel" ]);
     Route::post('/excel', [App\Http\Controllers\CotizadorController::class, 'importExcel']);
     
     Route::get('/listar-cotizaciones/{page}', [App\Http\Controllers\CotizadorController::class, "listarCotizaciones" ]);
+
+
+   
+   
 
     Voyager::routes();
 });

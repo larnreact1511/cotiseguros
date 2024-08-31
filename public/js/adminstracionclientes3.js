@@ -51,7 +51,7 @@ $( document ).ready(function()
         let montocotizacionpagar = localStorage.getItem("montocotizacionpagar");
         let id_insurancepolicies = localStorage.getItem("id_insurancepolicies");
         let fechainicio =$("#fechainicio").val();
-        if (  (localStorage.getItem("frecuencia") > 0) && (localStorage.getItem("idcotizacionpagar") >0 ) && (localStorage.getItem("montocotizacionpagar") > 0 ) && (localStorage.getItem("id_insurancepolicies") > 0 ) )
+        if (  (localStorage.getItem("frecuencia") > 0) && (localStorage.getItem("montocotizacionpagar") > 0 ) && (localStorage.getItem("id_insurancepolicies") > 0 ) )
         {
             //
             mostrarcarga()
@@ -985,7 +985,8 @@ function guardareempresas()
 function buscarfrecuencias(id,monto,id_insurancepolicies) //para crear pagos 
 {
     
-    mostrarcarga()
+    mostrarcarga();
+    localStorage.setItem("idcotizacionpagar",id);console.log('click');
     fetch(urlservidor+"api/pagospolizas", 
     {
         headers: 
@@ -1050,7 +1051,7 @@ function buscarfrecuencias(id,monto,id_insurancepolicies) //para crear pagos
            $("#div_frecuencias").css('display','block'); 
            $("#divbtnguardarpagos").css('display','none'); 
            $("#tablacontenidoformuariopago2").empty(''); 
-           localStorage.setItem("idcotizacionpagar",id);
+          
            localStorage.setItem("montocotizacionpagar",monto);
            localStorage.setItem("id_insurancepolicies",id_insurancepolicies);
         }

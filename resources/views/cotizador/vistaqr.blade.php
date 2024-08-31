@@ -190,6 +190,11 @@ use Illuminate\Support\Facades\DB;
                           ->where('estado','<',5)->get();
                           $vec2=array('id_insurancepolicies'=>$poliza->id_insurancepolicies);
                           $documentos =DB::table('docuemntos')->where($vec2)->get();
+
+                          $sum= DB::table('frequencyofpayments')
+                          ->where('id_insurancepolicies',$poliza->id_insurancepolicies)
+                          ->where('estadodepago',1)
+                          ->sum('montoestimado');
                           ?>
                           <div class="row p-2">
                             <div class="col-md-12 text-center">
@@ -197,8 +202,20 @@ use Illuminate\Support\Facades\DB;
                                   <div class="card text-center" style="width:100%;">
                                     <div class="card-body text-center">
                                       <h5 class="card-title"> <?=$poliza->name; ?></h5>
-                                      <h5 class="card-title"> <?=number_format($poliza->idcoverages).' USD '; ?></h5>
-                                      
+                                      <h5 
+                                        class="card-title"> 
+                                          <?=number_format($poliza->idcoverages).' USD '; ?>
+                                      </h5>
+                                      <h5 
+                                        class="card-title"> 
+                                          Abonado : <?=number_format($sum).' USD '; ?>
+                                      </h5>
+                                      <h5 
+                                        class="card-title"> 
+                                          Saldo restante : <?=number_format( floatval($poliza->idcoverages) - floatval($sum)  ).' USD '; ?>
+                                      </h5>
+
+                                    
                                       <?php 
                                       
                                       if ( count($documentos) >0 )
@@ -259,7 +276,7 @@ use Illuminate\Support\Facades\DB;
                                               <!--  --> 
                                               <div class ="card m-2">
                                                 <h6  style ="color:green !important;">
-                                                  Patologias Declaradas
+                                                  Patologias cubiertas
                                                 </h6>
                                                 <?php
                                                   $patologias =  DB::table('patologia')
@@ -289,7 +306,7 @@ use Illuminate\Support\Facades\DB;
                                               </div>
                                               <div class ="card m-2">
                                                 <h6 style ="color:#911d1b !important;">
-                                                  Patologias NO Declaradas
+                                                  Patologias no cubiertas
                                                 </h6>
                                                 <?php
                                                   $patologiasno =  DB::table('patologia')

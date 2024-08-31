@@ -2535,37 +2535,41 @@ class ClientesController extends Controller
                 {
                     if (in_array($i, $cbox))
                     {
-                        if ( floatval($monto[$i]) >0  )
+                        if ( floatval($monto[$i]) >=0  )
                         {
+                            $mon = $monto[$i] ? $monto[$i] : 0;
                             $vinsert =array(
                                 'idusuario'=>trim($request->idclientefp),
                                 'idquote'=>0,
                                 'idadmin'=>trim($request->idadminfp),
                                 'fechapago'=>date("Y-m-d H:i:s"),
-                                'montopago'=>$monto[$i],
+                                'montopago'=> $mon,
                                 'id_frequencyofpayments'=>trim($frequencyofpayments[$i]),
                                 'created_at'=>date("Y-m-d H:i:s"),
                                 'photo_payment'=>''
                             );
+                           
                             if( $idisnet =DB::table('payments')->insertGetId($vinsert))
                             {
-                                if (array_key_exists($i, $photo_payment)) 
+                                if ($mon > 0)
                                 {
-                                    if ($photo_payment[$i]) 
+                                    if (array_key_exists($i, $photo_payment)) 
                                     {
-                                        $photo =$photo_payment[$i];
-                                        $image_name=md5(rand(1000,10000));
-                                        $ext = strtolower($photo->getClientOriginalExtension() );
-                                        $image_full_name=$image_name.'.'.$ext;
-                                        $imagen_url = 'documentos/'.$image_full_name;
-                                        if ($photo->move(public_path('documentos'),$image_full_name))
+                                        if ($photo_payment[$i]) 
                                         {
-                                            DB::table('payments')->where('id',$idisnet)->update(array( 'photo_payment'=>$imagen_url));   
-                                            
-                                        }      
-                                    } 
+                                            $photo =$photo_payment[$i];
+                                            $image_name=md5(rand(1000,10000));
+                                            $ext = strtolower($photo->getClientOriginalExtension() );
+                                            $image_full_name=$image_name.'.'.$ext;
+                                            $imagen_url = 'documentos/'.$image_full_name;
+                                            if ($photo->move(public_path('documentos'),$image_full_name))
+                                            {
+                                                DB::table('payments')->where('id',$idisnet)->update(array( 'photo_payment'=>$imagen_url));   
+                                                
+                                            }      
+                                        } 
+                                    }
                                 }
-                               
                                 DB::table('frequencyofpayments')->where('id',$frequencyofpayments[$i])->update(array( 'estadodepago'=>1));   
                                 session()->flash('message', 'Se guardo con extio');
                             }
@@ -3736,5 +3740,11 @@ class ClientesController extends Controller
             session()->flash('message', 'porfavor intentelo de nuevo');    
             return back();
         }
+    }
+    //----
+
+    public function colectivos()
+    {
+        return view("admin.colectivos");
     }
 }
