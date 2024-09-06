@@ -71,6 +71,9 @@ Route::post('/crearnotacliente/', [App\Http\Controllers\NotificationsController:
 Route::post('/vernotasanteriores/{id}', [App\Http\Controllers\NotificationsController::class, 'vernotasanteriores'])->name('vernotasanteriores'); // ver notas de la cuota creada
 Route::get('/verpagos/{idquote}/{id_insurancepolicies}', [App\Http\Controllers\ClientesController::class, 'verpagos']); // ver pagos de una cotizacion
 Route::post('/calcularcuotas', [App\Http\Controllers\ClientesController::class, 'calcularcuotas'])->name('calcularcuotas');
+
+Route::post('/collective-quotas', [App\Http\Controllers\ClientesController::class, 'collectivequotas']);
+
 Route::post('/aprobarpoliza', [App\Http\Controllers\InsurancepoliciesController::class, 'aprobarpoliza'])->name('aprobarpoliza');
 Route::post('/modificardatosquote', [App\Http\Controllers\ClientesController::class, 'modificardatosquote'])->name('modificardatosquote');
 

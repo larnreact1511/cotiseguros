@@ -130,7 +130,21 @@ Route::get('/test', [App\Http\Controllers\ClientesController::class, 'test']);
 
 // colectivos
 Route::get('colectivos', [App\Http\Controllers\ClientesController::class, "colectivos" ]);
+Route::post('uploadgrup', [App\Http\Controllers\ClientesController::class, "importgroups" ]);
 
+Route::get('agregar-empresa', [App\Http\Controllers\ClientesController::class, "addcompany" ]);
+Route::post('agregar-empresa', [App\Http\Controllers\ClientesController::class, "saveaddcompany" ]);
+Route::get('lista-empresas', [App\Http\Controllers\ClientesController::class, "listcompany" ]);
+Route::get('getcompanys', [App\Http\Controllers\ClientesController::class, 'getcompanys']);
+Route::get('colectivos-asegurados', [App\Http\Controllers\ClientesController::class, 'insuredgroups']);
+Route::get('list-group', [App\Http\Controllers\ClientesController::class, 'listgroups']);
+
+Route::get('colectivos-polizas/{id}', [App\Http\Controllers\ClientesController::class, 'insuredpolicies']);
+Route::post('addpolicesgruop', [App\Http\Controllers\ClientesController::class, "addpolicesgruop" ]);
+
+Route::get('colectivos-frecuencias-pagos/{id}', [App\Http\Controllers\ClientesController::class, "frequentcollectivepayments" ]);
+Route::post('savecollectivequotas', [App\Http\Controllers\ClientesController::class, 'savecollectivequotas']);
+Route::post('colectivos-frecuencias-pagos/savecollectivequotas', [App\Http\Controllers\ClientesController::class, 'savecollectivequotas']);
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/excel', [App\Http\Controllers\CotizadorController::class, "insurerExcel" ]);
