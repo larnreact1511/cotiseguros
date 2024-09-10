@@ -13,6 +13,9 @@
     </div>
     
     <div class="row" id ="divprincipal">
+        <h3>
+            Listado colectivos 
+        </h3>
         <div class="col-12" id="">
             <table id="tablecompany" class="table" >
             <thead class="thead-dark">
@@ -24,6 +27,7 @@
                     <th>Nro telefono </th>
                     <th>Correo </th>
                     <th>Estado</th>
+                    <th>Empresa</th>
                     <th>Acciones</th>
                 </tr>
             </thead>

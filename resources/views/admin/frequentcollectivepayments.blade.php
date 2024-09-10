@@ -17,27 +17,31 @@
             <h3>
                 Agrega frecuencia de pagos ha : {{$company[0]->companyname}}
             </h3>
-            <!-- --> 
-                <?php           
-                    foreach ($insurancepolicies as $i )
-                    {
-                        $tipopoliza='Salud';
-                        $monto = number_format($i->idcoverages) .' USD ( '.$i->name.' :'.$tipopoliza.' ) '
-                        ?>
-                            <input 
-                                        class="form-check-input" 
-                                        type="radio" 
-                                        name="flexRadioDefault3" 
-                                        id="flexRadioDefault3" 
-                                        onclick="buscarfrecuencias2(0,<?=$i->idcoverages?>,<?=$i->companyid?>)">
-                                    <label class="form-check-label" for="flexRadioDefault3">
-                                        {{ $monto }}
-                                    </label>
-                        <?php  
-                    }
-                ?>
+                <!-- --> 
+                <div class="m-0 row justify-content-center mb-2">
+                    <?php           
+                        foreach ($insurancepolicies as $i )
+                        {
+                            $tipopoliza='Salud';
+                            $monto = number_format($i->idcoverages) .' USD ( '.$i->name.' :'.$tipopoliza.' ) '
+                            ?>
+                                <input 
+                                            class="form-check-input" 
+                                            type="radio" 
+                                            name="flexRadioDefault3" 
+                                            id="flexRadioDefault3" 
+                                            onclick="buscarfrecuencias2(0,<?=$i->idcoverages?>,<?=$i->companyid?>)">
+                                        <label class="form-check-label" for="flexRadioDefault3">
+                                            {{ $monto }}
+                                        </label>
+                            <?php  
+                        }
+                    ?>
+
+                </div>
+                
                 <!-- -->
-                <div class="m-0 row justify-content-center ocultardiv" id="div_frecuencias" style='display:none;'>
+                <div class="m-0 row justify-content-center ocultardiv mb-2" id="div_frecuencias" style='display:none;'>
                     <?php 
                         foreach ($frequencies as $frequencie) 
                         { 
@@ -66,7 +70,7 @@
                         >
                         <button type="button" id="calcularpagos" name="calcularpagos"> Calcular</button>     
                 </div>  
-                <div  style="border: 1px solid #fff; display:none;">
+                <div  style="border: 1px solid #fff; display:none;" id ="divbtnguardarpagos">
                     
                         <form  id ="formulariospagorealizar2" 
                             name="formulariospagorealizar2" 

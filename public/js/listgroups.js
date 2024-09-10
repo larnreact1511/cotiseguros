@@ -29,6 +29,7 @@ $(document).ready(function ()
                 return  `${row.estado ==1 ? 'Activo':''}`;
               }
             },
+            { data: 'company' },
             {
               orderable: false,
               data: "null",

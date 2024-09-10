@@ -1,6 +1,9 @@
 /node_modules
 /public/hot
 /public/storage
+/public/plantillas
+/public/documentos
+/public/qrcodes
 /storage/*.key
 /vendor
 /.env

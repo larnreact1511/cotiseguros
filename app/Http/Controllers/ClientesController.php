@@ -23,6 +23,8 @@ use App\MemberQuote;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Str;
+use Validator;
+use Illuminate\Validation\Rule;
 
 class ClientesController extends Controller
 {
@@ -2023,7 +2025,7 @@ class ClientesController extends Controller
                 "polizas" => $insurancepolicies,
                 "user" => $clientes,
                 // "url" =>'http://127.0.0.1:8000/', 
-                "url" =>'https://cotiseguros.com.ve/',
+                "url" =>'https://dev.cotiseguros.com.ve/',
             ]);
         }
         else
@@ -3347,187 +3349,9 @@ class ClientesController extends Controller
         $data['result'] =true;
         return $data;
     }
-    public function clinicas()
-    {
-        $data['estados'] = DB::table('estados')->get();
-        $data['insurers'] = Insurer::select(["*"])->get();
-        return view("clinicas.clinicas",$data);
-    }
-    public function changeselectestado($id)
-    {
-       $listmunicipios = DB::table('municipios')->where('id_estado',$id)->get();
-       $listciudades = DB::table('ciudades')->where('id_estado',$id)->get();
-       $datam =[];
-       $datec =[];
-       foreach(  $listmunicipios as  $muni => $m)
-       {
-            $data1['id']  = $m->id_municipio;    
-            $data1['text']  = $m->municipio;
-
-            $datam[]=$data1;
-       }
-       foreach(  $listciudades as  $ciu => $c)
-       {
-            $data2['id']  = $c->id_ciudad;    
-            $data2['text']  = $c->ciudad;
-
-            $datec[]=$data2;
-       }
-       $res['municipios'] = $datam;
-       $res['ciudades'] = $datec;
-       return response()->json($res);
-    } 
-    function agregarclinica(Request $request)
-    {
-        //  
-        if ( isset($request->id_clinica)){
-            session()->flash('message', 'Clinica Actulizada con exito');
-
-            $edita =array(
-                    'id_seguro'=>@$request->id_seguro,
-                    'id_poliza'=>0,
-                    'id_estado'=>@$request->id_estado,
-                    'id_municipio'=>@$request->id_municipio,
-                    'id_ciudad'=>@$request->id_ciudad,
-                    'direccion'=>@$request->direccion,
-                    'nombre'=>@$request->nombre,
-               );
-            DB::table('clinicasservicios')->where('id',@$request->id_clinica)->update($edita);
-        }
-        else
-        {
-            $agregarcliente = DB::table('clinicasservicios')->insertGetId(
-                [
-                    
-                    'id_seguro'=>@$request->id_seguro,
-                    'id_poliza'=>0,
-                    'id_estado'=>@$request->id_estado,
-                    'id_municipio'=>@$request->id_municipio,
-                    'id_ciudad'=>@$request->id_ciudad,
-                    'direccion'=>@$request->direccion,
-                    'nombre'=>@$request->nombre,
-                    
-                ]);
-                session()->flash('message', 'Clinica Agregada con exito');
-        }
-        
-            return back();
-    }  
-
-    public function listarclinicas(Request $request)
-    {
-        
-        $data=[];
-        $search = $request->input('search'); 
-        if ($search['value']=='')
-        {
-            $clinicasservicios = DB::table('clinicasservicios')
-            ->leftJoin('estados','clinicasservicios.id_estado', '=', 'estados.id_estado')
-            ->leftJoin('ciudades','clinicasservicios.id_ciudad', '=', 'ciudades.id_ciudad')
-            ->leftJoin('municipios','clinicasservicios.id_municipio', '=', 'municipios.id_municipio')
-            ->leftJoin('insurers','clinicasservicios.id_seguro', '=', 'insurers.id')
-            ->select(
-                'clinicasservicios.id as id_clinica',
-                'clinicasservicios.nombre',
-                'clinicasservicios.direccion',
-                'ciudades.ciudad',
-                'estados.estado',
-                'municipios.municipio',
-                'ciudades.id_ciudad',
-                'estados.id_estado',
-                'municipios.id_municipio',
-                'insurers.name as nombreseguro')
-            ->skip($request->input('start'))->take($request->input('length'))
-            ->orderBy('clinicasservicios.id', 'DESC')
-            ->get();
-        }
-        else
-        {
-            $value= $search['value'];
-            $clinicasservicios = DB::table('clinicasservicios')
-            ->leftJoin('estados','clinicasservicios.id_estado', '=', 'estados.id_estado')
-            ->leftJoin('ciudades','clinicasservicios.id_ciudad', '=', 'ciudades.id_ciudad')
-            ->leftJoin('municipios','clinicasservicios.id_municipio', '=', 'municipios.id_municipio')
-            ->leftJoin('insurers','clinicasservicios.id_seguro', '=', 'insurers.id')
-            ->Where('clinicasservicios.nombre', 'LIKE', "%$value%")
-            ->orWhere('ciudades.ciudad', 'LIKE', "%$value%")
-            ->orWhere('municipios.municipio', 'LIKE', "%$value%")
-            ->orWhere('insurers.name', 'LIKE', "%$value%")
-            ->select(
-                'clinicasservicios.id as id_clinica',
-                'clinicasservicios.nombre',
-                'clinicasservicios.direccion',
-                'ciudades.ciudad',
-                'estados.estado',
-                'municipios.municipio',
-                'ciudades.id_ciudad',
-                'estados.id_estado',
-                'municipios.id_municipio',
-                'insurers.name as nombreseguro')
-            ->skip($request->input('start'))->take($request->input('length'))
-            ->orderBy('clinicasservicios.id', 'DESC')
-            ->get();
-        }
     
-        if ( $clinicasservicios->count() > 0)
-        {
-            $i=0;
-            
-            foreach ($clinicasservicios as $clinica => $cli)
-            {
-                
-                $datos['id'] = $cli->id_clinica;
-                $datos['nombre'] = $cli->nombre;
-                $datos['direccion'] = $cli->direccion;
-                $datos['ciudad'] = $cli->ciudad;
-                $datos['estado'] = $cli->estado;
-                $datos['municipio'] = $cli->municipio;
-
-                $datos['id_ciudad'] = $cli->id_ciudad;
-                $datos['id_estado'] = $cli->id_estado;
-                $datos['id_municipio'] = $cli->id_municipio;
-                $datos['nombre_seguro'] = $cli->nombreseguro;
-                $data[]=$datos;
-            }
-        }
-        $dataresponce['draw'] = $request->input('draw');
-        $dataresponce['recordsTotal'] = $clinicasservicios->count() >0 ? $clinicasservicios->count() : 0;
-        $dataresponce['recordsFiltered'] = $clinicasservicios->count() >0 ? $clinicasservicios->count() : 0;
-        $dataresponce['data'] = $data;
-        return response()->json($dataresponce);
-    }
-    public function eliminarclinica($id)
-    {
-        $eliminarparentesco =array('id'=>$id);
-        DB::table('clinicasservicios')->where('id',$id)->delete();
-        $res['result']=true;
-        return response()->json($res);
-    }
-
-    public function datoseditarclinica($id)
-    {
-        $listmunicipios = DB::table('municipios')->where('id_estado',$id)->get();
-        $listciudades = DB::table('ciudades')->where('id_estado',$id)->get();
-        $datam =[];
-        $datec =[];
-        foreach(  $listmunicipios as  $muni => $m)
-        {
-             $data1['id']  = $m->id_municipio;    
-             $data1['text']  = $m->municipio;
- 
-             $datam[]=$data1;
-        }
-        foreach(  $listciudades as  $ciu => $c)
-        {
-             $data2['id']  = $c->id_ciudad;    
-             $data2['text']  = $c->ciudad;
- 
-             $datec[]=$data2;
-        }
-        $res['municipios'] = $datam;
-        $res['ciudades'] = $datec;
-        return response()->json($res);
-    }
+    
+    
 
     public function birthdaydate ()
     {
@@ -3747,4 +3571,473 @@ class ClientesController extends Controller
     {
         return view("admin.colectivos");
     }
+    public function importgroups(Request $request)
+    {
+        $archivo = $request->file('excel');
+        $disponibles = array("xlsx", "xls");
+        $file_name = Str::random(30);
+        $ext = strtolower($archivo->getClientOriginalExtension());
+        $data=[];
+        if (!in_array($ext, $disponibles)) {
+            $data['message']='Documento invalida, por favor suba un excel valido';
+        }
+        else{
+            $file_full_name = $file_name . '.' . $ext;
+            $upload_path = 'plantillas/';
+            $file_url = $upload_path . $file_full_name;
+            $success = $archivo->move($upload_path, $file_full_name);
+            $collection = (new FastExcel)->import($file_url);
+           
+            for ($i = 0; $i < sizeof($collection); $i++) 
+            {
+                
+                $nombre = $collection[$i]['nombre'] ;
+                $apellido = $collection[$i]['apellido'] ;
+                $email = $collection[$i]['email'] ;
+                $clave = $collection[$i]['clave'] ;
+                $cedula = $collection[$i]['cedula'] ;
+                $role = $collection[$i]['roles'] ;
+                $telefono = $collection[$i]['telefono'] ;
+                $companyid = $collection[$i]['id_colectivo'];
+                $fecha_nacimiento = @$collection[$i]['fecha_nacimiento'] ;
+                if ($collection[$i]['estado'] )
+                    $locacion = $collection[$i]['estado'] ;
+                else
+                    $locacion =0;
+                
+                
+                if (($nombre !='') && ($apellido !='') && ($email !='')&& ($clave !='') && ($cedula !='') && ($role !='') && ($telefono !='') && ($companyid !='') )
+                {
+                    $users = DB::table('users')->where('email',$email)->get();
+                   
+                    if ( $users->count() > 0 )
+                    {
+                       $id_usario =$users[0]->id;
+                       $cliente = DB::table('clientes')->where('idusuario',$id_usario)->get();
+                       if ( $cliente->count() > 0)
+                       {
+                            $id_cliente =$cliente[0]->id;
+                            $datauser =array(
+                                'role_id' => 5,
+                                'name' => $nombre,
+                                'lastname' =>$apellido ,
+                                'phone' =>$telefono
+                               );
+                               DB::table('users')->where('id',$id_usario)->update($datauser);
+                            //
+                            $datacliente =array(
+                            
+                                'nombre' => $nombre,
+                                'apellido' =>$apellido ,
+                                'cedula' => $cedula,
+                                'numerotelefono' => $telefono,
+                                'estado' =>1,
+                                'rif' =>'',
+                                'fecha_nacimiento' =>@$fecha_nacimiento,
+                                'locacion' => $locacion
+                               );
+                               DB::table('clientes')->where('id',$id_cliente)->update($datacliente);
+                       }
+                       else
+                       {
+
+                       }
+                    }
+                    else
+                    {
+                        
+                        $User = DB::table('users')->insertGetId(
+                            [
+                                'role_id' => 5,
+                                'name' => $nombre,
+                                'lastname' =>$apellido ,
+                                'email' => $email,
+                                'password' => bcrypt($clave),
+                                'phone' =>$telefono
+                            ]);
+                        $user_roles = DB::table('user_roles')->insertGetId(
+                            [
+                                'user_id' => $User,
+                                'role_id' => 5
+                            ]);
+                            
+                            $clientes = DB::table('clientes')->insertGetId(
+                                [
+                                    'created_at' => date("Y-m-d H:i:s"),
+                                    'nombre' => $nombre,
+                                    'apellido' =>$apellido ,
+                                    'cedula' => $cedula,
+                                    'numerotelefono' => $telefono,
+                                    'estado' =>1,
+                                    'idusuario' => $User,
+                                    'rif' =>'',
+                                    'fecha_nacimiento' =>@$fecha_nacimiento,
+                                    'locacion' => $locacion
+                                ]);
+
+                                 DB::table('company_client')->insertGetId(
+                                    [
+                                        'created_at' => date("Y-m-d H:i:s"),
+                                        'idcompany' => $companyid,
+                                        'idclient' => $User,
+                                        
+                                    ]);
+                           
+                    }
+                }
+            }
+                
+            $data['message']='Colectivos cargados con exito';
+        }
+        session()->flash('message', 'Colectivos cargado con exito');
+        return back();
+    }
+    
+    
+    public function insuredgroups ()
+    {
+        return view("admin.insuredgroups");
+    }
+    public function listgroups(Request $request)
+    {
+        
+        $search = $request->input('search'); 
+        $datos=[];
+        $limit = $request->input('length');
+        $start = $request->input('start');
+
+        $order = $request->input('order');
+        $column =$order[0]['column'];
+        $dir =$order[0]['dir'];
+
+        $orderBy ='id';
+        switch ($column) {
+            case 0:
+                $orderBy ='id';
+                break;
+            case 1:
+                $orderBy ='companyname';
+                break;
+            case 2:
+                $orderBy ='rifcompany';
+                break;
+            case 3:
+                $orderBy ='adresscompany';
+                break;
+            case 4:
+                $orderBy ='notecompany';
+                break;
+        }
+        if ($search['value']=='')
+        {
+            $company =DB::table('company_client')
+            ->select('clientes.id',
+            'clientes.nombre',
+            'clientes.apellido',
+            'clientes.numerotelefono',
+            'clientes.cedula',
+            'clientes.rif',
+            'clientes.estado',
+            'company.companyname as company',
+            'users.email')
+            ->leftJoin('clientes', 'clientes.idusuario', '=', 'company_client.idclient')
+            ->leftJoin('company', 'company_client.idcompany', '=', 'company.id')
+            ->leftJoin('users', 'clientes.idusuario', '=', 'users.id')
+            ->skip($start)
+            ->take($limit)
+            ->orderBy($orderBy, 'desc');
+            
+            $listcompanys =$company->get();
+            $recordsTotal =DB::table('company_client')
+            ->leftJoin('clientes', 'clientes.idusuario', '=', 'company_client.idclient')
+            ->leftJoin('company', 'company_client.idcompany', '=', 'company.id')
+            ->leftJoin('users', 'clientes.idusuario', '=', 'users.id')
+            ->count();
+
+        }
+        else
+        {
+            $value =$search['value']; 
+            $company =DB::table('company_client')
+            ->select('clientes.id',
+            'clientes.nombre',
+            'clientes.apellido',
+            'clientes.numerotelefono',
+            'clientes.cedula',
+            'clientes.rif',
+            'clientes.estado',
+            'company.companyname as company',
+            'users.email')
+            ->leftJoin('clientes', 'clientes.idusuario', '=', 'company_client.idclient')
+            ->leftJoin('company', 'company_client.idcompany', '=', 'company.id')
+            ->leftJoin('users', 'clientes.idusuario', '=', 'users.id')
+            ->orWhere('clientes.nombre', 'LIKE', "%$value%")
+            ->orWhere('clientes.apellido', 'LIKE', "%$value%")
+            ->orWhere('clientes.numerotelefono', 'LIKE', "%$value%")
+            ->orWhere('clientes.cedula', 'LIKE', "%$value%")
+            ->orWhere('clientes.rif', 'LIKE', "%$value%")
+            ->orWhere('users.email', 'LIKE', "%$value%")
+            ->orWhere('company.companyname', 'LIKE', "%$value%")
+            ->skip($start)
+            ->take($limit)
+            ->orderBy($orderBy, 'desc');
+
+            $listcompanys =$company->get();
+            $recordsTotal =$company->count();
+
+            $count =  DB::table('users')->where('role_id',5)->count();
+        }
+        $i = 0;
+        foreach ($listcompanys as $cliente => $c) {
+               
+            $nestedData['id']               = $c->id;
+            $nestedData['nombre']           = $c->nombre;
+            $nestedData['apellido']         = $c->apellido;
+            $nestedData['phone']            = $c->numerotelefono;
+            $nestedData['cedula']           = $c->cedula;
+            $nestedData['numerotelefono']   = $c->numerotelefono;
+            $nestedData['email']            = $c->email;
+            $nestedData['estado']            = $c->estado;
+            $nestedData['company']            = $c->company;
+           
+            $datos[] = $nestedData;
+        }
+        $dataresponce['draw'] = $request->input('draw');
+        $dataresponce['recordsTotal'] =$recordsTotal;
+        $dataresponce['recordsFiltered'] = $recordsTotal;
+        $dataresponce['data'] = $datos;
+        return response()->json($dataresponce);
+    }
+
+    public function insuredpolicies($id)
+    {
+        if ( DB::table('company')->where('id',$id)->count() > 0  )
+        {
+            $data['company']=DB::table('company')->where('id',$id)->get();
+            $data['id']=$id;
+            $data['insurers'] = Insurer::select(["*"])->get();
+            return view("admin.insuredpolicies",$data);
+        }
+            
+        else
+            return back();
+    }
+    public function addpolicesgruop(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'companyID' => 'required',
+            'mnontocobertura' => 'required',
+            'segurocobertura' => 'required',
+            
+          ],
+          [
+            'companyID.required' => 'El indentificador de empresa es requerido',
+            'mnontocobertura.required' => 'El monto es requerido',
+            'segurocobertura.required' => 'El seguro es requerido',
+          ]
+        );
+        if ($validator->fails()) {
+            return response()->json(['result'=>'error','message'=>$validator->errors()->all()]);		
+          }
+        $colectivos = DB::table('company_client')
+        ->select(
+            'clientes.idusuario as idusuario')
+        ->leftJoin('clientes', 'clientes.idusuario', '=', 'company_client.idclient')
+        ->where('company_client.idcompany',$request->companyID)
+        ->get();
+
+        foreach($colectivos as $colectivo)
+        {
+            $insurancepolicies = DB::table('insurancepolicies')->insertGetId(
+                [
+                    'created_at'=>date("Y-m-d H:i:s"),
+                    'idusuario'=>$colectivo->idusuario,
+                    'idadmin'=>0,
+                    'idcoverages' =>$request->mnontocobertura,
+                    'idinsurers' =>$request->segurocobertura,
+                    'comentario'=>''
+                ]);
+        }
+        DB::table('company_insurers')->insertGetId(
+            [
+                'created_at'=>date("Y-m-d H:i:s"),
+                'insurersid' =>$request->segurocobertura,
+                'companyid' =>$request->companyID,
+                'idcoverages' =>$request->mnontocobertura,
+                
+            ]);
+        
+        return response()->json(['result'=>'success','message'=>'polizas agrega con exito']);
+    }
+    // crear frecuencias de pago a colectivos
+    public function frequentcollectivepayments($id) 
+    {
+        if ( DB::table('company')->where('id',$id)->count() > 0  )
+        {
+            $data['company']=DB::table('company')->where('id',$id)->get();
+            $data['id']=$id;
+            $data['insurers'] = Insurer::select(["*"])->get();
+            $data['frequencies'] =DB::table('frequencies')->get();
+            $coverages = Coverage::select(["*"])->groupBy("coverage")->orderBy("coverage","ASC")->get();
+            $insurers = Insurer::select(["*"])->get();
+            $data['insurancepolicies'] =DB::table('company_insurers')
+            ->join('insurers', 'company_insurers.insurersid', '=', 'insurers.id')
+            ->where('company_insurers.companyid',$id)
+            ->select('insurers.name','company_insurers.idcoverages','company_insurers.companyid')->get(); 
+            
+            return view("admin.frequentcollectivepayments",$data);
+        }
+            
+        else
+            return back();
+    }
+    // calcular frecuencias de pagos a colectivos
+    public function collectivequotas(Request $request)
+    {
+        
+        $frecuencia =$request->frecuencia;
+        $montocotizacionpagar=$request->montocotizacionpagar;
+        $vector=[];
+        if ( @$request->frecuencia)
+        {
+            if ( @$request->fechainicio )
+                $fecha_actual = $request->fechainicio;
+            else
+                $fecha_actual = date("Y-m-d");
+    
+            switch ($request->frecuencia) 
+            {
+                case 1: // anual
+                    $fechafinal = date("Y-m-d",strtotime($fecha_actual."+ 1 year"));
+                    $vector[0] =array(
+                        'fechaini'=>$fecha_actual,
+                        'fechafin'=>$fechafinal,
+                    );
+                    break;
+                case 2: //semestral
+                    $fechafinal  =date("Y-m-d",strtotime($fecha_actual."+ 6 month"));
+                    for ($d=0; $d < 2; $d++)
+                    {
+                        
+                        $vector[$d] =array(
+                            'fechaini'=>$fecha_actual,
+                            'fechafin'=>$fechafinal,
+                        );
+                        $fecha_actual= $fechafinal; 
+                        $fechafinal  =date("Y-m-d",strtotime($fecha_actual."+ 6 month"));
+                    }
+                    break;
+                case 4: //trimestral
+                    $fechafinal  =date("Y-m-d",strtotime($fecha_actual."+ 3 month"));
+                    for ($d=0; $d < 4; $d++)
+                    {
+                        
+                        $vector[$d] =array(
+                            'fechaini'=>$fecha_actual,
+                            'fechafin'=>$fechafinal,
+                            'd'=>$d,
+                        );
+                        $fecha_actual= $fechafinal;
+                        $fechafinal  =date("Y-m-d",strtotime($fecha_actual."+ 3 month"));
+                    }
+                    break;
+                case 12: // mensual
+                    $fechafinal  =date("Y-m-d",strtotime($fecha_actual."+ 1 month"));
+                    for ($d=0; $d < 12; $d++)
+                    {
+                        
+                        $vector[$d] =array(
+                            'fechaini'=>$fecha_actual,
+                            'fechafin'=>$fechafinal,
+                        );
+                        $fecha_actual= $fechafinal;
+                        $fechafinal  =date("Y-m-d",strtotime($fecha_actual."+ 1 month")); 
+                        
+                    }
+
+                    break;
+            } 
+            $responce["result"]=true;
+        }
+        else
+            $responce["result"]=false;
+        
+        $responce["data"] =$vector;
+        $responce["id_insurancepolicies"] =$request->id_insurancepolicies;
+        return response()->json($responce);
+       
+    } 
+    // guardar frecuencia de pago a colectivos, seleccionada la empresa id_insurancepolicies
+    public function savecollectivequotas(Request $request)
+    {
+        $orden=0; 
+        $validator = Validator::make($request->all(), [
+            'id_insurancepolicies' => 'required',
+            
+          ],
+          [
+            'id_insurancepolicies.required' => 'El indentificador de empresa es requerido',
+          ]
+        );
+        if ($validator->fails()) {
+            return response()->json(['result'=>'error','message'=>$validator->errors()->all()]);		
+          }
+        $colectivos = DB::table('company_client')
+        ->select(
+            'clientes.idusuario as idusuario','insurancepolicies.id as insurancepoliciesID')
+        ->leftJoin('clientes', 'clientes.idusuario', '=', 'company_client.idclient')
+        ->leftJoin('insurancepolicies', 'insurancepolicies.idusuario', '=', 'company_client.idclient')
+        ->where('company_client.idcompany',$request->id_insurancepolicies)
+        ->get();
+        	
+        $vec=array(
+            'created_at'=>date('Y-m-d'),
+            'companyid'=>$request->id_insurancepolicies,
+            'frecuenci'=>0,
+        );
+        DB::table('company_frequencies')->insert($vec);   
+        foreach($colectivos as $colectivo)
+        {
+            $fechaincio =$request->fechainici;
+            $fechafin =$request->fechafin;
+            $monto =$request->monto;
+            $idadmin =0;
+            $orden=0;
+            for ( $i=0; $i < count($fechaincio); $i++ )
+            {
+                $vec=array(
+                    'created_at'=>date('Y-m-d'),
+                    'idquote'=>0,
+                    'fechainicio'=>$fechaincio[$i],
+                    'fechafin'=>$fechafin[$i],
+                    'montoestimado'=> $monto[$i] >0 ? $monto[$i] :0,
+                    'idadmin'=>$idadmin,
+                    'id_insurancepolicies'=>$colectivo->insurancepoliciesID,
+                    'estadodepago'=>0,
+                    'orden'=>$orden
+                );
+                DB::table('frequencyofpayments')->insert($vec);
+                $orden++;
+            }
+        }
+        return response()->json(['result'=>'success','message'=>'Proceso exitoso']);
+    }
+
+    public function amountcoverages ()
+    {
+        $data =DB::table('insurancepolicies')
+        ->leftJoin('coverages', 'coverages.id', '=', 'insurancepolicies.idcoverages')
+        ->select('insurancepolicies.id as coveragesID','coverages.coverage')
+        ->get();
+
+        foreach ($data as $d)
+        {
+            $dataupdate=array(
+                'idcoverages'=>$d->coverage
+            );
+            DB::table('insurancepolicies')->where('id',$d->coverage)
+            ->update($dataupdate);
+        }
+    } 
+    
 }

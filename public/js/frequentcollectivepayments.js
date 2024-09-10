@@ -1,5 +1,5 @@
-//let urlservidor ='http://127.0.0.1:8000/';
-let urlservidor  ='https://dev.cotiseguros.com.ve//';
+let urlservidor ='http://127.0.0.1:8000/';
+//let urlservidor  ='https://dev.cotiseguros.com.ve//';
 //let urlservidor  ='https://www.cotiseguros.com.ve/';
 $(document).ready(function () 
 {
@@ -242,7 +242,7 @@ $("#guardarpagos").on("click",function()
         processData:false,
         beforeSend: function(){},
         success: function(data){
-           if (data)
+            if (data)
             { 
                 var jsondata = JSON.parse(data);
                 if (jsondata['result']=='success')
@@ -258,7 +258,7 @@ $("#guardarpagos").on("click",function()
                             
                         }
                     );
-                    window.location ='./lista-empresas';
+                    window.location ='lista-empresas';
                 }
             else
                 enablebutton(jsondata['message']);

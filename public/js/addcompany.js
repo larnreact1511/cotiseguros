@@ -33,9 +33,10 @@ function addcompanybtn()
                         confirmButtonText: "Ok", 
                         customClass: { confirmButton: "btn btn-primary" } }).then(
                         function (e) {
-                            window.location ='agregar-empresa';
+                            
                         }
                     );
+                    window.location ='lista-empresas';
                 }
             else
                 enablebutton(jsondata['message']);

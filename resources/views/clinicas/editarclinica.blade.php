@@ -10,7 +10,7 @@
     </div>
 <div class="container">
     <h3>
-        Ingresa tu clínica
+        Modifca tu clínica : {{ $clinica[0]->nombre}}
 
     </h3>
     <div class="row mt-2">
@@ -19,19 +19,19 @@
             id="divempresas" 
             >
                 <form  
-                    action="agregarclinica" 
+                    action="../agregarclinica" 
                     method="POST"
                     enctype="multipart/form-data"
                     id="formagregarclinica"
                     name="formagregarclinica"
                     class="container px-4 my-5">
                     @csrf
-                    <input type="text" id="id_clinica" name="id_clinica"  value="" hidden>
+                    <input type="text" id="id_clinica" name="id_clinica"  value="{{ $clinica[0]->id}}" hidden>
                     <table  class="table">
                         <tr>
                             <th >
                                 <label> Nombre</label> <br>
-                                <input type="text" id="nombre" name="nombre" value="" size="50">
+                                <input type="text" id="nombre" name="nombre" value="{{ $clinica[0]->nombre}}" size="50">
                             </th>
                             
                             <th  >
@@ -46,8 +46,14 @@
                                         <?php  
                                             foreach ($insurers as $i )
                                             {
+                                                $selected ='';
+                                                if ($i->id == $clinica[0]->id_seguro)
+                                                    $selected ='selected';
                                                 ?>
-                                                    <option value="{{ $i->id }}">{{  $i->name }} </option> 
+                                                    <option 
+                                                        value="{{ $i->id }}"
+                                                        <?php echo $selected ?>
+                                                        >{{  $i->name }} </option> 
                                                 <?php  
                                             }
                                         ?>
@@ -62,14 +68,19 @@
                                         id ="id_estado"
                                         name ="id_estado"
                                         onchange="changeselectestado()"
-                                        
-                                        >
-                                             
+                                        > 
                                             <?php  
                                                 foreach ($estados as $i )
                                                 {
+                                                    $selected ='';
+                                                    if ($i->estado == $clinica[0]->id_estado)
+                                                        $selected ='selected';
                                                     ?>
-                                                        <option value="{{ $i->id_estado }}">{{  $i->estado }}</option> 
+                                                        <option 
+                                                            value="{{ $i->id_estado }}"
+                                                            <?php echo $selected ?>
+                                                            >
+                                                            {{  $i->estado }}</option> 
                                                     <?php  
                                                 }
                                             ?>
@@ -85,8 +96,21 @@
                                     id="id_municipio" 
                                     class="form-select shadow-none border-0 bg-grey w-25 align-self-start" 
                                     >
-                                         
-                                        
+                                    <?php  
+                                        foreach ($municipios as $i )
+                                        {
+                                            $selected ='';
+                                            if ($i->id_municipio == $clinica[0]->id_municipio)
+                                                $selected ='selected';
+                                            ?>
+                                                <option 
+                                                    value="{{ $i->id_municipio }}"
+                                                    <?php echo $selected ?>
+                                                    >
+                                                    {{  $i->municipio }}</option> 
+                                            <?php  
+                                        }
+                                    ?>
                                 </select>
                                 
                             </th>
@@ -98,13 +122,26 @@
                                     id="id_ciudad" 
                                     class="form-select shadow-none border-0 bg-grey w-25 align-self-start" 
                                     >
-                                         
-                                        
+                                    <?php  
+                                        foreach ($ciudades as $i )
+                                        {
+                                            $selected ='';
+                                            if ($i->id_ciudad == $clinica[0]->id_ciudad)
+                                                $selected ='selected';
+                                            ?>
+                                                <option 
+                                                    value="{{ $i->id_ciudad }}"
+                                                    <?php echo $selected ?>
+                                                    >
+                                                    {{  $i->ciudad }}</option> 
+                                            <?php  
+                                        }
+                                    ?>
                                 </select>
                             </th>
                             <th>
                                 <label> Dirrección</label> <br>
-                                <input type="text" id="direccion" name="direccion"  value="" size="50" > 
+                                <input type="text" id="direccion" name="direccion"  value="{{ $clinica[0]->direccion}}" size="50" > 
                             </th>
                             
                         </tr>

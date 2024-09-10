@@ -11,10 +11,14 @@
     <div class="col-12" id="">
         <div class="custom-loader" id ="carga" sytyle="display:none"></div>
     </div>
-    
+   
     <div class="row" id ="divprincipal">
-        <div class="col-12" id="">
-        <form 
+        <h3>
+            Ingresa tu empresa
+
+        </h3>
+        <div class="card" id="">
+            <form 
                     id="form-add-company" 
                     class="container px-4 my-5"
                     action="" 

@@ -126,16 +126,17 @@ Route::get('missninestros', [App\Http\Controllers\ClientesController::class, 'mi
 Route::get('misdatos', [App\Http\Controllers\ClientesController::class, 'misdatos']);
 Route::get('mispagos', [App\Http\Controllers\ClientesController::class, 'mispagos']);
 Route::get('/test', [App\Http\Controllers\ClientesController::class, 'test']);
-
-
+// empresas
+Route::get('agregar-empresa', [App\Http\Controllers\CompanyController::class, "addcompany" ]);
+Route::post('agregar-empresa', [App\Http\Controllers\CompanyController::class, "saveaddcompany" ]);
+Route::get('lista-empresas', [App\Http\Controllers\CompanyController::class, "listcompany" ]);
+Route::get('getcompanys', [App\Http\Controllers\CompanyController::class, 'getcompanys']);
 // colectivos
 Route::get('colectivos', [App\Http\Controllers\ClientesController::class, "colectivos" ]);
 Route::post('uploadgrup', [App\Http\Controllers\ClientesController::class, "importgroups" ]);
 
-Route::get('agregar-empresa', [App\Http\Controllers\ClientesController::class, "addcompany" ]);
-Route::post('agregar-empresa', [App\Http\Controllers\ClientesController::class, "saveaddcompany" ]);
-Route::get('lista-empresas', [App\Http\Controllers\ClientesController::class, "listcompany" ]);
-Route::get('getcompanys', [App\Http\Controllers\ClientesController::class, 'getcompanys']);
+
+
 Route::get('colectivos-asegurados', [App\Http\Controllers\ClientesController::class, 'insuredgroups']);
 Route::get('list-group', [App\Http\Controllers\ClientesController::class, 'listgroups']);
 
@@ -203,17 +204,22 @@ Route::get('cliente/patrimonio', [App\Http\Controllers\ClientesController::class
 Route::get('importar-usuarios', [App\Http\Controllers\ClientesController::class, 'importarusuarios']);
 Route::post('importausu', [App\Http\Controllers\ClientesController::class, 'importausu']);
 
+// CLinicas 
+Route::get('agregar-clinica', [App\Http\Controllers\ClinicasController::class, 'clinicas']);
+Route::get('agregar-clincas-masivo', [App\Http\Controllers\ClinicasController::class, 'addclinic']);
+Route::get('listado-de-clinicas', [App\Http\Controllers\ClinicasController::class, 'listofclinics']);
+Route::get('changeselectestado/{id}', [App\Http\Controllers\ClinicasController::class, 'changeselectestado']);
+Route::post('agregarclinica', [App\Http\Controllers\ClinicasController::class, 'agregarclinica']);
 
-Route::get('Agregar-Clinicas', [App\Http\Controllers\ClientesController::class, 'clinicas']);
-Route::get('changeselectestado/{id}', [App\Http\Controllers\ClientesController::class, 'changeselectestado']);
-
-Route::post('agregarclinica', [App\Http\Controllers\ClientesController::class, 'agregarclinica']);
-Route::get('listarclinicas', [App\Http\Controllers\ClientesController::class, 'listarclinicas']);
-
-Route::get('eliminarclinica/{id}', [App\Http\Controllers\ClientesController::class, 'eliminarclinica']);
-Route::get('editarclinica/{id}', [App\Http\Controllers\ClientesController::class, 'datoseditarclinica']);
-
+Route::post('importar-clinicas-excel', [App\Http\Controllers\ClinicasController::class, 'clinicssave']);
+Route::get('json-clinicas', [App\Http\Controllers\ClinicasController::class, 'jsonclinics']);
+Route::get('eliminarclinica/{id}', [App\Http\Controllers\ClinicasController::class, 'eliminarclinica']);
+Route::get('editarclinica/{id}', [App\Http\Controllers\ClinicasController::class, 'datoseditarclinica']);
+Route::get('modificar-clinica/{id}', [App\Http\Controllers\ClinicasController::class, 'modifyclinic']);
+//----
 
 Route::get('siniestro/{id}', [App\Http\Controllers\ClientesController::class, 'siniestro']);
 Route::get('cumpleañeros-del-mes', [App\Http\Controllers\ClientesController::class, 'birthdaydate']);
 Route::get('listbirthdaydate', [App\Http\Controllers\ClientesController::class, 'listbirthdaydate']);
+
+Route::get('cambiar', [App\Http\Controllers\ClientesController::class, 'amountcoverages']);

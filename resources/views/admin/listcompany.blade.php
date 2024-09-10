@@ -13,20 +13,19 @@
     </div>
     
     <div class="row" id ="divprincipal">
-        <div class="col-md-12">
-            <button class="btn btn-primary" id="btndeletegrupe" name="btndeletegrupe"  onclick ="deletselct()">
-                Eliminar Selección
-            </button>
-        </div>
+        <h3>
+           Listado de empresas
+
+        </h3>
         <div class="col-12" id="">
             <table id="tablecompany" class="table" >
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>    
-                    <th>companyname</th>
-                    <th>rifcompany</th>
-                    <th>adresscompany </th>
-                    <th>notecompany </th>
+                    <th>Nombre</th>
+                    <th>Rif</th>
+                    <th>Dirrecion </th>
+                    <th>Nota </th>
                     <th>Acciones</th>
                 </tr>
             </thead>
