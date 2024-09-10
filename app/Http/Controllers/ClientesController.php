@@ -3672,7 +3672,8 @@ class ClientesController extends Controller
                                     'idusuario' => $User,
                                     'rif' =>'',
                                     'fecha_nacimiento' =>@$fecha_nacimiento,
-                                    'locacion' => $locacion
+                                    'locacion' => $locacion,
+                                    'tipocliente' =>1
                                 ]);
 
                                  DB::table('company_client')->insertGetId(
