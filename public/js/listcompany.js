@@ -44,6 +44,13 @@ $(document).ready(function ()
                         onclick="" 
                     ></span>
                 </a>
+                <a href="realizar-pagos-frecuentes/${row.id}" style ="text-decoration: none;">
+                    <span 
+                        class='voyager-activity btn-doc p-3' 
+                        title='realizar pagos frecuentes'
+                        onclick="" 
+                    ></span>
+                </a>
                 `;
               }
             },

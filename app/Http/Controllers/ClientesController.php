@@ -2508,6 +2508,43 @@ class ClientesController extends Controller
         }
         return response()->json($data);
     }
+    public function consultpaymentscompanies(Request $request)
+    {
+        if ( (DB::table('company_frequencies')->where('companyid',$request->idpoliza)->count()) >0  )
+        {
+            $data['frecuencias'] =true;
+            $empleado = DB::table('company_client')
+            ->select('insurancepolicies.id')
+            ->leftJoin('insurancepolicies', 'insurancepolicies.idusuario', '=', 'company_client.idclient')
+            ->where('company_client.idcompany', $request->idpoliza)
+            ->first();
+
+            $data['empleado'] =$empleado;
+            
+            $data['data'] =DB::table('frequencyofpayments')
+            ->leftJoin('payments', 'frequencyofpayments.id', '=', 'payments.id_frequencyofpayments')
+            ->where('frequencyofpayments.id_insurancepolicies',$empleado->id)
+            ->select(
+                'frequencyofpayments.id',
+                'frequencyofpayments.fechainicio',
+                'frequencyofpayments.fechafin',
+                'frequencyofpayments.montoestimado',
+                'frequencyofpayments.estadodepago',
+                'frequencyofpayments.orden',
+                'payments.montopago',
+                'payments.photo_payment',
+                'payments.fechapago')
+            ->get();
+            
+        }
+        else
+        {
+            $data['frecuencias'] =false;
+            $data['data']=[];
+        }
+        return response()->json($data);
+    }
+
     public function editarfrecuenciapago(Request $request)
     {
         if ( isset($request->id)  )
@@ -3887,6 +3924,27 @@ class ClientesController extends Controller
             ->select('insurers.name','company_insurers.idcoverages','company_insurers.companyid')->get(); 
             
             return view("admin.frequentcollectivepayments",$data);
+        }
+            
+        else
+            return back();
+    }
+    public function makefrequentpayments($id) 
+    {
+        if ( DB::table('company')->where('id',$id)->count() > 0  )
+        {
+            $data['company']=DB::table('company')->where('id',$id)->get();
+            $data['id']=$id;
+            $data['insurers'] = Insurer::select(["*"])->get();
+            $data['frequencies'] =DB::table('frequencies')->get();
+            $coverages = Coverage::select(["*"])->groupBy("coverage")->orderBy("coverage","ASC")->get();
+            $insurers = Insurer::select(["*"])->get();
+            $data['insurancepolicies'] =DB::table('company_insurers')
+            ->join('insurers', 'company_insurers.insurersid', '=', 'insurers.id')
+            ->where('company_insurers.companyid',$id)
+            ->select('insurers.name','company_insurers.idcoverages','company_insurers.companyid')->get(); 
+            
+            return view("admin.makefrequentpayments",$data);
         }
             
         else

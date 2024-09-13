@@ -75,7 +75,7 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
     
     mostrarcarga();
     localStorage.setItem("idcotizacionpagar",id);console.log('click');
-    fetch(urlservidor+"api/pagospolizas", 
+    fetch(urlservidor+"api/consultar-pagos-empresas", 
     {
         headers: 
         {
@@ -97,15 +97,15 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
         if (r.frecuencias)
         {
             Swal.fire('Tiene frecuencias');
-            $("#div_frecuencias").css('display','none'); 
-            $("#divbtnguardarpagos").css('display','none'); 
-            $("#tablacontenidoformuariopago2").empty('')
+            $("#div_frecuenciascolectivos").css('display','block'); 
+            $("#divbtnguardarpagoscolectivos").css('display','block'); 
+            $("#tablacontenidoformuariopago2colectivos").empty('')
             //
             let fre=r.data;    
             fre.map((f,index) =>
             {
                
-                $("#tablacontenidoformuariopago2").append(`
+                $("#tablacontenidoformuariopago2colectivos").append(`
                 <tr>
                     <th>
                         <label> Fecha inicio</label>
@@ -136,9 +136,9 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
         }
         else
         {
-           $("#div_frecuencias").css('display','block'); 
-           $("#divbtnguardarpagos").css('display','none'); 
-           $("#tablacontenidoformuariopago2").empty(''); 
+           $("#div_frecuenciascolectivos").css('display','block'); 
+           $("#divbtnguardarpagoscolectivos").css('display','none'); 
+           $("#tablacontenidoformuariopago2colectivos").empty(''); 
           
            localStorage.setItem("montocotizacionpagar",monto);
            localStorage.setItem("id_insurancepolicies",id_insurancepolicies);

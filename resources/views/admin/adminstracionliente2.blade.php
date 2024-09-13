@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="{{ asset('/css/lloader.css') }}">
 <script src="{{ asset('js/jquery-3.5.1.js') }}" defer></script>
 <script src="{{ asset('js/sweetalert.js') }}" defer></script>
+<script src="{{ asset('js/generaladmin.js') }}" defer></script>
 <script src="{{ asset('js/adminstracionclientes3.js') }}" defer></script>
 <!-- --> 
 <?php 

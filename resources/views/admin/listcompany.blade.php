@@ -5,6 +5,7 @@
 <script src="{{ asset('js/jquery-3.5.1.js') }}" defer></script>
 <script src="{{ asset('js/sweetalert2.js') }}" defer></script>
 <script src="{{ asset('js/jquery.dataTables.min.js') }}" defer></script>
+<script src="{{ asset('js/generaladmin.js') }}" defer></script>
 <script src="{{ asset('js/listcompany.js') }}" defer></script>
 <div class="container">
 

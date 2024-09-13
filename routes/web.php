@@ -147,12 +147,16 @@ Route::get('colectivos-frecuencias-pagos/{id}', [App\Http\Controllers\ClientesCo
 Route::post('savecollectivequotas', [App\Http\Controllers\ClientesController::class, 'savecollectivequotas']);
 Route::post('colectivos-frecuencias-pagos/savecollectivequotas', [App\Http\Controllers\ClientesController::class, 'savecollectivequotas']);
 
+Route::get('realizar-pagos-frecuentes/{id}', [App\Http\Controllers\ClientesController::class, "makefrequentpayments" ]);
+
+
+
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/excel', [App\Http\Controllers\CotizadorController::class, "insurerExcel" ]);
     Route::post('/excel', [App\Http\Controllers\CotizadorController::class, 'importExcel']);
     
-    Route::get('/listar-cotizaciones/{page}', [App\Http\Controllers\CotizadorController::class, "listarCotizaciones" ]);
-
+    Route::get('listar-cotizaciones/{page}', [App\Http\Controllers\CotizadorController::class, "listarCotizaciones" ]);
+    Route::get('consultar-pagos-empresas/{page}', [App\Http\Controllers\CotizadorController::class, "listarCotizaciones" ]);
 
    
    

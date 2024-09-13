@@ -6,7 +6,7 @@
 <script src="{{ asset('js/sweetalert2.js') }}" defer></script>
 <script src="{{ asset('js/jquery.dataTables.min.js') }}" defer></script>
 <script src="{{ asset('js/generaladmin.js') }}" defer></script>
-<script src="{{ asset('js/frequentcollectivepayments.js') }}" defer></script>
+<script src="{{ asset('js/makefrequentpayments.js') }}" defer></script>
 <div class="container">
 
     <div class="col-12" id="">
@@ -42,7 +42,7 @@
                 </div>
                 
                 <!-- -->
-                <div class="m-0 row justify-content-center ocultardiv mb-2" id="div_frecuencias" style='display:none;'>
+                <div class="m-0 row justify-content-center ocultardiv mb-2" id="div_frecuenciascolectivos" style='display:none;'>
                     <?php 
                         foreach ($frequencies as $frequencie) 
                         { 
@@ -71,7 +71,7 @@
                         >
                         <button type="button" id="calcularpagos" name="calcularpagos"> Calcular</button>     
                 </div>  
-                <div  style="border: 1px solid #fff; display:none;" id ="divbtnguardarpagos">
+                <div  style="border: 1px solid #fff; display:none;" id ="divbtnguardarpagoscolectivos">
                     
                         <form  id ="formulariospagorealizar2" 
                             name="formulariospagorealizar2" 
@@ -81,7 +81,7 @@
                             
                         >
                             @csrf 
-                            <table id="tablacontenidoformuariopago2" class="table">
+                            <table id="tablacontenidoformuariopago2colectivos" class="table">
                                    
                             </table>
                             <br>
