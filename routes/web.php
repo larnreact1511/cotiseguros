@@ -87,6 +87,9 @@ Route::post('adminstracionclientes/polizassalud', [App\Http\Controllers\Clientes
 Route::post('adminstracionclientes/polizasuato', [App\Http\Controllers\ClientesController::class, 'polizasuato'])->name('polizasuato');
 Route::post('adminstracionclientes/polizaempresas', [App\Http\Controllers\ClientesController::class, 'polizaempresas'])->name('polizaempresas');
 Route::post('adminstracionclientes/adminpagos/', [App\Http\Controllers\ClientesController::class, 'guardarpagpendiente']);
+Route::post('realizar-pagos-frecuentes/pago-colectivo', [App\Http\Controllers\ClientesController::class, 'guardarpagpendientecolectivos']);
+
+
 Route::post('adminstracionclientes/gudardarsinisestro/', [App\Http\Controllers\ClientesController::class, 'gudardarsinisestro']); 
 Route::post('adminstracionclientes/gudardarsinisestroeditar/', [App\Http\Controllers\ClientesController::class, 'gudardarsinisestroeditar']);
 Route::post('adminstracionclientes/borrardocumento/{id}', [App\Http\Controllers\ClientesController::class, 'borrardocumento']);
@@ -227,3 +230,5 @@ Route::get('cumpleañeros-del-mes', [App\Http\Controllers\ClientesController::cl
 Route::get('listbirthdaydate', [App\Http\Controllers\ClientesController::class, 'listbirthdaydate']);
 
 Route::get('cambiar', [App\Http\Controllers\ClientesController::class, 'amountcoverages']);
+
+Route::get('teste', [App\Http\Controllers\ClientesController::class, 'pagostes']);

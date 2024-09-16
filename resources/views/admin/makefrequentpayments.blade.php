@@ -16,7 +16,7 @@
     <div class="row" id ="divprincipal">
         <div class="col-12" id="">
             <h3>
-                Agrega frecuencia de pagos ha : {{$company[0]->companyname}}
+                Realiza pago de : {{$company[0]->companyname}}
             </h3>
                 <!-- --> 
                 <div class="m-0 row justify-content-center mb-2">
@@ -42,60 +42,28 @@
                 </div>
                 
                 <!-- -->
-                <div class="m-0 row justify-content-center ocultardiv mb-2" id="div_frecuenciascolectivos" style='display:none;'>
-                    <?php 
-                        foreach ($frequencies as $frequencie) 
-                        { 
-                            ?> 
-                                <input 
-                                    
-                                    style="padding:5px;"
-                                    type="radio" 
-                                    name="frequencie" 
-                                    id="frequenciepagos" 
-                                    onclick="frecuencia(<?=$frequencie->frequency ?>)"
-                                >
-                                    
-                                    <label class="form-check-label" for="frequenciepagos">
-                                        <?php echo $frequencie->name; ?>
-                                    </label>
-                            <?php 
-                        } 
-                    ?>  
-                    <label>Fecha de Inicio pagos </label>
-                    <input 
-                        class="form-check-input"  
-                        type="date" 
-                        name="fechainicio" 
-                        id="fechainicio" value="<?= date('Y-m-d'); ?>"
-                        >
-                        <button type="button" id="calcularpagos" name="calcularpagos"> Calcular</button>     
-                </div>  
-                <div  style="border: 1px solid #fff; display:none;" id ="divbtnguardarpagoscolectivos">
-                    
-                        <form  id ="formulariospagorealizar2" 
-                            name="formulariospagorealizar2" 
+                <div class="m-0 row justify-content-center ocultardiv mb-2">
+                    <form  id ="realizarpagofrecuencia" 
+                            name="realizarpagofrecuencia" 
                             method="POST"
-                            class=""
-                            action="frecuenciapagos" 
-                            
+                            class="container px-4 my-5"
+                            action="pago-colectivo" 
+                            enctype="multipart/form-data"
                         >
-                            @csrf 
-                            <table id="tablacontenidoformuariopago2colectivos" class="table">
-                                   
-                            </table>
-                            <br>
-                            <button 
-                                type="button" 
-                                id="guardarpagos" 
-                                name="guardarpagos" 
-                                class="btn btn-primary mt-2" 
-                                style="display:none;"> 
-                                    Guardar fechas
-                            </button>
-                        </form>           
-                </div> 
-                <!-- -->
+                        @csrf 
+                        <br>
+                        <input type="hidden" name="idcompany" id='idcompany' value="{{$id}}">
+                        <table id ="tablecontenidoformuariopago3" class="table">
+
+                        </table>    
+                        <div class="ocultardiv" id="divbtnguardarpagos2" style=" border: 1px solid #fff;">
+                            <button type="button" id="guardarpagpendiente" name="guardarpagpendiente" class="btn btn-primary mt-2"> Guardar Pagos </button>
+                        </div>
+                        
+                    </form>   
+                   
+                </div>  
+                
         </div>
     </div>
 </div>

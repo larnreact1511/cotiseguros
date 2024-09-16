@@ -94,55 +94,48 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
     .then(r => r.json())
     .then(r => 
     {
+        $("#tablecontenidoformuariopago3").html('');
         if (r.frecuencias)
         {
-            Swal.fire('Tiene frecuencias');
-            $("#div_frecuenciascolectivos").css('display','block'); 
-            $("#divbtnguardarpagoscolectivos").css('display','block'); 
-            $("#tablacontenidoformuariopago2colectivos").empty('')
-            //
-            let fre=r.data;    
+            Swal.fire('Existe fechas de pago generadas para esta póliza');
+            
+            let fre=r.data;   
+            console.log(fre); 
             fre.map((f,index) =>
             {
-               
-                $("#tablacontenidoformuariopago2colectivos").append(`
+                $("#tablecontenidoformuariopago3").append(`
                 <tr>
-                    <th>
-                        <label> Fecha inicio</label>
-                        <input class="form-check-input" type="date" name="fechainici[]" id="fechainici_${f.id}" value="${f.fechainicio}" >
+                    <th> orden: ${f.orden} : 
+                    ${ f.estadodepago ==1 ?'' : `<input type="checkbox" name="cbox[]" value="${index}">` }
                     </th>
                     <th>
-                        <label> Fecha fin</label>
-                        <input class="form-check-input" type="date" name="fechafin[]" id="fechafin_${f.id}" value="${f.fechafin}">
+                        <input type="hidden" name="frequencyofpayments[]" value="${f.id}">
+                        <label> Fecha Pago</label>
+                        <input class="form-check-input" readonly  
+                            type="date" name="fechainicio[]" id="" value="${f.fechainicio}">
+                    </th>
+                    <th>
+                        <label> Fecha Pago</label>
+                        <input class="form-check-input" readonly  
+                            type="date" name="fechafin[]" id="" value="${f.fechafin}">
                     </th>
                     <th>
                         <label> Monto</label>
-                        <input class="form-check-input" type="numeric" name="monto[]" id="" value="${f.montoestimado}" size="10">
+                        <input class="form-check-input"  
+                            type="numeric" name="monto[]" id="" value="${f.estadodepago ==1 ? f.montopago :f.montoestimado}" size="10">
                     </th>
                     <th>
-                        <input 
-                            class="form-check-input" 
-                            type="radio" 
-                            name="editarfrecuencia" 
-                            id="editarfrecuencia_${f.id}" 
-                            onclick="funeditarfrecuencia(${f.id})">
-
-                            editar
-                        </th>
+                        ${f.estadodepago ==1 ? inputanularpago(f.id,f.photo_payment ) :inputsubirpago(f.estadodepago )} 
+                        
+                    </th>
+                    </th>
                 </tr>
                 `);
             });
-            //
+            $("#divbtnguardarpagos2").css('display','block');
         }
         else
-        {
-           $("#div_frecuenciascolectivos").css('display','block'); 
-           $("#divbtnguardarpagoscolectivos").css('display','none'); 
-           $("#tablacontenidoformuariopago2colectivos").empty(''); 
-          
-           localStorage.setItem("montocotizacionpagar",monto);
-           localStorage.setItem("id_insurancepolicies",id_insurancepolicies);
-        }
+            Swal.fire('No existe fechas de pago generadas para esta póliza');
         
     }).finally(()=>
     {
@@ -150,122 +143,45 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
     });
   
 }
-$( "#calcularpagos" ).on( "click", function() 
-{
-    let frecuencia = localStorage.getItem("frecuencia");
-    let idcotizacionpagar = localStorage.getItem("idcotizacionpagar");
-    let montocotizacionpagar = localStorage.getItem("montocotizacionpagar");
-    let id_insurancepolicies = localStorage.getItem("id_insurancepolicies");
-    let fechainicio =$("#fechainicio").val();
-    if (  (localStorage.getItem("frecuencia") > 0)  )
-    {
-        //
-        mostrarcarga()
-        fetch(urlservidor+"api/collective-quotas", 
-        {
-            headers: 
-            {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // <--- aquí el token
-                "Content-type": "application/json; charset=UTF-8"
-            },
-            method: "POST",
-            body: JSON.stringify(
-            {
-                frecuencia: frecuencia,
-                idcotizacionpagar: idcotizacionpagar,
-                montocotizacionpagar: montocotizacionpagar,
-                fechainicio: fechainicio,
-                id_insurancepolicies:id_insurancepolicies
-                
-            }),
-        })
-        .then(r => r.json())
-        .then(r => 
-        {
-            if (r.result)
-            {
-                let fre=r.data;
-                $("#tablacontenidoformuariopago2").html('');
-                $("#idquote").val(r.idcotizacionpagar);
-                $("#id_insurancepolicies").val(r.id_insurancepolicies);
-                fre.map((f,index) =>
-                {
-                
-                $("#tablacontenidoformuariopago2").append(`
-                <tr>
-                    <th>
-                        <label> Fecha inicio</label>
-                        <input class="form-check-input" type="date" name="fechainici[]" id="" value="${f.fechaini}">
-                    </th>
-                    <th>
-                        <label> Fecha fin</label>
-                        <input class="form-check-input" type="date" name="fechafin[]" id="" value="${f.fechafin}">
-                    </th>
-                    <th>
-                        <label> Monto</label>
-                        <input class="form-check-input" type="numeric" name="monto[]" id="" value="" size="10">
-                    </th>
-                </tr>
-                    `);
-                });
-                $("#divbtnguardarpagos").css('display','block'); 
-                $("#guardarpagos").css('display','block');    
-            }
-        }).finally(()=>
-        {
-            ocultarcarga()
-        });
-        //
-    }
-    else
-    {
-        Swal.fire('Debe escoger una cotización y frecuencia de pago de la misma');
-    }
-});
 
-$("#guardarpagos").on("click",function()
+function inputsubirpago(estadodepago)
 {
-    $( "#formulariospagorealizar2" ).append(`<input type="hidden" id="idquote" readonly name="idquote" class="form-control" value ="0"/>`);
-    $( "#formulariospagorealizar2" ).append(`<input type="hidden" id="idadmin" readonly name="idadmin" class="form-control" value ="${$("#idadmin").val()}"/>`);
-    $( "#formulariospagorealizar2" ).append(`<input type="hidden" id="id_insurancepolicies" readonly name="id_insurancepolicies" class="form-control" value ="${localStorage.getItem("id_insurancepolicies")}"/>`);
-    //let formulario = document.getElementById('formulariospagorealizar2');
-    //formulario.submit();
-    $.ajax({
-        method: "POST",
-        url: './savecollectivequotas',
-        data:  new FormData(document.getElementById("formulariospagorealizar2")),
-        mimeType:"multipart/form-data",
-        contentType: false,
-        cache: false,
-        processData:false,
-        beforeSend: function(){},
-        success: function(data){
-            if (data)
-            { 
-                var jsondata = JSON.parse(data);
-                if (jsondata['result']=='success')
-                {
-                    ocultarcarga();
-                    Swal.fire({ 
-                        text: jsondata['message'], 
-                        icon: "success", 
-                        buttonsStyling: !1, 
-                        confirmButtonText: "Ok", 
-                        customClass: { confirmButton: "btn btn-primary" } }).then(
-                        function (e) {
-                            
-                        }
-                    );
-                    window.location ='lista-empresas';
-                }
-            else
-                enablebutton(jsondata['message']);
-           }
-           else
-            enablebutton('No se pudo agregar la empresa.');    
-        },
-        error: function (request, status, error) {
-           enablebutton(request.responseText);
-        }
+    html =`<input 
+        ${ estadodepago ==1 ?'' : `disabeld` }
+        type="file" 
+        class="custom-file-input" 
+        name="photo_payment[]" 
+        id="photo_payment"
+        accept="png,jpeg,pdf" 
+    >`;
+    return html;
+}
+function inputanularpago(id,photo_payment)
+{
+    html ='';
+    html =`<input 
+    class="form-check-input" 
+    type="radio" 
+    name="btneliminarfrecuecia" 
+    id="btneliminarfrecuecia" 
+    onclick="eliminarfrecuecia(${id})"
+    >
+
+    Anular pago
+    
+    <a href="${photo_payment}" target="_blank">
+    ver img
+    </a>
+    
+    `;
+    return html;
+}
+$("#guardarpagpendiente").on("click",function()
+    {
+        $( "#realizarpagofrecuencia" ).append(`<input type="hidden" id="idquotefp" readonly name="idquotefp" class="form-control" value ="0"/>`);
+        $( "#realizarpagofrecuencia" ).append(`<input type="hidden" id="idadminfp" readonly name="idadminfp" class="form-control" value ="${$("#idadmin").val()}"/>`);
+        $( "#realizarpagofrecuencia" ).append(`<input type="hidden" id="id_insurancepoliciesfp" readonly name="id_insurancepoliciesfp" class="form-control" value ="${localStorage.getItem("id_insurancepolicies")}"/>`);
+        $( "#realizarpagofrecuencia" ).append(`<input type="hidden" id="idclientefp" readonly name="idclientefp" class="form-control" value ="${$("#idcliente").val()}"/>`);
+        let formulario = document.getElementById('realizarpagofrecuencia');
+        formulario.submit();
     });
-});

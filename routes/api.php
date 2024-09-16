@@ -78,6 +78,7 @@ Route::post('/aprobarpoliza', [App\Http\Controllers\InsurancepoliciesController:
 Route::post('/modificardatosquote', [App\Http\Controllers\ClientesController::class, 'modificardatosquote'])->name('modificardatosquote');
 
 Route::post('pagospolizas', [App\Http\Controllers\ClientesController::class, 'pagospolizas'])->name('pagospolizas');
+Route::post('pagospolizas-colectivos', [App\Http\Controllers\ClientesController::class, 'pagospolizascolectivos']);
 Route::post('consultar-pagos-empresas', [App\Http\Controllers\ClientesController::class, 'consultpaymentscompanies']);
 Route::post('funeditarfrecuencia', [App\Http\Controllers\ClientesController::class, 'editarfrecuenciapago'])->name('editarfrecuenciapago');
 

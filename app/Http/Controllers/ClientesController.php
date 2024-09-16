@@ -1474,9 +1474,11 @@ class ClientesController extends Controller
     {
         $orden=0; 
         //dd($request);
+        /*
         if (DB::table('frequencyofpayments')->find(\DB::table('frequencyofpayments')->where('id_insurancepolicies',$request->id_insurancepolicies)->max('id')) )
             $orden =floatval($frequencyofpayments->orden) + 1;
-    
+        */
+
         $fechaincio =$request->fechainici;
         $fechafin =$request->fechafin;
         $monto =$request->monto;
@@ -2508,6 +2510,32 @@ class ClientesController extends Controller
         }
         return response()->json($data);
     }
+    public function pagospolizascolectivos(Request $request)
+    {
+        if ( (DB::table('company_frequencies_detail')->where('id_insurancepolicies',$request->idpoliza)->count()) >0  )
+        {
+            $data['frecuencias'] =true;
+            $data['data'] =DB::table('company_frequencies_detail')
+            ->leftJoin('company_payments', 'company_frequencies_detail.id', '=', 'company_payments.id_frequencyofpayments')
+            ->where('company_frequencies_detail.id_company',$request->idpoliza)
+            ->select(
+                'company_frequencies_detail.id',
+                'company_frequencies_detail.fechainicio',
+                'company_frequencies_detail.fechafin',
+                'company_frequencies_detail.montoestimado',
+                'company_frequencies_detail.estadodepago',
+                'company_payments.montopago',
+                'company_payments.photo_payment',
+                'company_payments.fechapago')
+            ->get();
+        }
+        else
+        {
+            $data['frecuencias'] =false;
+            $data['data']=[];
+        }
+        return response()->json($data);
+    }
     public function consultpaymentscompanies(Request $request)
     {
         if ( (DB::table('company_frequencies')->where('companyid',$request->idpoliza)->count()) >0  )
@@ -2521,19 +2549,19 @@ class ClientesController extends Controller
 
             $data['empleado'] =$empleado;
             
-            $data['data'] =DB::table('frequencyofpayments')
-            ->leftJoin('payments', 'frequencyofpayments.id', '=', 'payments.id_frequencyofpayments')
-            ->where('frequencyofpayments.id_insurancepolicies',$empleado->id)
+            $data['data'] =DB::table('company_frequencies_detail')
+            ->leftJoin('company_payments', 'company_frequencies_detail.id', '=', 'company_payments.id_frequencyofpayments')
+            ->where('company_frequencies_detail.id_company',$request->idpoliza)
             ->select(
-                'frequencyofpayments.id',
-                'frequencyofpayments.fechainicio',
-                'frequencyofpayments.fechafin',
-                'frequencyofpayments.montoestimado',
-                'frequencyofpayments.estadodepago',
-                'frequencyofpayments.orden',
-                'payments.montopago',
-                'payments.photo_payment',
-                'payments.fechapago')
+                'company_frequencies_detail.id',
+                'company_frequencies_detail.fechainicio',
+                'company_frequencies_detail.fechafin',
+                'company_frequencies_detail.montoestimado',
+                'company_frequencies_detail.estadodepago',
+                'company_frequencies_detail.orden',
+                'company_payments.montopago',
+                'company_payments.photo_payment',
+                'company_payments.fechapago')
             ->get();
             
         }
@@ -2624,6 +2652,132 @@ class ClientesController extends Controller
             
         }
         return back();
+    }
+    public function pagostes()
+    {
+        $empleados=DB::table('company_client')
+                ->select(
+
+                    'frequencyofpayments.orden',
+                    'frequencyofpayments.fechafin',
+                    'frequencyofpayments.fechainicio',
+                    'frequencyofpayments.montoestimado',
+                    
+                )
+                ->leftJoin('insurancepolicies', 'company_client.idclient', '=', 'insurancepolicies.idusuario')
+                ->leftJoin('frequencyofpayments', 'insurancepolicies.id', '=', 'frequencyofpayments.id_insurancepolicies')
+                ->where('company_client.idcompany',3)
+                ->get();  
+
+        dd($empleados);
+    }
+    public function guardarpagpendientecolectivos(Request $request)
+    {
+            $cbox = $request->input('cbox');
+            if (   (isset($cbox)) && (count($cbox)> 0)  )
+            {
+                $fechafin = $request->input('fechafin'); 
+                $fechainicio = $request->input('fechainicio'); 
+                $monto = $request->input('monto');
+                $photo_payment =  $request->file('photo_payment');
+                $frequencyofpayments = $request->input('frequencyofpayments');
+                
+                $empleados=DB::table('company_client')
+                ->select(
+
+                    'frequencyofpayments.orden',
+                    'frequencyofpayments.id',
+                    'frequencyofpayments.fechafin',
+                    'frequencyofpayments.fechainicio',
+                    'frequencyofpayments.montoestimado',
+                    
+                )
+                ->leftJoin('insurancepolicies', 'company_client.idclient', '=', 'insurancepolicies.idusuario')
+                ->leftJoin('frequencyofpayments', 'insurancepolicies.id', '=', 'frequencyofpayments.id_insurancepolicies')
+                ->where('company_client.idcompany',$request->idcompany)
+                ->get();    
+               
+                for ( $i=0; $i < count($fechafin); $i++ )
+                {
+                    $imagen_url ='';
+                    if (in_array($i, $cbox))
+                    {
+                        
+                        if ( floatval($monto[$i]) >=0  )
+                        {
+                            //echo ' monto mayor a 0 ';
+                            $mon = $monto[$i] ? $monto[$i] : 0;
+                            $vinsert =array(
+                                'idusuario'=>0,
+                                'idquote'=>0,
+                                'idadmin'=>0,
+                                'fechapago'=>date("Y-m-d H:i:s"),
+                                'montopago'=> $mon,
+                                'id_frequencyofpayments'=>trim($frequencyofpayments[$i]),
+                                'created_at'=>date("Y-m-d H:i:s"),
+                                'photo_payment'=>''
+                            );
+                            
+                            if( $idisnet =DB::table('company_payments')->insertGetId($vinsert))
+                            {
+                                if ($mon > 0)
+                                {
+                                    if (array_key_exists($i, $photo_payment)) 
+                                    {
+                                        if ($photo_payment[$i]) 
+                                        {
+                                            $photo =$photo_payment[$i];
+                                            $image_name=md5(rand(1000,10000));
+                                            $ext = strtolower($photo->getClientOriginalExtension() );
+                                            $image_full_name=$image_name.'.'.$ext;
+                                            $imagen_url = 'documentos/'.$image_full_name;
+                                            if ($photo->move(public_path('documentos'),$image_full_name))
+                                            {
+                                                DB::table('company_payments')->where('id',$idisnet)->update(array( 'photo_payment'=>$imagen_url));   
+                                                
+                                            }      
+                                        } 
+                                    }
+                                }
+                                DB::table('company_frequencies_detail')->where('id',$frequencyofpayments[$i])->update(array( 'estadodepago'=>1));   
+                                
+                            }
+                            
+                            foreach ($empleados as $empleado)
+                            {
+                                
+                                if( ($empleado->fechainicio==$fechainicio[$i]) && ($empleado->fechafin == $fechafin[$i]))
+                                {
+                                    echo ' '.$empleado->id.' ';
+                                    $vinsert =array(
+                                        'idusuario'=>0,
+                                        'idquote'=>0,
+                                        'idadmin'=>0,
+                                        'fechapago'=>date("Y-m-d H:i:s"),
+                                        'montopago'=> $mon,
+                                        'id_frequencyofpayments'=>trim($empleado->id),
+                                        'created_at'=>date("Y-m-d H:i:s"),
+                                        'photo_payment'=>''
+                                    );
+                                   
+                                    if( $idisnet =DB::table('payments')->insertGetId($vinsert))
+                                    {
+                                        if ($mon > 0)
+                                        {
+                                            DB::table('payments')->where('id',$idisnet)->update(array( 'photo_payment'=>$imagen_url));     
+                                        }
+                                        DB::table('frequencyofpayments')->where('id',$empleado->id)->update(array( 'estadodepago'=>1));   
+                                        
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+            }
+            session()->flash('message', 'Pagos realizados con exito');
+            return back();
     }
     public function eliminarfrecuecia(Request $request)
     {
@@ -4041,6 +4195,28 @@ class ClientesController extends Controller
         if ($validator->fails()) {
             return response()->json(['result'=>'error','message'=>$validator->errors()->all()]);		
           }
+        // guardar fecha de pago para las empresas
+        $fechaincio =$request->fechainici;
+        $fechafin =$request->fechafin;
+        $monto =$request->monto;
+        $idadmin =0; $orden2=1;
+        for ( $i=0; $i < count($fechaincio); $i++ )
+        {
+            $vec=array(
+                'created_at'=>date('Y-m-d'),
+                'idquote'=>0,
+                'fechainicio'=>$fechaincio[$i],
+                'fechafin'=>$fechafin[$i],
+                'montoestimado'=> $monto[$i] >0 ? $monto[$i] :0,
+                'idadmin'=>$idadmin,
+                'id_company'=>$request->id_insurancepolicies,
+                'estadodepago'=>0,
+                'orden'=>$orden2
+            );
+            $orden2 ++;
+            DB::table('company_frequencies_detail')->insert($vec);
+        }
+        // guardar fecha de pago para los colectivos de las empresas  
         $colectivos = DB::table('company_client')
         ->select(
             'clientes.idusuario as idusuario','insurancepolicies.id as insurancepoliciesID')
