@@ -2,7 +2,8 @@
 /public/hot
 /public/storage
 /public/plantillas
-/public/documentos
+/public/documentos/*.jpg
+/public/documentos/*.png
 /public/qrcodes
 /storage/*.key
 /vendor
