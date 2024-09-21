@@ -56,7 +56,7 @@
                         <table id ="tablecontenidoformuariopago3" class="table">
 
                         </table>    
-                        <div class="ocultardiv" id="divbtnguardarpagos2" style=" border: 1px solid #fff;">
+                        <div class="ocultardiv" id="divbtnguardarpagos2" style=" border: 1px solid #fff; display:none;">
                             <button type="button" id="guardarpagpendiente" name="guardarpagpendiente" class="btn btn-primary mt-2"> Guardar Pagos </button>
                         </div>
                         

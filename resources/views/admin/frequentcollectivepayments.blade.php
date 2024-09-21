@@ -41,37 +41,7 @@
 
                 </div>
                 
-                <!-- -->
-                <div class="m-0 row justify-content-center ocultardiv mb-2" id="div_frecuencias" style='display:none;'>
-                    <?php 
-                        foreach ($frequencies as $frequencie) 
-                        { 
-                            ?> 
-                                <input 
-                                    
-                                    style="padding:5px;"
-                                    type="radio" 
-                                    name="frequencie" 
-                                    id="frequenciepagos" 
-                                    onclick="frecuencia(<?=$frequencie->frequency ?>)"
-                                >
-                                    
-                                    <label class="form-check-label" for="frequenciepagos">
-                                        <?php echo $frequencie->name; ?>
-                                    </label>
-                            <?php 
-                        } 
-                    ?>  
-                    <label>Fecha de Inicio pagos </label>
-                    <input 
-                        class="form-check-input"  
-                        type="date" 
-                        name="fechainicio" 
-                        id="fechainicio" value="<?= date('Y-m-d'); ?>"
-                        >
-                        <button type="button" id="calcularpagos" name="calcularpagos"> Calcular</button>     
-                </div>  
-                <div  style="border: 1px solid #fff; display:none;" id ="divbtnguardarpagos">
+                <div  style="" id ="divbtnguardarpagos">
                     
                         <form  id ="formulariospagorealizar2" 
                             name="formulariospagorealizar2" 

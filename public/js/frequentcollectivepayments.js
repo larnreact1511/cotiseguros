@@ -96,9 +96,9 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
     {
         if (r.frecuencias)
         {
-            Swal.fire('Tiene frecuencias');
+            Swal.fire('Tiene frecuencias generada la empresa');
             $("#div_frecuencias").css('display','none'); 
-            $("#divbtnguardarpagos").css('display','none'); 
+            $("#divbtnguardarpagos").css('display','block'); 
             $("#tablacontenidoformuariopago2").empty('')
             //
             let fre=r.data;    
@@ -120,15 +120,7 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
                         <input class="form-check-input" type="numeric" name="monto[]" id="" value="${f.montoestimado}" size="10">
                     </th>
                     <th>
-                        <input 
-                            class="form-check-input" 
-                            type="radio" 
-                            name="editarfrecuencia" 
-                            id="editarfrecuencia_${f.id}" 
-                            onclick="funeditarfrecuencia(${f.id})">
-
-                            editar
-                        </th>
+                        
                 </tr>
                 `);
             });

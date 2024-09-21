@@ -105,7 +105,7 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
             {
                 $("#tablecontenidoformuariopago3").append(`
                 <tr>
-                    <th> orden: ${f.orden} : 
+                    <th>
                     ${ f.estadodepago ==1 ?'' : `<input type="checkbox" name="cbox[]" value="${index}">` }
                     </th>
                     <th>
