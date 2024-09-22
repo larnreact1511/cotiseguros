@@ -843,6 +843,39 @@ class ClientesController extends Controller
         $dataresponce['data'] = $datos;
         return response()->json($dataresponce);
     }
+    public function addgrupupe($id)
+    {
+        if (DB::table('clientes')->where('id',$id)->count() > 0)
+        {
+            $data['cliente']=DB::table('clientes')->where('id',$id)->get();
+            $data['companys']=DB::table('company')->get();
+            return view("admin.addgrupupe",$data);
+        }
+        
+    }
+    public function groupeemploye($id)
+    {
+        
+        
+        if ( isset($request->idempresa) && isset($request->idempleado) )
+        {
+            DB::table('company_client')->insertGetId(
+                [
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'idcompany' => $request->idempresa,
+                    'idclient' => $request->idempleado,
+                    
+                ]);
+                
+                session()->flash('message', 'Empleado agregado a empresa con exito');
+                return back();
+        }
+        else{
+            session()->flash('message', 'NO se pudo agregar empleado a empresa');
+            return back();
+        }
+        
+    }
     public function listaclientes()
     {
         return view("admin.listadoclientes");
@@ -4262,16 +4295,47 @@ class ClientesController extends Controller
     {
         $data =DB::table('insurancepolicies')
         ->leftJoin('coverages', 'coverages.id', '=', 'insurancepolicies.idcoverages')
-        ->select('insurancepolicies.id as coveragesID','coverages.coverage')
+        ->select('insurancepolicies.id as insurancepoliciesid','coverages.coverage', 
+        'coverages.id as coveragesID', 
+        'insurancepolicies.idcoverages as idcoverages')
         ->get();
-
+        //dd($data);
         foreach ($data as $d)
         {
-            $dataupdate=array(
-                'idcoverages'=>$d->coverage
-            );
-            DB::table('insurancepolicies')->where('id',$d->coverage)
-            ->update($dataupdate);
+            //echo $d->insurancepoliciesid.' - ' ;
+            if ($d->coverage)
+            {
+                //echo ' existe ';
+                /*
+                    $dataupdate=array(
+                        'idcoverages'=>$d->coverage
+                    );
+                    DB::table('insurancepolicies')->where('id',$d->coverage)
+                    ->update($dataupdate);
+                */
+            }
+            else
+            {       
+                //echo $d->idcoverages.' - ' ;
+                if (DB::table('coveragesres')->where('id',$d->idcoverages)->count() > 0 )
+                {
+                    $conv = DB::table('coveragesres')->where('id',$d->idcoverages)->get();
+                    //echo $conv[0]->coverage.' - ' ;
+                    
+                    $dataupdate=array(
+                        'idcoverages'=>$conv[0]->coverage
+                    );
+                    DB::table('insurancepolicies')->where('id',$d->insurancepoliciesid)
+                    ->update($dataupdate);
+                    
+                    
+
+                }
+                    
+                
+            }
+                
+            
         }
     } 
     

@@ -136,6 +136,10 @@ Route::get('lista-empresas', [App\Http\Controllers\CompanyController::class, "li
 Route::get('getcompanys', [App\Http\Controllers\CompanyController::class, 'getcompanys']);
 // colectivos
 Route::get('colectivos', [App\Http\Controllers\ClientesController::class, "colectivos" ]);
+Route::get('agregar-a-colectivo/{id}', [App\Http\Controllers\ClientesController::class, "addgrupupe" ]);
+Route::post('agregar-a-colectivo/empleado-colectivo', [App\Http\Controllers\ClientesController::class, "groupeemploye" ]);
+
+
 Route::post('uploadgrup', [App\Http\Controllers\ClientesController::class, "importgroups" ]);
 
 

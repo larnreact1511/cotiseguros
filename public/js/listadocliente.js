@@ -38,6 +38,15 @@ $(document).ready(function ()
               {
                 arreglo[row.id] =row.memberquote;
                 return  `
+
+                <a href="#" style ="text-decoration: none;">
+                  <span 
+                    class='icon voyager-wallet btn-doc p-3' 
+                    title='Agregar a colectivo'
+                    onclick="addcolectivos(${row.id})" 
+                  ></span>
+                </a>
+
                 <a href="#" style ="text-decoration: none;">
                   <span 
                     class='icon voyager-wallet btn-doc p-3' 
@@ -109,6 +118,10 @@ function deletselct()
 function verperfil(id)
 {
   window.open(`perfilcliente/${id}`);
+}
+function addcolectivos(id)
+{
+  window.location.href=`agregar-a-colectivo/${id}`;
 }
 function adminstracionclientes(id)
 {
