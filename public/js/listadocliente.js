@@ -41,7 +41,7 @@ $(document).ready(function ()
 
                 <a href="#" style ="text-decoration: none;">
                   <span 
-                    class='icon voyager-wallet btn-doc p-3' 
+                    class='icon voyager-list-add btn-doc p-3' 
                     title='Agregar a colectivo'
                     onclick="addcolectivos(${row.id})" 
                   ></span>

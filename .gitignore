@@ -4,6 +4,8 @@
 /public/plantillas
 /public/documentos/*.jpg
 /public/documentos/*.png
+/public/documentos
+/public/
 /public/qrcodes
 /storage/*.key
 /vendor

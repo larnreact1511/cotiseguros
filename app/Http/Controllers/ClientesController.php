@@ -853,10 +853,9 @@ class ClientesController extends Controller
         }
         
     }
-    public function groupeemploye($id)
+    public function groupeemploye(Request $request)
     {
-        
-        
+        //dd($request->idempresa, $request->idempleado);
         if ( isset($request->idempresa) && isset($request->idempleado) )
         {
             DB::table('company_client')->insertGetId(
@@ -2545,7 +2544,7 @@ class ClientesController extends Controller
     }
     public function pagospolizascolectivos(Request $request)
     {
-        if ( (DB::table('company_frequencies_detail')->where('id_insurancepolicies',$request->idpoliza)->count()) >0  )
+        if ( (DB::table('company_frequencies_detail')->where('id_company',$request->idpoliza)->count()) >0  )
         {
             $data['frecuencias'] =true;
             $data['data'] =DB::table('company_frequencies_detail')
@@ -4092,7 +4091,10 @@ class ClientesController extends Controller
                 
             ]);
         
-        return response()->json(['result'=>'success','message'=>'polizas agrega con exito']);
+        return response()->json([
+            'result'=>'success',
+            'data'=>$colectivos,
+            'message'=>'polizas agrega con exito']);
     }
     // crear frecuencias de pago a colectivos
     public function frequentcollectivepayments($id) 

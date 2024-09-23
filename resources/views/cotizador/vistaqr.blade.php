@@ -206,14 +206,7 @@ use Illuminate\Support\Facades\DB;
                                         class="card-title"> 
                                           <?=number_format($poliza->idcoverages).' USD '; ?>
                                       </h5>
-                                      <h5 
-                                        class="card-title"> 
-                                          Abonado : <?=number_format($sum).' USD '; ?>
-                                      </h5>
-                                      <h5 
-                                        class="card-title"> 
-                                          Saldo restante : <?=number_format( floatval($poliza->idcoverages) - floatval($sum)  ).' USD '; ?>
-                                      </h5>
+                                      
 
                                     
                                       <?php 

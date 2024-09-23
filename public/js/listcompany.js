@@ -25,28 +25,28 @@ $(document).ready(function ()
               {
                 return  `<a href="colectivos-asegurados" style ="text-decoration: none;">
                     <span 
-                        class='voyager-list btn-doc p-3' 
+                        class='voyager-list btn-doc p-4' 
                         title='Asegurados'
                         onclick="" 
                     ></span>
                 </a>
                 <a href="colectivos-polizas/${row.id}" style ="text-decoration: none;">
                     <span 
-                        class='voyager-list-add btn-doc p-3' 
+                        class='voyager-double-right btn-doc p-4' 
                         title='Polizas colectivos'
                         onclick="" 
                     ></span>
                 </a>
                 <a href="colectivos-frecuencias-pagos/${row.id}" style ="text-decoration: none;">
                     <span 
-                        class='voyager-activity btn-doc p-3' 
+                        class='voyager-activity btn-doc p-4' 
                         title='Frecuencia de pagos'
                         onclick="" 
                     ></span>
                 </a>
                 <a href="realizar-pagos-frecuentes/${row.id}" style ="text-decoration: none;">
                     <span 
-                        class='voyager-activity btn-doc p-3' 
+                        class='voyager-bar-chart btn-doc p-4' 
                         title='realizar pagos frecuentes'
                         onclick="" 
                     ></span>

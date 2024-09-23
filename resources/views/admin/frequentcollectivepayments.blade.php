@@ -19,37 +19,62 @@
                 Agrega frecuencia de pagos ha : {{$company[0]->companyname}}
             </h3>
                 <!-- --> 
-                <div class="m-0 row justify-content-center mb-2">
-                    <?php           
-                        foreach ($insurancepolicies as $i )
-                        {
-                            $tipopoliza='Salud';
-                            $monto = number_format($i->idcoverages) .' USD ( '.$i->name.' :'.$tipopoliza.' ) '
-                            ?>
+                <?php           
+                    foreach ($insurancepolicies as $i )
+                    {
+                        $tipopoliza='Salud';
+                        $monto = number_format($i->idcoverages) .' USD ( '.$i->name.' :'.$tipopoliza.' ) '
+                        ?>
+                            <input 
+                                        class="form-check-input" 
+                                        type="radio" 
+                                        name="flexRadioDefault3" 
+                                        id="flexRadioDefault3" 
+                                        onclick="buscarfrecuencias2(0,<?=$i->idcoverages?>,<?=$i->companyid?>)">
+                                    <label class="form-check-label" for="flexRadioDefault3">
+                                        {{ $monto }}
+                                    </label>
+                        <?php  
+                    }
+                ?>
+                <!-- -->
+                <div class="m-0 row justify-content-center ocultardiv" id="div_frecuencias" style ="display:none;">
+                    <?php 
+                        foreach ($frequencies as $frequencie) 
+                        { 
+                            ?> 
                                 <input 
-                                            class="form-check-input" 
-                                            type="radio" 
-                                            name="flexRadioDefault3" 
-                                            id="flexRadioDefault3" 
-                                            onclick="buscarfrecuencias2(0,<?=$i->idcoverages?>,<?=$i->companyid?>)">
-                                        <label class="form-check-label" for="flexRadioDefault3">
-                                            {{ $monto }}
-                                        </label>
-                            <?php  
-                        }
-                    ?>
-
-                </div>
-                
-                <div  style="" id ="divbtnguardarpagos">
+                                    
+                                    style="padding:5px;"
+                                    type="radio" 
+                                    name="frequencie" 
+                                    id="frequenciepagos" 
+                                    onclick="frecuencia(<?=$frequencie->frequency ?>)"
+                                >
+                                    
+                                    <label class="form-check-label" for="frequenciepagos">
+                                        <?php echo $frequencie->name; ?>
+                                    </label>
+                            <?php 
+                        } 
+                    ?>  
+                    <label>Fecha de Inicio pagos </label>
+                    <input 
+                        class="form-check-input"  
+                        type="date" 
+                        name="fechainicio" 
+                        id="fechainicio" value="<?= date('Y-m-d'); ?>"
+                        >
+                        <button type="button" id="calcularpagos" name="calcularpagos"> Calcular</button>     
+                </div>  
+                <div  style="border: 1px solid #fff;">
                     
                         <form  id ="formulariospagorealizar2" 
                             name="formulariospagorealizar2" 
                             method="POST"
                             class=""
-                            action="frecuenciapagos" 
-                            
-                        >
+                            action="savecollectivequotas" 
+                            >
                             @csrf 
                             <table id="tablacontenidoformuariopago2" class="table">
                                    
@@ -60,11 +85,13 @@
                                 id="guardarpagos" 
                                 name="guardarpagos" 
                                 class="btn btn-primary mt-2" 
-                                style="display:none;"> 
-                                    Guardar fechas
-                            </button>
+                                style="display:none;"
+                                > 
+                                Guardar fechas
+                                </button>
                         </form>           
                 </div> 
+                <!-- -->
                 <!-- -->
         </div>
     </div>

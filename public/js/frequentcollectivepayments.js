@@ -75,7 +75,7 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
     
     mostrarcarga();
     localStorage.setItem("idcotizacionpagar",id);console.log('click');
-    fetch(urlservidor+"api/pagospolizas", 
+    fetch(urlservidor+"api/pagospolizas-colectivos", 
     {
         headers: 
         {
@@ -128,12 +128,9 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
         }
         else
         {
-           $("#div_frecuencias").css('display','block'); 
-           $("#divbtnguardarpagos").css('display','none'); 
-           $("#tablacontenidoformuariopago2").empty(''); 
-          
-           localStorage.setItem("montocotizacionpagar",monto);
-           localStorage.setItem("id_insurancepolicies",id_insurancepolicies);
+            $("#div_frecuencias").css('display','block'); 
+            $("#divbtnguardarpagos").css('display','none'); 
+            $("#tablacontenidoformuariopago2").empty('');
         }
         
     }).finally(()=>

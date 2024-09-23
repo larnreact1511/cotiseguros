@@ -24,6 +24,12 @@
                       $comentarios =DB::table('comentariospolizas')->where('id_insurancepolicies',$poliza->id_insurancepolicies)->get();
                       $vec2=array('id_insurancepolicies'=>$poliza->id_insurancepolicies);
                       $documentos =DB::table('docuemntos')->where($vec2)->get();
+
+                      $sum= DB::table('frequencyofpayments')
+                          ->where('id_insurancepolicies',$poliza->id_insurancepolicies)
+                          ->where('estadodepago',1)
+                          ->sum('montoestimado');
+
                       ?>
                           <div class="accordion-item m-2">
                               <h6  
@@ -45,6 +51,8 @@
                                     src="{{env('APP_URL')}}storage/{{$poliza->image}}"
                                     >
                                     {{ number_format($poliza->coverage, 2, ',', '.') }} USD
+
+                                    
                               </h6>     
                               <div 
                                   id="collapsePoliza_{{$poliza->idinsurers}}" 
