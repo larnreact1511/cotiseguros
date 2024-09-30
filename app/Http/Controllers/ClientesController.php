@@ -972,6 +972,8 @@ class ClientesController extends Controller
             'clientes.cedula',
             'clientes.rif',
             'clientes.estado',
+            'clientes.tipocliente',
+            'clientes.idusuario',
             'users.email')
             ->leftJoin('users', 'clientes.idusuario', '=', 'users.id')
             ->skip($start)
@@ -987,6 +989,8 @@ class ClientesController extends Controller
             'clientes.cedula',
             'clientes.rif',
             'clientes.estado',
+            'clientes.tipocliente',
+            'clientes.idusuario',
             'users.email')
             ->leftJoin('users', 'clientes.idusuario', '=', 'users.id')
             ->orderBy('id', 'desc')
@@ -1003,6 +1007,8 @@ class ClientesController extends Controller
             'clientes.cedula',
             'clientes.rif',
             'clientes.estado',
+            'clientes.tipocliente',
+            'clientes.idusuario',
             'users.email')
             ->leftJoin('users', 'clientes.idusuario', '=', 'users.id')
             ->orWhere('clientes.nombre', 'LIKE', "%$value%")
@@ -1023,6 +1029,8 @@ class ClientesController extends Controller
             'clientes.cedula',
             'clientes.rif',
             'clientes.estado',
+            'clientes.tipocliente',
+            'clientes.idusuario',
             'users.email')
             ->leftJoin('users', 'clientes.idusuario', '=', 'users.id')
             ->orWhere('clientes.nombre', 'LIKE', "%$value%")
@@ -1039,7 +1047,7 @@ class ClientesController extends Controller
         }
         $i = 0;
         foreach ($clientes as $cliente => $c) {
-               
+            
             $nestedData['id']               = $c->id;
             $nestedData['nombre']           = $c->nombre;
             $nestedData['apellido']         = $c->apellido;
@@ -1048,8 +1056,12 @@ class ClientesController extends Controller
             $nestedData['numerotelefono']   = $c->numerotelefono;
             $nestedData['email']            = $c->email;
             $nestedData['estado']            = $c->estado;
+            $nestedData['tipocliente']            = $c->tipocliente;
+            if ($c->tipocliente ==1)
+                $nestedData['company'] =$this->getcompanyclient($c->idusuario);
+            else
+                $nestedData['company'] ='';
 
-            
             $datos[] = $nestedData;
         }
         $dataresponce['draw'] = $request->input('draw');
@@ -1057,6 +1069,22 @@ class ClientesController extends Controller
         $dataresponce['recordsFiltered'] = $recordsTotal->count();
         $dataresponce['data'] = $datos;
         return response()->json($dataresponce);
+    }
+    public function getcompanyclient($id)
+    {
+        
+        $company= DB::table('company_client')
+        ->select('company.companyname')
+        ->leftJoin('company', 'company_client.idcompany', '=', 'company.id')
+        ->where('company_client.idclient',$id);
+        if ($company->count() > 0) 
+        {
+            $companyname = $company->get();
+            return  $companyname[0]->companyname ;
+        }
+            
+        else
+            return '';
     }
     public function contactoseguros()
     {
@@ -1763,7 +1791,7 @@ class ClientesController extends Controller
                 'idusuario'=>auth()->id(),
                 'tipopoliza'=>1);
             $data['salud'] =DB::table('insurancepolicies')
-            ->join('coverages', 'insurancepolicies.idcoverages', '=', 'coverages.id')
+            //->join('coverages', 'insurancepolicies.idcoverages', '=', 'coverages.id')
             ->join('insurers', 'insurancepolicies.idinsurers', '=', 'insurers.id')
             ->where($buscarsalud)
             ->select(
@@ -1771,16 +1799,17 @@ class ClientesController extends Controller
                 'insurancepolicies.comentario', 
                 'insurancepolicies.idcoverages', 
                 'insurancepolicies.idinsurers', 
-                'coverages.coverage',
+                //'coverages.coverage',
                 'insurers.name',
                 'insurers.image',
                 'insurers.id as idinsurers',
                 'insurancepolicies.tipopoliza',
                 'insurancepolicies.id as id_insurancepolicies',
-                'coverages.id')->get();  
+                //'coverages.id'
+                )->get();  //dd($data);
             return view("clientes.clientepolizassalud",$data);
 
-            // datacliente
+            // datacliente coverage
         }
         else
             return view("errors.nologin");
@@ -2570,16 +2599,10 @@ class ClientesController extends Controller
     }
     public function consultpaymentscompanies(Request $request)
     {
-        if ( (DB::table('company_frequencies')->where('companyid',$request->idpoliza)->count()) >0  )
+        if ( (DB::table('company_frequencies_detail')->where('id_company',$request->idpoliza)->count()) >0  )
         {
             $data['frecuencias'] =true;
-            $empleado = DB::table('company_client')
-            ->select('insurancepolicies.id')
-            ->leftJoin('insurancepolicies', 'insurancepolicies.idusuario', '=', 'company_client.idclient')
-            ->where('company_client.idcompany', $request->idpoliza)
-            ->first();
-
-            $data['empleado'] =$empleado;
+            
             
             $data['data'] =DB::table('company_frequencies_detail')
             ->leftJoin('company_payments', 'company_frequencies_detail.id', '=', 'company_payments.id_frequencyofpayments')
@@ -2728,7 +2751,8 @@ class ClientesController extends Controller
                 ->leftJoin('frequencyofpayments', 'insurancepolicies.id', '=', 'frequencyofpayments.id_insurancepolicies')
                 ->where('company_client.idcompany',$request->idcompany)
                 ->get();    
-               
+                
+                    
                 for ( $i=0; $i < count($fechafin); $i++ )
                 {
                     $imagen_url ='';
@@ -2754,22 +2778,27 @@ class ClientesController extends Controller
                             {
                                 if ($mon > 0)
                                 {
-                                    if (array_key_exists($i, $photo_payment)) 
+                                    //dd('',$monto,$photo_payment,$i);
+                                    if (isset($photo_payment))
                                     {
-                                        if ($photo_payment[$i]) 
+                                        if (array_key_exists($i, $photo_payment)) 
                                         {
-                                            $photo =$photo_payment[$i];
-                                            $image_name=md5(rand(1000,10000));
-                                            $ext = strtolower($photo->getClientOriginalExtension() );
-                                            $image_full_name=$image_name.'.'.$ext;
-                                            $imagen_url = 'documentos/'.$image_full_name;
-                                            if ($photo->move(public_path('documentos'),$image_full_name))
+                                            if ($photo_payment[$i]) 
                                             {
-                                                DB::table('company_payments')->where('id',$idisnet)->update(array( 'photo_payment'=>$imagen_url));   
-                                                
-                                            }      
-                                        } 
+                                                $photo =$photo_payment[$i];
+                                                $image_name=md5(rand(1000,10000));
+                                                $ext = strtolower($photo->getClientOriginalExtension() );
+                                                $image_full_name=$image_name.'.'.$ext;
+                                                $imagen_url = 'documentos/'.$image_full_name;
+                                                if ($photo->move(public_path('documentos'),$image_full_name))
+                                                {
+                                                    DB::table('company_payments')->where('id',$idisnet)->update(array( 'photo_payment'=>$imagen_url));   
+                                                    
+                                                }      
+                                            } 
+                                        }
                                     }
+                                    
                                 }
                                 DB::table('company_frequencies_detail')->where('id',$frequencyofpayments[$i])->update(array( 'estadodepago'=>1));   
                                 
@@ -4220,11 +4249,11 @@ class ClientesController extends Controller
     {
         $orden=0; 
         $validator = Validator::make($request->all(), [
-            'id_insurancepolicies' => 'required',
+            'idcompany' => 'required',
             
           ],
           [
-            'id_insurancepolicies.required' => 'El indentificador de empresa es requerido',
+            'idcompany.required' => 'El indentificador de empresa es requerido',
           ]
         );
         if ($validator->fails()) {
@@ -4244,7 +4273,7 @@ class ClientesController extends Controller
                 'fechafin'=>$fechafin[$i],
                 'montoestimado'=> $monto[$i] >0 ? $monto[$i] :0,
                 'idadmin'=>$idadmin,
-                'id_company'=>$request->id_insurancepolicies,
+                'id_company'=>$request->idcompany,
                 'estadodepago'=>0,
                 'orden'=>$orden2
             );
@@ -4257,12 +4286,12 @@ class ClientesController extends Controller
             'clientes.idusuario as idusuario','insurancepolicies.id as insurancepoliciesID')
         ->leftJoin('clientes', 'clientes.idusuario', '=', 'company_client.idclient')
         ->leftJoin('insurancepolicies', 'insurancepolicies.idusuario', '=', 'company_client.idclient')
-        ->where('company_client.idcompany',$request->id_insurancepolicies)
+        ->where('company_client.idcompany',$request->idcompany)
         ->get();
         	
         $vec=array(
             'created_at'=>date('Y-m-d'),
-            'companyid'=>$request->id_insurancepolicies,
+            'companyid'=>$request->idcompany,
             'frecuenci'=>0,
         );
         DB::table('company_frequencies')->insert($vec);   

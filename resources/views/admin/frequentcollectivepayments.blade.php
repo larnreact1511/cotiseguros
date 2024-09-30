@@ -76,6 +76,14 @@
                             action="savecollectivequotas" 
                             >
                             @csrf 
+
+                            <input 
+                                class="form-check-input"  
+                                type="text" 
+                                name="idcompany" 
+                                id="idcompany" value="{{$id}}"
+                                >
+
                             <table id="tablacontenidoformuariopago2" class="table">
                                    
                             </table>

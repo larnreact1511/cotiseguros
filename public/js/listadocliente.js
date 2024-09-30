@@ -18,6 +18,7 @@ $(document).ready(function ()
             { data: 'cedula' },
             { data: 'numerotelefono' },
             { data: 'email' },
+            { data: 'company' },
             //{ data: 'estado' },
             {
               orderable: false,
@@ -39,13 +40,7 @@ $(document).ready(function ()
                 arreglo[row.id] =row.memberquote;
                 return  `
 
-                <a href="#" style ="text-decoration: none;">
-                  <span 
-                    class='icon voyager-list-add btn-doc p-3' 
-                    title='Agregar a colectivo'
-                    onclick="addcolectivos(${row.id})" 
-                  ></span>
-                </a>
+                ${row.tipocliente > 0 ?'': returnaddcompany(row.id) }
 
                 <a href="#" style ="text-decoration: none;">
                   <span 
@@ -75,7 +70,17 @@ $(document).ready(function ()
     });
     ocultarcarga()
 });
-
+function returnaddcompany(id)
+{
+  html = `<a href="#" style ="text-decoration: none;">
+                  <span 
+                    class='icon voyager-list-add btn-doc p-3' 
+                    title='Agregar a colectivo'
+                    onclick="addcolectivos(${id})" 
+                  ></span>
+                </a> `;
+                return html;
+}
 function agregareliminar(id)
 {
   let checkBox = document.getElementById("cliente_"+id);

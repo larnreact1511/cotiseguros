@@ -29,7 +29,9 @@
                           ->where('id_insurancepolicies',$poliza->id_insurancepolicies)
                           ->where('estadodepago',1)
                           ->sum('montoestimado');
-
+                         
+                       
+                      
                       ?>
                           <div class="accordion-item m-2">
                               <h6  
@@ -50,10 +52,13 @@
                                     width ="50" 
                                     src="{{env('APP_URL')}}storage/{{$poliza->image}}"
                                     >
-                                    {{ number_format($poliza->coverage, 2, ',', '.') }} USD
+                                      {{ number_format($poliza->idcoverages, 2, ',', '.') }} USD --
 
-                                    
-                              </h6>     
+                                      <h7>
+                                        Monto pagado :  {{ number_format($sum, 2, ',', '.') }} USD
+                                      </h7>  
+                                </h6> 
+                                 
                               <div 
                                   id="collapsePoliza_{{$poliza->idinsurers}}" 
                                   class="accordion-collapse collapse" 

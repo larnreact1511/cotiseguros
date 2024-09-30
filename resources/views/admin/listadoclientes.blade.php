@@ -28,6 +28,7 @@
                     <th>Cedula </th>
                     <th>Nro telefono </th>
                     <th>Correo </th>
+                    <th>Empresa </th>
                     <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
