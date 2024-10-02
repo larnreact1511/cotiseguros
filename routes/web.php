@@ -63,6 +63,8 @@ Route::post('deletselct/', [App\Http\Controllers\ClientesController::class, 'del
 
 Route::get('perfilcliente/{id}', [App\Http\Controllers\ClientesController::class, 'perfilcliente'])->name('perfilcliente');
 Route::get('adminstracionclientes/{id}', [App\Http\Controllers\ClientesController::class, 'adminstracionclientes'])->name('adminstracionclientes');
+Route::get('colectivos-asegurados/removefromthecollective/{id}', [App\Http\Controllers\ClientesController::class, 'removefromthecollective']);
+
 
 Route::get('update-1', [App\Http\Controllers\ClientesController::class, 'update1']);
 Route::post('adminstracionclientes/renovarpoliza', [App\Http\Controllers\ClientesController::class, 'renovarpoliza']);
@@ -145,6 +147,7 @@ Route::post('uploadgrup', [App\Http\Controllers\ClientesController::class, "impo
 
 
 Route::get('colectivos-asegurados', [App\Http\Controllers\ClientesController::class, 'insuredgroups']);
+Route::get('colectivos-asegurados/{id}', [App\Http\Controllers\ClientesController::class, 'insuredgroupsforid']);
 Route::get('list-group', [App\Http\Controllers\ClientesController::class, 'listgroups']);
 
 Route::get('colectivos-polizas/{id}', [App\Http\Controllers\ClientesController::class, 'insuredpolicies']);

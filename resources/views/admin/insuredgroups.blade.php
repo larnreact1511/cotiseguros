@@ -11,7 +11,7 @@
     <div class="col-12" id="">
         <div class="custom-loader" id ="carga" sytyle="display:none"></div>
     </div>
-    
+    <input type="hidden" id="idcompany" name="idcompany" value ="<?=@$id; ?>">
     <div class="row" id ="divprincipal">
         <h3>
             Listado colectivos 

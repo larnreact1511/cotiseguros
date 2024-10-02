@@ -2,15 +2,21 @@ let arreglo =[];
 let clientesborrar=[];
 $(document).ready(function () 
 {
-    $('#tablecompany').DataTable({
+  let idcompany =$("#idcompany").val();
+  let urlget ='list-group/';
+  
+  $('#tablecompany').DataTable({
         responsive: true,
         processing: true,
         serverSide: true,
-        ajax: `list-group/`,
-        language:
-            {
-				"url": "json/Spanish.json"
-			},
+        //ajax: `../list-group/`,
+        'ajax': {
+            'url':'../list-group/',
+            'data': function(data) {
+                let idcompany = $('#idcompany').val();
+                data.idcompany = idcompany;
+            }
+        },
         columns: [
             { data: 'id' },
             { data: 'nombre' },
@@ -39,6 +45,13 @@ $(document).ready(function ()
               {
                 arreglo[row.id] =row.memberquote;
                 return  `
+                <a href="#" style ="text-decoration: none;">
+                  <span 
+                    class='icon voyager-x btn-doc p-3' 
+                    title='Eliminar cliente'
+                    onclick="removefromthecollective(${row.idusuario})" 
+                  ></span>
+                </a>
                 <a href="#" style ="text-decoration: none;">
                   <span 
                     class='icon voyager-wallet btn-doc p-3' 
@@ -80,6 +93,10 @@ function agregareliminar(id)
   }
 
 }
+function removefromthecollective(id)
+{
+  window.location.href=`./removefromthecollective/${id}`;
+}
 function deletselct()
 {
   mostrarcarga()
@@ -113,8 +130,7 @@ function verperfil(id)
 }
 function adminstracionclientes(id)
 {
-  //window.open(`adminstracionclientes/${id}`);
-  window.location.href=`adminstracionclientes/${id}`;
+  window.location.href=`../adminstracionclientes/${id}`;
 }
 function relizapagos(id)
 {

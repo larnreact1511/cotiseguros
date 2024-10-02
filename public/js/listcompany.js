@@ -23,7 +23,7 @@ $(document).ready(function ()
               defaultContent:'',
               render: function(data, type, row, meta) 
               {
-                return  `<a href="colectivos-asegurados" style ="text-decoration: none;">
+                return  `<a href="colectivos-asegurados/${row.id}" style ="text-decoration: none;">
                     <span 
                         class='voyager-list btn-doc p-4' 
                         title='Asegurados'

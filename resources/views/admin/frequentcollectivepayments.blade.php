@@ -79,7 +79,7 @@
 
                             <input 
                                 class="form-check-input"  
-                                type="text" 
+                                type="hidden" 
                                 name="idcompany" 
                                 id="idcompany" value="{{$id}}"
                                 >

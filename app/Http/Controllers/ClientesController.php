@@ -3951,115 +3951,96 @@ class ClientesController extends Controller
     {
         return view("admin.insuredgroups");
     }
+    public function insuredgroupsforid ($id)
+    {
+        $data['id']=$id;
+        return view("admin.insuredgroups",$data);
+    }
+    public function removefromthecollective($id)
+    {
+        DB::table('company_client')->where('idclient',$id)->delete();
+        return back();
+    }
     public function listgroups(Request $request)
     {
+        $search = $request->input('search');
+        $limit = $request->input('length', 10);
+        $start = $request->input('start', 0);
+        $idcompany = $request->input('idcompany');
+        $order = $request->input('order', [['column' => 0, 'dir' => 'desc']]);
+        // Mapeo de columnas
+        $columns = ['id', 'companyname', 'rifcompany', 'adresscompany', 'notecompany'];
+        $orderBy = $columns[$order[0]['column']] ?? 'id';
+        // Construcción de la consulta base
+
         
-        $search = $request->input('search'); 
-        $datos=[];
-        $limit = $request->input('length');
-        $start = $request->input('start');
-
-        $order = $request->input('order');
-        $column =$order[0]['column'];
-        $dir =$order[0]['dir'];
-
-        $orderBy ='id';
-        switch ($column) {
-            case 0:
-                $orderBy ='id';
-                break;
-            case 1:
-                $orderBy ='companyname';
-                break;
-            case 2:
-                $orderBy ='rifcompany';
-                break;
-            case 3:
-                $orderBy ='adresscompany';
-                break;
-            case 4:
-                $orderBy ='notecompany';
-                break;
+        $query = DB::table('company_client')
+            ->select(
+                'clientes.id',
+                'clientes.idusuario',
+                'clientes.nombre',
+                'clientes.apellido',
+                'clientes.numerotelefono',
+                'clientes.cedula',
+                'clientes.rif',
+                'clientes.estado',
+                'company.companyname as company',
+                'users.email'
+            )
+            ->leftJoin('clientes', 'clientes.idusuario', '=', 'company_client.idclient')
+            ->leftJoin('company', 'company_client.idcompany', '=', 'company.id')
+            ->leftJoin('users', 'clientes.idusuario', '=', 'users.id');
+        // Filtrado por idcompany
+        if ($idcompany > 0) {
+            $query->where('company_client.idcompany', $idcompany);
         }
-        if ($search['value']=='')
-        {
-            $company =DB::table('company_client')
-            ->select('clientes.id',
-            'clientes.nombre',
-            'clientes.apellido',
-            'clientes.numerotelefono',
-            'clientes.cedula',
-            'clientes.rif',
-            'clientes.estado',
-            'company.companyname as company',
-            'users.email')
+        // Filtrado por búsqueda
+        if (!empty($search['value'])) {
+            $value = '%' . $search['value'] . '%';
+            $query->where(function ($subQuery) use ($value) {
+                $subQuery->where('clientes.nombre', 'LIKE', $value)
+                    ->orWhere('clientes.apellido', 'LIKE', $value)
+                    ->orWhere('clientes.numerotelefono', 'LIKE', $value)
+                    ->orWhere('clientes.cedula', 'LIKE', $value)
+                    ->orWhere('clientes.rif', 'LIKE', $value)
+                    ->orWhere('users.email', 'LIKE', $value)
+                    ->orWhere('company.companyname', 'LIKE', $value);
+            });
+        }
+        // Obtener datos paginados y ordenados
+        $listcompanys = $query->skip($start)->take($limit)->orderBy($orderBy, 'desc')->get();
+        // Contar registros totales
+        $recordsTotal = DB::table('company_client')
             ->leftJoin('clientes', 'clientes.idusuario', '=', 'company_client.idclient')
             ->leftJoin('company', 'company_client.idcompany', '=', 'company.id')
             ->leftJoin('users', 'clientes.idusuario', '=', 'users.id')
-            ->skip($start)
-            ->take($limit)
-            ->orderBy($orderBy, 'desc');
-            
-            $listcompanys =$company->get();
-            $recordsTotal =DB::table('company_client')
-            ->leftJoin('clientes', 'clientes.idusuario', '=', 'company_client.idclient')
-            ->leftJoin('company', 'company_client.idcompany', '=', 'company.id')
-            ->leftJoin('users', 'clientes.idusuario', '=', 'users.id')
+            ->when($idcompany > 0, function ($q) use ($idcompany) {
+                return $q->where('company.id', $idcompany);
+            })
             ->count();
 
+        // Preparar datos para la respuesta
+        $datos = [];
+        foreach ($listcompanys as $c) {
+            $datos[] = [
+                'id' => $c->id,
+                'nombre' => $c->nombre,
+                'apellido' => $c->apellido,
+                'phone' => $c->numerotelefono,
+                'cedula' => $c->cedula,
+                'numerotelefono' => $c->numerotelefono,
+                'email' => $c->email,
+                'estado' => $c->estado,
+                'company' => $c->company,
+                'idusuario' => $c->idusuario,
+            ];
         }
-        else
-        {
-            $value =$search['value']; 
-            $company =DB::table('company_client')
-            ->select('clientes.id',
-            'clientes.nombre',
-            'clientes.apellido',
-            'clientes.numerotelefono',
-            'clientes.cedula',
-            'clientes.rif',
-            'clientes.estado',
-            'company.companyname as company',
-            'users.email')
-            ->leftJoin('clientes', 'clientes.idusuario', '=', 'company_client.idclient')
-            ->leftJoin('company', 'company_client.idcompany', '=', 'company.id')
-            ->leftJoin('users', 'clientes.idusuario', '=', 'users.id')
-            ->orWhere('clientes.nombre', 'LIKE', "%$value%")
-            ->orWhere('clientes.apellido', 'LIKE', "%$value%")
-            ->orWhere('clientes.numerotelefono', 'LIKE', "%$value%")
-            ->orWhere('clientes.cedula', 'LIKE', "%$value%")
-            ->orWhere('clientes.rif', 'LIKE', "%$value%")
-            ->orWhere('users.email', 'LIKE', "%$value%")
-            ->orWhere('company.companyname', 'LIKE', "%$value%")
-            ->skip($start)
-            ->take($limit)
-            ->orderBy($orderBy, 'desc');
-
-            $listcompanys =$company->get();
-            $recordsTotal =$company->count();
-
-            $count =  DB::table('users')->where('role_id',5)->count();
-        }
-        $i = 0;
-        foreach ($listcompanys as $cliente => $c) {
-               
-            $nestedData['id']               = $c->id;
-            $nestedData['nombre']           = $c->nombre;
-            $nestedData['apellido']         = $c->apellido;
-            $nestedData['phone']            = $c->numerotelefono;
-            $nestedData['cedula']           = $c->cedula;
-            $nestedData['numerotelefono']   = $c->numerotelefono;
-            $nestedData['email']            = $c->email;
-            $nestedData['estado']            = $c->estado;
-            $nestedData['company']            = $c->company;
-           
-            $datos[] = $nestedData;
-        }
-        $dataresponce['draw'] = $request->input('draw');
-        $dataresponce['recordsTotal'] =$recordsTotal;
-        $dataresponce['recordsFiltered'] = $recordsTotal;
-        $dataresponce['data'] = $datos;
-        return response()->json($dataresponce);
+        return response()->json([
+            'draw' => (int)$request->input('draw'),
+            'recordsTotal' => (int)$recordsTotal,
+            'recordsFiltered' => (int)$recordsTotal,
+            'data' => $datos,
+        ]);
     }
 
     public function insuredpolicies($id)
@@ -4330,43 +4311,28 @@ class ClientesController extends Controller
         'coverages.id as coveragesID', 
         'insurancepolicies.idcoverages as idcoverages')
         ->get();
-        //dd($data);
         foreach ($data as $d)
         {
-            //echo $d->insurancepoliciesid.' - ' ;
             if ($d->coverage)
             {
-                //echo ' existe ';
-                /*
-                    $dataupdate=array(
-                        'idcoverages'=>$d->coverage
-                    );
-                    DB::table('insurancepolicies')->where('id',$d->coverage)
-                    ->update($dataupdate);
-                */
+                $dataupdate=array(
+                    'idcoverages'=>$d->coverage
+                );
+                DB::table('insurancepolicies')->where('id',$d->coverage)
+                ->update($dataupdate);
             }
             else
             {       
-                //echo $d->idcoverages.' - ' ;
-                if (DB::table('coveragesres')->where('id',$d->idcoverages)->count() > 0 )
+                if (DB::table('coveragesres3')->where('id',$d->idcoverages)->count() > 0 )
                 {
-                    $conv = DB::table('coveragesres')->where('id',$d->idcoverages)->get();
-                    //echo $conv[0]->coverage.' - ' ;
-                    
+                    $conv = DB::table('coveragesres3')->where('id',$d->idcoverages)->get();
                     $dataupdate=array(
                         'idcoverages'=>$conv[0]->coverage
                     );
                     DB::table('insurancepolicies')->where('id',$d->insurancepoliciesid)
                     ->update($dataupdate);
-                    
-                    
-
-                }
-                    
-                
+                }   
             }
-                
-            
         }
     } 
     
