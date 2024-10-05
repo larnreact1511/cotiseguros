@@ -131,6 +131,11 @@ Route::get('missninestros', [App\Http\Controllers\ClientesController::class, 'mi
 Route::get('misdatos', [App\Http\Controllers\ClientesController::class, 'misdatos']);
 Route::get('mispagos', [App\Http\Controllers\ClientesController::class, 'mispagos']);
 Route::get('/test', [App\Http\Controllers\ClientesController::class, 'test']);
+//
+Route::get('vencimientos', [App\Http\Controllers\ClientesController::class, "viewmaturities" ]);
+Route::get('vencimientoslist', [App\Http\Controllers\ClientesController::class, "maturities2" ]);
+//seguros
+Route::get('listado-de-seguros', [App\Http\Controllers\InsurersController::class, "index" ]);
 // empresas
 Route::get('agregar-empresa', [App\Http\Controllers\CompanyController::class, "addcompany" ]);
 Route::post('agregar-empresa', [App\Http\Controllers\CompanyController::class, "saveaddcompany" ]);

@@ -1953,17 +1953,16 @@ class ClientesController extends Controller
         $insurancepolicies = DB::table('insurancepolicies')
         ->leftJoin('frequencyofpayments', 'insurancepolicies.id', '=', 'frequencyofpayments.id_insurancepolicies')
         ->where('idusuario',$id)
-        //->where('frequencyofpayments.fechainicio','<',date('Y-m-d'))
-        ->select('frequencyofpayments.estadodepago','frequencyofpayments.fechainicio','frequencyofpayments.id')
+        ->where('frequencyofpayments.estadodepago',1)
+        ->select('frequencyofpayments.estadodepago','frequencyofpayments.fechainicio','frequencyofpayments.fechafin','frequencyofpayments.id')
         ->get();
-        //echo $id; die;
-        //echo "<pre>"; print_r($insurancepolicies);
+        //dd($insurancepolicies);
         if ( count($insurancepolicies)>0 )
         {
             foreach ($insurancepolicies as $c)
             {
                
-                if (($c->fechainicio ) <= (date('Y-m-d')))
+                if (($c->fechafin ) <= (date('Y-m-d')))
                 {
                     //echo  $c->id." comparo ".$c->fechainicio." ".date('Y-m-d')."<br>";
                     if ($c->estadodepago ==1)
@@ -2093,8 +2092,7 @@ class ClientesController extends Controller
         }
         else
             return view("errors.nologin");
-
-       
+  
     }
     public function missninestros()
     {
@@ -3826,124 +3824,113 @@ class ClientesController extends Controller
     public function importgroups(Request $request)
     {
         $archivo = $request->file('excel');
-        $disponibles = array("xlsx", "xls");
-        $file_name = Str::random(30);
+        $disponibles = ["xlsx", "xls"];
         $ext = strtolower($archivo->getClientOriginalExtension());
-        $data=[];
+
         if (!in_array($ext, $disponibles)) {
-            $data['message']='Documento invalida, por favor suba un excel valido';
+            return back()->with('message', 'Documento inválido, por favor suba un excel válido');
         }
-        else{
-            $file_full_name = $file_name . '.' . $ext;
-            $upload_path = 'plantillas/';
-            $file_url = $upload_path . $file_full_name;
-            $success = $archivo->move($upload_path, $file_full_name);
-            $collection = (new FastExcel)->import($file_url);
-           
-            for ($i = 0; $i < sizeof($collection); $i++) 
-            {
-                
-                $nombre = $collection[$i]['nombre'] ;
-                $apellido = $collection[$i]['apellido'] ;
-                $email = $collection[$i]['email'] ;
-                $clave = $collection[$i]['clave'] ;
-                $cedula = $collection[$i]['cedula'] ;
-                $role = $collection[$i]['roles'] ;
-                $telefono = $collection[$i]['telefono'] ;
-                $companyid = $collection[$i]['id_colectivo'];
-                $fecha_nacimiento = @$collection[$i]['fecha_nacimiento'] ;
-                if ($collection[$i]['estado'] )
-                    $locacion = $collection[$i]['estado'] ;
-                else
-                    $locacion =0;
-                
-                
-                if (($nombre !='') && ($apellido !='') && ($email !='')&& ($clave !='') && ($cedula !='') && ($role !='') && ($telefono !='') && ($companyid !='') )
-                {
-                    $users = DB::table('users')->where('email',$email)->get();
-                   
-                    if ( $users->count() > 0 )
-                    {
-                       $id_usario =$users[0]->id;
-                       $cliente = DB::table('clientes')->where('idusuario',$id_usario)->get();
-                       if ( $cliente->count() > 0)
-                       {
-                            $id_cliente =$cliente[0]->id;
-                            $datauser =array(
-                                'role_id' => 5,
-                                'name' => $nombre,
-                                'lastname' =>$apellido ,
-                                'phone' =>$telefono
-                               );
-                               DB::table('users')->where('id',$id_usario)->update($datauser);
-                            //
-                            $datacliente =array(
-                            
-                                'nombre' => $nombre,
-                                'apellido' =>$apellido ,
-                                'cedula' => $cedula,
-                                'numerotelefono' => $telefono,
-                                'estado' =>1,
-                                'rif' =>'',
-                                'fecha_nacimiento' =>@$fecha_nacimiento,
-                                'locacion' => $locacion
-                               );
-                               DB::table('clientes')->where('id',$id_cliente)->update($datacliente);
-                       }
-                       else
-                       {
 
-                       }
-                    }
-                    else
-                    {
-                        
-                        $User = DB::table('users')->insertGetId(
-                            [
-                                'role_id' => 5,
-                                'name' => $nombre,
-                                'lastname' =>$apellido ,
-                                'email' => $email,
-                                'password' => bcrypt($clave),
-                                'phone' =>$telefono
-                            ]);
-                        $user_roles = DB::table('user_roles')->insertGetId(
-                            [
-                                'user_id' => $User,
-                                'role_id' => 5
-                            ]);
-                            
-                            $clientes = DB::table('clientes')->insertGetId(
-                                [
-                                    'created_at' => date("Y-m-d H:i:s"),
-                                    'nombre' => $nombre,
-                                    'apellido' =>$apellido ,
-                                    'cedula' => $cedula,
-                                    'numerotelefono' => $telefono,
-                                    'estado' =>1,
-                                    'idusuario' => $User,
-                                    'rif' =>'',
-                                    'fecha_nacimiento' =>@$fecha_nacimiento,
-                                    'locacion' => $locacion,
-                                    'tipocliente' =>1
-                                ]);
+        $file_name = Str::random(30) . '.' . $ext;
+        $upload_path = 'plantillas/';
+        $archivo->move($upload_path, $file_name);
+        
+        $collection = (new FastExcel)->import($upload_path . $file_name);
 
-                                 DB::table('company_client')->insertGetId(
-                                    [
-                                        'created_at' => date("Y-m-d H:i:s"),
-                                        'idcompany' => $companyid,
-                                        'idclient' => $User,
-                                        
-                                    ]);
-                           
+        // Verificar cabeceras
+        $requiredHeaders = ['nombre', 'apellido', 'email', 'clave', 'cedula', 'roles', 'telefono', 'id_colectivo'];
+        
+        if (!$this->validateHeaders($collection, $requiredHeaders)) {
+            return back()->with('message', 'El archivo no contiene todas las cabeceras requeridas.');
+        }
+
+        foreach ($collection as $row) {
+            // Validar que las columnas requeridas no estén vacías
+            if (!empty(array_filter($row))) {
+                // Extraer datos con verificación
+                $nombre = $row['nombre'] ?? '';
+                $apellido = $row['apellido'] ?? '';
+                $email = $row['email'] ?? '';
+                $clave = $row['clave'] ?? '123456789';
+                $cedula = $row['cedula'] ?? '';
+                $role = $row['roles'] ?? '';
+                $telefono = $row['telefono'] ?? '';
+                $companyid = $row['id_colectivo'] ?? '';
+                $fecha_nacimiento = @$row['fecha_nacimiento'];
+                $locacion = @$row['estado'] ?: 0;
+
+                // Comprobar si el usuario existe
+                $user = DB::table('users')->where('email', $email)->first();
+
+                if ($user) {
+                    // Actualizar usuario y cliente
+                    DB::table('users')->where('id', $user->id)->update([
+                        'name' => $nombre,
+                        'lastname' => $apellido,
+                        'phone' => $telefono,
+                    ]);
+
+                    // Actualizar cliente
+                    if ($cliente = DB::table('clientes')->where('idusuario', $user->id)->first()) {
+                        DB::table('clientes')->where('id', $cliente->id)->update([
+                            'nombre' => $nombre,
+                            'apellido' => $apellido,
+                            'cedula' => $cedula,
+                            'numerotelefono' => $telefono,
+                            'estado' => 1,
+                            'rif' => '',
+                            'fecha_nacimiento' => @$fecha_nacimiento,
+                            'locacion' => $locacion,
+                        ]);
                     }
+                    
+                } else {
+                    // Crear nuevo usuario
+                    $userId = DB::table('users')->insertGetId([
+                        'role_id' => 5,
+                        'name' => $nombre,
+                        'lastname' => $apellido,
+                        'email' => $email,
+                        'password' => bcrypt($clave),
+                        'phone' => $telefono,
+                    ]);
+
+                    // Crear nuevo cliente
+                    DB::table('clientes')->insertGetId([
+                        'created_at' => now(),
+                        'nombre' => $nombre,
+                        'apellido' => $apellido,
+                        'cedula' => $cedula,
+                        'numerotelefono' => $telefono,
+                        'estado' => 1,
+                        'idusuario' => $userId,
+                        'rif' => '',
+                        'fecha_nacimiento' => @$fecha_nacimiento,
+                        'locacion' => $locacion,
+                        'tipocliente' => 1
+                    ]);
+
+                    // Relacionar el cliente con la empresa
+                    DB::table('company_client')->insertGetId([
+                        'created_at' => now(),
+                        'idcompany' => (int)$companyid, // Asegúrate de que esto sea un entero
+                        'idclient' => (int)$userId, // Asegúrate de que esto sea un entero
+                    ]);
                 }
             }
-                
-            $data['message']='Colectivos cargados con exito';
         }
-        session()->flash('message', 'Colectivos cargado con exito');
-        return back();
+
+        return back()->with('message', 'Colectivos cargados con éxito');
+    }
+
+    private function validateHeaders($collection, array $requiredHeaders)
+    {
+        if (empty($collection)) {
+            return false;
+        }
+
+        // Obtener las cabeceras del primer registro
+        return !array_diff($requiredHeaders, array_keys($collection[0]));
     }
     
     
@@ -4323,9 +4310,9 @@ class ClientesController extends Controller
             }
             else
             {       
-                if (DB::table('coveragesres3')->where('id',$d->idcoverages)->count() > 0 )
+                if (DB::table('coveragesres5')->where('id',$d->idcoverages)->count() > 0 )
                 {
-                    $conv = DB::table('coveragesres3')->where('id',$d->idcoverages)->get();
+                    $conv = DB::table('coveragesres5')->where('id',$d->idcoverages)->get();
                     $dataupdate=array(
                         'idcoverages'=>$conv[0]->coverage
                     );
@@ -4335,5 +4322,74 @@ class ClientesController extends Controller
             }
         }
     } 
-    
+    public  function viewmaturities()
+    {
+        return view("admin.viewmaturities");
+    }
+    public function maturities2(Request $request)
+    {
+        $search = $request->input('search');
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $draw = $request->input('draw');
+
+        // Construir la consulta base
+        $query = DB::table('insurancepolicies')
+            ->leftJoin('frequencyofpayments', 'frequencyofpayments.id_insurancepolicies', '=', 'insurancepolicies.id')
+            ->leftJoin('clientes', 'clientes.idusuario', '=', 'insurancepolicies.idusuario')
+            ->select(
+                'insurancepolicies.idcoverages',
+                'frequencyofpayments.fechainicio',
+                'frequencyofpayments.fechafin',
+                'clientes.cedula',
+                'clientes.nombre',
+                'clientes.apellido',
+                'clientes.numerotelefono'
+            );
+
+        // Aplicar filtros de búsqueda si existen
+        if (!empty($search['value'])) {
+            $value = $search['value'];
+            $query->where(function ($q) use ($value) {
+                $q->orWhere('clientes.numerotelefono', 'LIKE', "%$value%")
+                ->orWhere('clientes.nombre', 'LIKE', "%$value%")
+                ->orWhere('clientes.apellido', 'LIKE', "%$value%")
+                ->orWhere('clientes.cedula', 'LIKE', "%$value%");
+            });
+        }
+
+        // Obtener los registros
+        $insurancepolicies = $query->orderBy('frequencyofpayments.fechainicio', 'DESC')
+            ->skip($start)
+            ->take($limit)
+            ->get();
+
+        // Contar los registros totales
+        $totalRecords = DB::table('insurancepolicies')->count();
+        
+        // Contar los registros filtrados
+        $filteredRecords = $query->count();
+
+        // Preparar los datos para la respuesta
+        $data = [];
+        foreach ($insurancepolicies as $conta) {
+            $data[] = [
+                'cedula' => $conta->cedula,
+                'fechainicio' => $conta->fechainicio,
+                'fechafin' => $conta->fechafin,
+                'nombre' => $conta->nombre,
+                'apellido' => $conta->apellido,
+                'numerotelefono' => $conta->numerotelefono,
+                'idcoverages' => $conta->idcoverages,
+            ];
+        }
+
+        // Construir la respuesta final
+        return response()->json([
+            'draw' => intval($draw),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $filteredRecords,
+            'data' => $data,
+        ]);
+    }
 }
