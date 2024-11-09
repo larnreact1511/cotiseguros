@@ -139,6 +139,10 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
     });
   
 }
+function frecuencia (id)
+{
+    localStorage.setItem("frecuencia",id);
+}
 $( "#calcularpagos" ).on( "click", function() 
 {
     let frecuencia = localStorage.getItem("frecuencia");

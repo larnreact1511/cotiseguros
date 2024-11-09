@@ -134,6 +134,37 @@ function buscarfrecuencias2(id,monto,id_insurancepolicies) // para realizar pago
                         </tr>
                         `);
                 }
+                else
+                {
+                    $("#tablecontenidoformuariopago3").append(`
+                        <tr hidden >
+                            <th>
+                            ${ f.estadodepago ==1 ?'' : `<input type="checkbox" name="cbox[]" value="${index}">` }
+                            </th>
+                            <th>
+                                <input type="hidden" name="frequencyofpayments[]" value="${f.id}">
+                                <label> Fecha Pago</label>
+                                <input class="form-check-input" readonly  
+                                    type="date" name="fechainicio[]" id="" value="${f.fechainicio}">
+                            </th>
+                            <th>
+                                <label> Fecha Pago</label>
+                                <input class="form-check-input" readonly  
+                                    type="date" name="fechafin[]" id="" value="${f.fechafin}">
+                            </th>
+                            <th>
+                                <label> Monto</label>
+                                <input class="form-check-input"  
+                                    type="numeric" name="monto[]" id="" value="${f.estadodepago ==1 ? f.montopago :f.montoestimado}" size="10">
+                            </th>
+                            <th>
+                                ${f.estadodepago ==1 ? inputanularpago(f.id,f.photo_payment ) :inputsubirpago(f.estadodepago )} 
+                                
+                            </th>
+                            </th>
+                        </tr>
+                        `);
+                }
                 
             });
             $("#divbtnguardarpagos2").css('display','block');

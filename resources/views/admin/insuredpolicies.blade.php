@@ -67,14 +67,26 @@
                         </tr>
                         <tr>
                             <th>
-                                <button
-                                        onclick="addpolicesgruop()"
-                                        class="btn btn-primary mt-2"
-                                        type='button'
-                                        
-                                        >
-                                            Agregar polizas al colectivo
-                                    </button>
+                            <?php   
+                                if ( $insurancepolicies == 0 )
+                                {
+                                    ?>
+                                        <button
+                                                onclick="addpolicesgruop()"
+                                                class="btn btn-primary mt-2"
+                                                type='button'
+                                                
+                                                >
+                                                    Agregar polizas al colectivo
+                                            </button>   
+                                    <?php  
+                                }
+                                else
+                                {
+                                    echo " La empresa ya posee una polisa agregada ";
+                                }
+                            ?>
+                                    
                             </th>
                             <th></th>
 

@@ -2750,13 +2750,13 @@ class ClientesController extends Controller
                 ->where('company_client.idcompany',$request->idcompany)
                 ->get();    
                 
-                    
+                //dd($fechafin) ;
                 for ( $i=0; $i < count($fechafin); $i++ )
                 {
                     $imagen_url ='';
                     if (in_array($i, $cbox))
                     {
-                        
+                       
                         if ( floatval($monto[$i]) >=0  )
                         {
                             //echo ' monto mayor a 0 ';
@@ -2807,7 +2807,6 @@ class ClientesController extends Controller
                                 
                                 if( ($empleado->fechainicio==$fechainicio[$i]) && ($empleado->fechafin == $fechafin[$i]))
                                 {
-                                    echo ' '.$empleado->id.' ';
                                     $vinsert =array(
                                         'idusuario'=>0,
                                         'idquote'=>0,
@@ -2833,7 +2832,20 @@ class ClientesController extends Controller
                         }
                         
                     }
+                    else
+                    {
+                        session()->flash('message', 'NO se pudo realizar pagos -error01');
+                        //echo " no esta el id ".$i." en coxb ";
+                        //print_r($cbox);
+                        //dd($cbox,$i,$fechafin);
+                        //return back();
+                    }
                 }
+            }
+            else
+            {
+                session()->flash('message', 'NO se pudo realizar pagos -error02');
+                return back();
             }
             session()->flash('message', 'Pagos realizados con exito');
             return back();
@@ -4037,6 +4049,10 @@ class ClientesController extends Controller
             $data['company']=DB::table('company')->where('id',$id)->get();
             $data['id']=$id;
             $data['insurers'] = Insurer::select(["*"])->get();
+            $data['insurancepolicies'] =DB::table('company_insurers')
+            ->join('insurers', 'company_insurers.insurersid', '=', 'insurers.id')
+            ->where('company_insurers.companyid',$id)
+            ->select('insurers.name','company_insurers.idcoverages','company_insurers.companyid')->count(); 
             return view("admin.insuredpolicies",$data);
         }
             

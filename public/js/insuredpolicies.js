@@ -36,7 +36,7 @@ function addpolicesgruop()
                             
                         }
                     );
-                    //window.location ='lista-empresas';
+                    window.location ='./lista-empresas';
                 }
             else
                 enablebutton(jsondata['message']);
