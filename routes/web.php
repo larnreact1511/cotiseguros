@@ -140,6 +140,9 @@ Route::get('listado-de-seguros', [App\Http\Controllers\InsurersController::class
 Route::get('agregar-empresa', [App\Http\Controllers\CompanyController::class, "addcompany" ]);
 Route::post('agregar-empresa', [App\Http\Controllers\CompanyController::class, "saveaddcompany" ]);
 Route::get('lista-empresas', [App\Http\Controllers\CompanyController::class, "listcompany" ]);
+
+Route::get('info-empresa/{id}', [App\Http\Controllers\CompanyController::class, "infocompany" ]);
+
 Route::get('getcompanys', [App\Http\Controllers\CompanyController::class, 'getcompanys']);
 // colectivos
 Route::get('colectivos', [App\Http\Controllers\ClientesController::class, "colectivos" ]);
