@@ -69,3 +69,55 @@ function enablebutton(msj){
         
     }   
 }
+function editarempresa()
+{
+    let idempresa =$("#listadodeempresas").val();
+    if (idempresa > 0)
+    {
+        mostrarcarga()
+        $.ajax({
+            method: "GET",
+            url: 'info-empresa/'+idempresa,
+            mimeType:"multipart/form-data",
+            contentType: false,
+            cache: false,
+            processData:false,
+            beforeSend: function(){},
+            success: function(data){
+               if (data)
+                { 
+                    var jsondata = JSON.parse(data);
+                    if (jsondata['result']=='success')
+                    {
+                        let data = jsondata['data'];
+                        console.log(data);
+                        $('#idempresa').val(data[0]['id']);
+                        $('#companyname').val(data[0]['companyname']);
+                        $('#rifcompany').val(data[0]['rifcompany']);
+                        $('#adresscompany').val(data[0]['adresscompany']);
+                        $('#notecompany').val(data[0]['notecompany']);
+                        ocultarcarga();
+                    }
+                    else
+                        ocultarcarga();
+               }
+               else
+                ocultarcarga();  
+            },
+            error: function (request, status, error) {
+                ocultarcarga();
+            }
+        });
+    }
+    else
+    {
+        
+        $('#idempresa').val(0);
+        $('#companyname').val('');
+        $('#rifcompany').val('');
+        $('#adresscompany').val('');
+        $('#notecompany').val('');
+    }
+    
+
+}

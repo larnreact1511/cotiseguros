@@ -32,7 +32,14 @@ class CompanyController extends Controller
     //
     public function addcompany()
     {
-        return view("admin.addcompany");
+        $data['companys'] =DB::table('company')->get();
+        return view("admin.addcompany",$data);
+    }
+
+    public function infocompany($id){
+
+        $company = DB::table('company')->where('id',$id) ->get();   
+        return response()->json(['result'=>'success','data'=>$company]);
     }
     function saveaddcompany(Request $request)
     {
@@ -64,9 +71,22 @@ class CompanyController extends Controller
             'notecompany'=>@$request->notecompany,
             'created_at'=>date("Y-m-d H:i:s"),
             
-          );
-          DB::table('company')->insertGetId($data);
-          return response()->json(['result'=>'success','message'=>'Empresa agrega con exito']);
+        );
+          if ($request->idempresa >0 )
+          {
+            
+            DB::table('company')
+            ->where('id',$request->idempresa)
+            ->update($data);
+            return response()->json(['result'=>'success','message'=>'Empresa actulizada con exito']);
+          }
+          else
+          {
+            DB::table('company')->insertGetId($data);
+            return response()->json(['result'=>'success','message'=>'Empresa agrega con exito']);
+          }
+          
+          
     }
     public function listcompany()
     {

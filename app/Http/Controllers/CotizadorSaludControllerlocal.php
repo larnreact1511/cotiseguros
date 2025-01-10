@@ -653,7 +653,7 @@ class CotizadorSaludController extends Controller
             ])
         //->download('mi-archivo.pdf');
         ->save(storage_path('app/public/') . $file );
-        //Mail::to($cotizacion->email)->send(new Cotizador( env('APP_URL') . "/storage/" . $file ));
+        Mail::to($cotizacion->email)->send(new Cotizador( env('APP_URL') . "/storage/" . $file ));
         $data['ruta'][$i]= env('APP_URL') . "/storage/" . $file;
         $i++;
         return response()->json($data);

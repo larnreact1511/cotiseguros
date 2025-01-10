@@ -17,84 +17,120 @@
             Ingresa tu empresa
 
         </h3>
+        <div class ="card">
+            
+            
+            <table class="table">
+                    <tr>
+                        <th>
+                            <lable>
+                            Empresas del sistema 
+                            </lable>
+                                
+                            <select 
+                                name="listadodeempresas" 
+                                id="listadodeempresas" 
+                                class="form-select shadow-none border-0 bg-grey w-25 align-self-start" 
+                                aria-label="Default select example" 
+                                onchange="editarempresa()"
+                                >
+                                <option value="0">Seleccione</option> 
+                                <?php  
+                                    foreach ($companys as $c )
+                                    {
+                                        ?>
+                                            <option value="{{ $c->id }}">
+                                                {{ $c->companyname }}
+                                            </option> 
+                                        <?php  
+                                    }
+                                ?>
+                            </select>
+                        </th>
+                        
+                    </tr>
+                
+                </table>
+
+        </div> <br>
         <div class="card" id="">
             <form 
-                    id="form-add-company" 
-                    class="container px-4 my-5"
-                    action="" 
-                    method="post"
-                    enctype="multipart/form-data"
-                    >
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                   
-                    <table class="table">
-                        <tr>
-                            <th>
-                                <label>Empresa </label>
-                                    <input 
-                                        name="companyname" 
-                                        id="companyname"
-                                        type="text" 
-                                        class="form-control shadow-none border-0 bg-grey"
-                                        placeholder="Nombre de la empresa" 
-                                        value="">
-                            </th>
-                            <th>
-                                <label> Rif</label>
-                                    <input 
-                        
-                                        name="rifcompany" 
-                                        id="rifcompany" 
-                                        type="text" 
-                                        class="form-control shadow-none border-0 bg-grey" 
-                                        
-                                        placeholder="Rif de la empresa" 
-                                        value=""
-                                    >
-                            </th>
-                            <th>
-                                    
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <label>Dirrecion </label>
-                                    <input 
-                                        name="adresscompany" 
-                                        id="adresscompany"
-                                        type="text" 
-                                        class="form-control shadow-none border-0 bg-grey"
-                                        placeholder="Direccion de la empresa" 
-                                        value="">
-                            </th>
-                            <th>
-                                <label> Nota</label>
-                                    <input 
-                        
-                                        name="notecompany" 
-                                        id="notecompany" 
-                                        type="text" 
-                                        class="form-control shadow-none border-0 bg-grey" 
-                                        
-                                        placeholder="Nota de la empresa" 
-                                        value=""
-                                    >
-                            </th>
-                            <th>
-                                    
-                            </th>
-                        </tr>
-                        
-                    </table>
+                id="form-add-company" 
+                class="container px-4 my-5"
+                action="" 
+                method="post"
+                enctype="multipart/form-data"
+                >
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="idempresa" id="idempresa" value="">
+                <table class="table">
+                    <tr>
+                        <th>
+                            <label>Empresa </label>
+                                <input 
+                                    name="companyname" 
+                                    id="companyname"
+                                    type="text" 
+                                    class="form-control shadow-none border-0 bg-grey"
+                                    placeholder="Nombre de la empresa" 
+                                    value="">
+                        </th>
+                        <th>
+                            <label> Rif</label>
+                                <input 
                     
-                    <button 
-                        type="button" 
-                        onClick="addcompanybtn()"  
-                        type="button" 
-                        class="btn btn-primary" > 
-                            Agregar empresa
-                        </button> 
-                </form>
+                                    name="rifcompany" 
+                                    id="rifcompany" 
+                                    type="text" 
+                                    class="form-control shadow-none border-0 bg-grey" 
+                                    
+                                    placeholder="Rif de la empresa" 
+                                    value=""
+                                >
+                        </th>
+                        <th>
+                                
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>Dirrecion </label>
+                                <input 
+                                    name="adresscompany" 
+                                    id="adresscompany"
+                                    type="text" 
+                                    class="form-control shadow-none border-0 bg-grey"
+                                    placeholder="Direccion de la empresa" 
+                                    value="">
+                        </th>
+                        <th>
+                            <label> Nota</label>
+                                <input 
+                    
+                                    name="notecompany" 
+                                    id="notecompany" 
+                                    type="text" 
+                                    class="form-control shadow-none border-0 bg-grey" 
+                                    
+                                    placeholder="Nota de la empresa" 
+                                    value=""
+                                >
+                        </th>
+                        <th>
+                                
+                        </th>
+                    </tr>
+                    
+                </table>
+                
+                <button 
+                    type="button" 
+                    onClick="addcompanybtn()"  
+                    type="button" 
+                    class="btn btn-primary" > 
+                        Agregar empresa
+                    </button> 
+            </form>
             
         </div>
     </div>
